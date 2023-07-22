@@ -1,15 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
+import Calendar from './app/Calendar';
+import { CONFIG } from './constant';
+import './index.css';
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
-    <App />
+    <div style={{ width: '100vw', height: '100vh', padding: '2.4rem' }}>
+      <Calendar
+        duration={CONFIG.DEFAULT.DURATION}
+        displayDuration={CONFIG.DEFAULT.DURATION}
+        workingTime={CONFIG.DEFAULT.WORKING_TIME}
+        dayTime={CONFIG.DEFAULT.DAY_TIME}
+        timeType={CONFIG.DEFAULT.TIME_TYPE}
+        groupTime={CONFIG.DEFAULT.GROUP_TIME}
+        nowIndicator={true}
+      />
+    </div>
   </React.StrictMode>
 );
 
