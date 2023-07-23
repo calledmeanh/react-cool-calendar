@@ -4,7 +4,8 @@ import { Flex } from './Flex';
 export const Line = styled(Flex)`
   flex-grow: 1;
   flex-shrink: 0;
-  height: 24px;
+  min-height: 24px;
+  max-height: 36px;
   color: #101928;
   font-size: 14px;
   line-height: 14px;

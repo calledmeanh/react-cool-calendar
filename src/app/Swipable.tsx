@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import Timeline from './Timeline';
+import Dateline from './Dateline';
 import Grid from './Grid';
 
 const Wrapper = styled.div`
@@ -9,18 +9,11 @@ const Wrapper = styled.div`
 `;
 
 const Swipable: React.FC<{}> = () => {
-  //TODO: check this code, find best solution 
-  const gridRef = useRef<any>();
-  const [height, setHeight] = useState(0);
-  useEffect(() => {
-    if (gridRef.current) {
-      const newHeight = gridRef.current.clientHeight;
-      setHeight(newHeight);
-    }
-  }, []);
+  const [gridEl, setGridEl] = useState<HTMLDivElement | null>(null);
+
   return (
-    <Wrapper data-idtf={'swipable'} ref={gridRef}>
-      <Timeline height={height} />
+    <Wrapper data-idtf={'swipable'} ref={(ref) => setGridEl(ref)}>
+      {gridEl && <Dateline height={gridEl.clientHeight} />}
       <Grid />
     </Wrapper>
   );

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Flex, Select, Text, Option, Button } from './common';
 import { useCalendar, useCalendarDispatch } from '../hook';
 import { EAction } from '../model';
+import { getValueFromUserInput } from '../util';
 
 const Wrapper = styled(Flex)`
   width: 100%;
@@ -13,6 +14,11 @@ const Wrapper = styled(Flex)`
 const Toolbar: React.FC<{}> = () => {
   const calendarState = useCalendar();
   const dispath = useCalendarDispatch();
+
+  const onSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = getValueFromUserInput(e);
+    dispath({ type: EAction.MODE, payload: value });
+  };
 
   return (
     <Wrapper data-idtf={'toolbar'} $align={'center'} $justify={'space-between'}>
@@ -36,10 +42,7 @@ const Toolbar: React.FC<{}> = () => {
         $padding={[8, 12]}
         $isborderradius
         value={calendarState.mode}
-        onChange={(e) => {
-          const value = e.target.value;
-          dispath({ type: EAction.MODE, payload: value });
-        }}
+        onChange={onSelectChange}
       >
         <Option value="DAY">day</Option>
         <Option value="WEEK">week</Option>

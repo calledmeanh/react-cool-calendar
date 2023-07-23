@@ -9,8 +9,19 @@ import { useCalendar } from '../hook';
 const Wrapper = styled(Flex)`
   width: 48px;
   height: max-content;
-  padding-top: 60px;
-  border-right: 1px solid #d5d7da;
+`;
+
+/**
+ * sticky to the header with dateline
+ */
+const Box = styled.div`
+  flex-grow: 1;
+  flex-shrink: 0;
+  height: 60px;
+  background: #f7f7f8;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 `;
 
 const Time: React.FC<{}> = () => {
@@ -39,6 +50,7 @@ const Time: React.FC<{}> = () => {
   }, [calendarState.duration, calendarState.dayTime]);
   return (
     <Wrapper data-idtf={'time'} $dir={'column'}>
+      <Box />
       {renderTime()}
     </Wrapper>
   );

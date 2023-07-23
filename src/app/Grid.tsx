@@ -19,6 +19,7 @@ const Wrapper = styled.div`
     transparent 55%
   );
   background-color: #eef0f2;
+  box-shadow: -2px 0px 4px 0px rgba(164, 173, 186, 0.5);
 `;
 
 const Grid: React.FC<{}> = () => {

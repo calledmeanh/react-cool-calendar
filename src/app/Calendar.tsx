@@ -2,9 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import { Flex } from './common';
 import Toolbar from './Toolbar';
-import Content from './Content';
 import CalendarProvider from '../hook/useCalendarContext';
 import { TCalendarState } from '../model';
+import Scrolling from './Scrolling';
 
 const Wrapper = styled(Flex)`
   width: 100%;
@@ -21,7 +21,7 @@ const Calendar: React.FC<TCalendarState> = (props) => {
     <CalendarProvider initialState={props}>
       <Wrapper data-idtf={'calendar'} $dir={'column'} $justify={'center'} $align={'center'}>
         <Toolbar />
-        <Content />
+        <Scrolling />
       </Wrapper>
     </CalendarProvider>
   );
