@@ -1,10 +1,10 @@
 import React from 'react';
 import moment from 'moment';
 import styled from 'styled-components';
-import { CONFIG } from '../constant';
 import { clsx } from '../util';
 import { DateUtils } from '../util';
 import { Flex } from './common';
+import { useCalendar } from '../hook';
 
 const Wrapper = styled(Flex)`
   height: 60px;
@@ -14,7 +14,7 @@ const Wrapper = styled(Flex)`
   background: #f7f7f8;
 `;
 
-const TimelineHeader = styled(Flex)`
+const TimelineHeader = styled(Flex)<{ $height: number }>`
   flex: 1;
   background: transparent;
   font-weight: 500;
@@ -31,9 +31,9 @@ const TimelineHeader = styled(Flex)`
   &::after {
     background: #eef0f2;
     width: 1px;
-    height: 2304px;
+    height: ${(props) => props.$height}px;
     position: absolute;
-    top: 60px;
+    top: 0;
     right: 0;
     content: '';
   }
@@ -62,24 +62,29 @@ const TimelineText = styled.div`
   }
 `;
 
-const Timeline: React.FC<{}> = () => {
-  return (
-    <Wrapper data-idtf={'timeline'}>
-      {DateUtils.getWeek().map((week, i) => {
-        const today: string = moment(week.origin).format(CONFIG.DEFAULT.DATE_FORMAT);
-        const isToday: boolean = DateUtils.isToday(today);
-        const classname = clsx({
-          today: isToday,
-        });
-        return (
-          <TimelineHeader key={i} $justify={'center'} $align={'center'}>
-            <TimelineNumber className={classname}>{week.number}</TimelineNumber>
-            <TimelineText className={classname}>{week.text}</TimelineText>
-          </TimelineHeader>
-        );
-      })}
-    </Wrapper>
-  );
+const Timeline: React.FC<{ height: any }> = ({ height }) => {
+  const calendarState = useCalendar();
+  console.log(height);
+  const render = () => {
+    let week = DateUtils.getWeek();
+    if (calendarState.mode === 'DAY') week = week.slice(0, 1);
+
+    return week.map((w, i) => {
+      const today: string = moment(w.origin).format(calendarState.dateFormat);
+      const isToday: boolean = DateUtils.isToday(today);
+      const classname = clsx({
+        today: isToday,
+      });
+      return (
+        <TimelineHeader key={i} $justify={'center'} $align={'center'} $height={height || 0}>
+          <TimelineNumber className={classname}>{w.number}</TimelineNumber>
+          <TimelineText className={classname}>{w.text}</TimelineText>
+        </TimelineHeader>
+      );
+    });
+  };
+
+  return <Wrapper data-idtf={'timeline'}>{render()}</Wrapper>;
 };
 
 export default Timeline;

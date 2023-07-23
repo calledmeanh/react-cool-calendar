@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Flex, Select, Text, Option, Button } from './common';
+import { useCalendar, useCalendarDispatch } from '../hook';
+import { EAction } from '../model';
 
 const Wrapper = styled(Flex)`
   width: 100%;
@@ -9,6 +11,9 @@ const Wrapper = styled(Flex)`
 `;
 
 const Toolbar: React.FC<{}> = () => {
+  const calendarState = useCalendar();
+  const dispath = useCalendarDispatch();
+
   return (
     <Wrapper data-idtf={'toolbar'} $align={'center'} $justify={'space-between'}>
       <Text data-idtf={'label'} $padding={[8, 12]} $align={'center'} $justify={'center'}>
@@ -26,10 +31,19 @@ const Toolbar: React.FC<{}> = () => {
           &#x203A;
         </Button>
       </Flex>
-      <Select data-idtf={'mode'} $padding={[8, 12]} $isborderradius>
-        <Option value="day">day</Option>
-        <Option value="week">week</Option>
-        <Option value="month">month</Option>
+      <Select
+        data-idtf={'mode'}
+        $padding={[8, 12]}
+        $isborderradius
+        value={calendarState.mode}
+        onChange={(e) => {
+          const value = e.target.value;
+          dispath({ type: EAction.MODE, payload: value });
+        }}
+      >
+        <Option value="DAY">day</Option>
+        <Option value="WEEK">week</Option>
+        {/* <Option value="MONTH">month</Option> */}
       </Select>
     </Wrapper>
   );

@@ -11,14 +11,14 @@ export const DateUtils = {
 };
 
 function prev(currentDate: string): string {
-  return moment(currentDate).subtract(1, 'days').format(CONFIG.DEFAULT.DATE_FORMAT);
+  return moment(currentDate).subtract(1, 'days').format(CONFIG.DATE_FORMAT);
 }
 
 function next(currentDate: string): string {
-  return moment(currentDate).add(1, 'days').format(CONFIG.DEFAULT.DATE_FORMAT);
+  return moment(currentDate).add(1, 'days').format(CONFIG.DATE_FORMAT);
 }
 function today(): string {
-  return moment().format(CONFIG.DEFAULT.DATE_FORMAT);
+  return moment().format(CONFIG.DATE_FORMAT);
 }
 
 function getWeek(): TCustomWeek[] {
@@ -36,8 +36,8 @@ function getWeek(): TCustomWeek[] {
 }
 
 function isToday(date: string): boolean {
-  const today = moment().format(CONFIG.DEFAULT.DATE_FORMAT);
-  const anotherDay = moment(date).format(CONFIG.DEFAULT.DATE_FORMAT);
+  const today = moment().format(CONFIG.DATE_FORMAT);
+  const anotherDay = moment(date).format(CONFIG.DATE_FORMAT);
 
   const isToday: boolean = today === anotherDay;
   return isToday;

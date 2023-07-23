@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
-import { TimeUtil } from '../util';
+import { TimeUtils } from '../util';
 import { clsx } from '../util';
 import { Line } from './common';
-import { CONFIG } from '../constant';
+import { useCalendar } from '../hook';
 
 const Wrapper = styled.div`
   touch-action: pan-y;
@@ -22,26 +22,26 @@ const Wrapper = styled.div`
 `;
 
 const Grid: React.FC<{}> = () => {
+  const calendarState = useCalendar();
+
   const renderRow = useCallback(() => {
-    return TimeUtil.createTimes(
-      CONFIG.DEFAULT.DAY_TIME.end,
-      CONFIG.DEFAULT.DAY_TIME.start,
-      CONFIG.DEFAULT.DURATION
-    ).map((t, i) => {
-      const currentTime: number = CONFIG.DEFAULT.DAY_TIME.start + i * CONFIG.DEFAULT.DURATION;
-      const workingTime: boolean = TimeUtil.checkWorkingTime(
-        CONFIG.DEFAULT.DAY_TIME,
-        CONFIG.DEFAULT.WORKING_TIME,
-        currentTime
-      );
-      const groupTime: boolean = TimeUtil.checkGroupTime(CONFIG.DEFAULT.GROUP_TIME, CONFIG.DEFAULT.DURATION, i, 'top');
-      const classname = clsx({
-        wt: workingTime,
-        gt: groupTime,
-      });
-      return <Line data-idtf={'line'} $justify={'flex-start'} $align={'center'} className={classname} key={i}></Line>;
-    });
-  }, []);
+    return TimeUtils.createTimes(calendarState.dayTime.end, calendarState.dayTime.start, calendarState.duration).map(
+      (t, i) => {
+        const currentTime: number = calendarState.dayTime.start + i * calendarState.duration;
+        const workingTime: boolean = TimeUtils.checkWorkingTime(
+          calendarState.dayTime,
+          calendarState.workingTime,
+          currentTime
+        );
+        const groupTime: boolean = TimeUtils.checkGroupTime(calendarState.groupTime, calendarState.duration, i, 'top');
+        const classname = clsx({
+          wt: workingTime,
+          gt: groupTime,
+        });
+        return <Line data-idtf={'line'} $justify={'flex-start'} $align={'center'} className={classname} key={i}></Line>;
+      }
+    );
+  }, [calendarState.duration, calendarState.dayTime, calendarState.workingTime, calendarState.groupTime]);
 
   return <Wrapper data-idtf={'grid'}>{renderRow()}</Wrapper>;
 };

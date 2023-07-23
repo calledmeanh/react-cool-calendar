@@ -1,16 +1,14 @@
 export type TCalendarState = {
   duration: number;
-  displayDuration: number;
   workingTime: TTime;
   dayTime: TTime;
   timeType: number;
   groupTime: number;
   nowIndicator: boolean;
-};
-
-export type TCalendarAction = {
-  type: string;
-  payload: any;
+  mode: 'DAY' | 'WEEK' | 'MONTH';
+  dateFormat: string;
+  datetimeFormat: string;
+  timeFormat: string;
 };
 
 export type TTime = {
@@ -23,3 +21,12 @@ export type TCustomWeek = {
   text: string;
   origin: Date;
 };
+
+export type TCalendarAction = {
+  type: EAction;
+  payload: any;
+};
+
+export enum EAction {
+  MODE = 'MODE',
+}

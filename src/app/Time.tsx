@@ -1,9 +1,10 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import { Flex, Line } from './common';
-import { TimeUtil } from '../util';
+import { TimeUtils } from '../util';
 import { CONFIG } from '../constant';
 import { clsx } from '../util';
+import { useCalendar } from '../hook';
 
 const Wrapper = styled(Flex)`
   width: 48px;
@@ -13,29 +14,29 @@ const Wrapper = styled(Flex)`
 `;
 
 const Time: React.FC<{}> = () => {
+  const calendarState = useCalendar();
+
   const renderTime = useCallback(() => {
-    return TimeUtil.createTimes(
-      CONFIG.DEFAULT.DAY_TIME.end,
-      CONFIG.DEFAULT.DAY_TIME.start,
-      CONFIG.DEFAULT.DURATION
-    ).map((t, i) => {
-      const currentTime: number = CONFIG.DEFAULT.DAY_TIME.start + i * CONFIG.DEFAULT.DURATION;
-      const time: string = TimeUtil.convertSecondsToHourString(currentTime);
-      const showTime: boolean = TimeUtil.displayTime(
-        currentTime,
-        CONFIG.DEFAULT.DAY_TIME.start,
-        CONFIG.DEFAULT.DURATION * CONFIG.DEFAULT.MAPPING_TIME[900]
-      );
-      const classname = clsx({
-        ngt: true,
-      });
-      return (
-        <Line data-idtf={'line'} $justify={'center'} $align={'center'} className={classname} key={i}>
-          {showTime && time}
-        </Line>
-      );
-    });
-  }, []);
+    return TimeUtils.createTimes(calendarState.dayTime.end, calendarState.dayTime.start, calendarState.duration).map(
+      (t, i) => {
+        const currentTime: number = calendarState.dayTime.start + i * calendarState.duration;
+        const time: string = TimeUtils.convertSecondsToHourString(currentTime);
+        const showTime: boolean = TimeUtils.displayTime(
+          currentTime,
+          calendarState.dayTime.start,
+          calendarState.duration * CONFIG.MAPPING_TIME[900]
+        );
+        const classname = clsx({
+          ngt: true,
+        });
+        return (
+          <Line data-idtf={'line'} $justify={'center'} $align={'center'} className={classname} key={i}>
+            {showTime && time}
+          </Line>
+        );
+      }
+    );
+  }, [calendarState.duration, calendarState.dayTime]);
   return (
     <Wrapper data-idtf={'time'} $dir={'column'}>
       {renderTime()}

@@ -1,7 +1,7 @@
 import { CONFIG } from '../constant';
 import { TTime } from '../model';
 
-export const TimeUtil = {
+export const TimeUtils = {
   calcDistanceBetweenTimes,
   calcTimeStep,
   createTimes,
@@ -71,8 +71,8 @@ function covertHourToSeconds(hour: number, minute: number): number {
   return result;
 }
 
-function displayTime(current: number, start: number, displayDuration: number): boolean {
-  return (current - start) % displayDuration === 0 ? true : false;
+function displayTime(current: number, start: number, duration: number): boolean {
+  return (current - start) % duration === 0 ? true : false;
 }
 
 function checkWorkingTime(dayTime: TTime, workingTime: TTime, current: number): boolean {
