@@ -9,6 +9,7 @@ export const Select = styled.select<{ $padding: TStylePadding; $isborderradius?:
   background: #fff;
   cursor: pointer;
   font-size: 14px;
+  text-transform: capitalize;
   transition: all 0.15s cubic-bezier(0, 0, 1, 1);
   &:hover {
     box-shadow: 0 2px 10px 0 rgba(16, 25, 40, 0.2);

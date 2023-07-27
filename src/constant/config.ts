@@ -3,6 +3,10 @@ const SECONDS_PER_HOUR: number = 3600;
 
 const HAFT_DAY_SECONDS: number = 12 * SECONDS_PER_HOUR - 1; // 11h59m59s
 
+const VIEWMODE_LARGE = 15 * SECONDS_PER_MINUTE;
+const VIEWMODE_MEDIUM = 30 * SECONDS_PER_MINUTE;
+const VIEWMODE_SMALL = 45 * SECONDS_PER_MINUTE;
+
 const MAPPING_TIME = {
   300: 3,
   600: 3,
@@ -10,15 +14,15 @@ const MAPPING_TIME = {
   1800: 2,
 };
 
-const DATE_FORMAT = 'YYYY/MM/DD';
-
-const WEEK: string[] = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const DATE_FORMAT = 'MM/DD/YYYY';
 
 export const CONFIG = {
   SECONDS_PER_HOUR,
   SECONDS_PER_MINUTE,
   HAFT_DAY_SECONDS,
-  WEEK,
+  VIEWMODE_LARGE,
+  VIEWMODE_MEDIUM,
+  VIEWMODE_SMALL,
   MAPPING_TIME,
   DATE_FORMAT,
 };

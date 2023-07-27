@@ -8,5 +8,5 @@ export const Text = styled(Flex)<{ $padding: TStylePadding; $isborderradius?: TS
   border: 1px solid #d5d7da;
   background: #fff;
   color: #101928;
-  user-select: none;
+  text-transform: capitalize;
 `;

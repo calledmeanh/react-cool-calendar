@@ -1,24 +1,24 @@
 import { Reducer, createContext, useContext, useReducer, ReactNode } from 'react';
-import { TCalendarState, TCalendarAction, EAction } from '../model';
+import { TCalendarStateForApp, TCalendarAction, EAction } from '../model';
 import { ConfigUtils } from '../util';
 
-const CalendarContext = createContext<TCalendarState>(ConfigUtils.createCalendarState());
+const CalendarContext = createContext<TCalendarStateForApp>(ConfigUtils.createExampleCalendarState());
 const CalendarDispatchContext = createContext<React.Dispatch<TCalendarAction>>(function (value: TCalendarAction) {});
 
-export const useCalendar = () => useContext(CalendarContext);
+export const useCalendarState = () => useContext(CalendarContext);
 export const useCalendarDispatch = () => useContext(CalendarDispatchContext);
 
 type TProps = {
   children: ReactNode;
-  initialState: TCalendarState;
+  initialState: TCalendarStateForApp;
 };
 
 /**
- * CalendarProvider is a single source of truth for app state, 
+ * CalendarProvider is a single source of truth for app state,
  * this takes props from Calendar
  */
 const CalendarProvider: React.FC<TProps> = ({ children, initialState }) => {
-  const [state, dispatch] = useReducer<Reducer<TCalendarState, TCalendarAction>>(calendarReducer, initialState);
+  const [state, dispatch] = useReducer<Reducer<TCalendarStateForApp, TCalendarAction>>(calendarReducer, initialState);
 
   return (
     <CalendarContext.Provider value={state}>
@@ -27,10 +27,22 @@ const CalendarProvider: React.FC<TProps> = ({ children, initialState }) => {
   );
 };
 
-function calendarReducer(state: TCalendarState, action: TCalendarAction): TCalendarState {
+function calendarReducer(state: TCalendarStateForApp, action: TCalendarAction): TCalendarStateForApp {
   switch (action.type) {
-    case EAction.MODE:
-      return { ...state, mode: action.payload };
+    case EAction.CHANGE_MODE:
+      return { ...state, viewMode: action.payload };
+    case EAction.CHANGE_ZOOM:
+      return { ...state, duration: action.payload };
+    case EAction.PREV_DAY:
+      return { ...state, currentDate: action.payload };
+    case EAction.NEXT_DAY:
+      return { ...state, currentDate: action.payload };
+    case EAction.PREV_WEEK:
+      return { ...state, currentDate: action.payload };
+    case EAction.NEXT_WEEK:
+      return { ...state, currentDate: action.payload };
+    case EAction.GET_TODAY:
+      return { ...state, currentDate: action.payload };
     default: {
       throw Error('Unknown action: ' + action.type);
     }

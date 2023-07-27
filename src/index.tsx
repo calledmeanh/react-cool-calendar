@@ -11,14 +11,15 @@ root.render(
     <div style={{ width: '100vw', height: '100vh', padding: '2.4rem' }}>
       {/* Calendar should take props from user pass in, this value below is just for temporary */}
       <Calendar
-        duration={15 * CONFIG.SECONDS_PER_MINUTE}
+        duration={CONFIG.VIEWMODE_MEDIUM}
         timeType={24}
-        groupTime={60 * CONFIG.SECONDS_PER_HOUR}
+        groupTime={30 * CONFIG.SECONDS_PER_HOUR}
         nowIndicator={true}
-        mode={'WEEK'}
-        dateFormat="YYYY/MM/DD"
-        datetimeFormat="DD MM YYYY hh:mm:ss"
+        viewMode={'WEEK'}
+        dateFormat="MM/DD/YYYY"
+        datetimeFormat="MM DD YYYY hh:mm:ss"
         timeFormat="hh:mm:ss"
+        locale="en"
         workingTime={{
           start: 7 * CONFIG.SECONDS_PER_HOUR,
           end: 20 * CONFIG.SECONDS_PER_HOUR,

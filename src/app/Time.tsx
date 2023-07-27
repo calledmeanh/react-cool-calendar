@@ -4,7 +4,7 @@ import { Flex, Line } from './common';
 import { TimeUtils } from '../util';
 import { CONFIG } from '../constant';
 import { clsx } from '../util';
-import { useCalendar } from '../hook';
+import { useCalendarState } from '../hook';
 
 const Wrapper = styled(Flex)`
   width: 48px;
@@ -25,7 +25,7 @@ const Box = styled.div`
 `;
 
 const Time: React.FC<{}> = () => {
-  const calendarState = useCalendar();
+  const calendarState = useCalendarState();
 
   const renderTime = useCallback(() => {
     return TimeUtils.createTimes(calendarState.dayTime.end, calendarState.dayTime.start, calendarState.duration).map(
@@ -48,6 +48,7 @@ const Time: React.FC<{}> = () => {
       }
     );
   }, [calendarState.duration, calendarState.dayTime]);
+
   return (
     <Wrapper data-idtf={'time'} $dir={'column'}>
       <Box />

@@ -1,44 +1,95 @@
-import moment from 'moment';
 import { CONFIG } from '../constant';
-import { TCustomWeek } from '../model';
+
+import dayjs, { Dayjs } from 'dayjs';
+import { TDateline } from '../model';
 
 export const DateUtils = {
-  prev,
-  next,
-  today,
-  getWeek,
-  isToday,
+  prevDay,
+  nextDay,
+  prevWeek,
+  nextWeek,
+  getDateline,
+  getCustomDateToDate,
+  getCustomDay,
+  checkToday,
 };
 
-function prev(currentDate: string): string {
-  return moment(currentDate).subtract(1, 'days').format(CONFIG.DATE_FORMAT);
+function prevDay(currentDate: string): Dayjs {
+  return dayjs(currentDate).subtract(1, 'days');
 }
 
-function next(currentDate: string): string {
-  return moment(currentDate).add(1, 'days').format(CONFIG.DATE_FORMAT);
-}
-function today(): string {
-  return moment().format(CONFIG.DATE_FORMAT);
+function nextDay(currentDate: string): Dayjs {
+  return dayjs(currentDate).add(1, 'days');
 }
 
-function getWeek(): TCustomWeek[] {
-  const week: TCustomWeek[] = [];
+function prevWeek(currentDate: string): Dayjs {
+  return dayjs(currentDate).subtract(7, 'days');
+}
 
-  let startOfWeek: moment.Moment = moment().startOf('isoWeek');
-  let endOfWeek: moment.Moment = moment().endOf('isoWeek');
+function nextWeek(currentDate: string): Dayjs {
+  return dayjs(currentDate).add(7, 'days');
+}
+
+function getDateline(todayGlobal: Dayjs): TDateline {
+  let startOfWeek = todayGlobal.startOf('weeks'); // monday
+  let endOfWeek = todayGlobal.endOf('weeks'); // sunday
+
+  const dateline: TDateline = {
+    week: [],
+    today: {
+      number: todayGlobal.format('DD'),
+      text: todayGlobal.format('dddd'),
+      date: todayGlobal.format(CONFIG.DATE_FORMAT),
+    },
+  };
 
   while (startOfWeek <= endOfWeek) {
-    const JSDate = startOfWeek.toDate();
-    week.push({ number: JSDate.getDate(), text: CONFIG.WEEK[JSDate.getDay()], origin: JSDate });
+    dateline.week.push({
+      number: startOfWeek.format('DD'),
+      text: startOfWeek.format('dddd'),
+      date: startOfWeek.format(CONFIG.DATE_FORMAT),
+    });
     startOfWeek = startOfWeek.clone().add(1, 'd');
   }
-  return week;
+  return dateline;
 }
 
-function isToday(date: string): boolean {
-  const today = moment().format(CONFIG.DATE_FORMAT);
-  const anotherDay = moment(date).format(CONFIG.DATE_FORMAT);
+function getCustomDateToDate(currentDate: Dayjs): string {
+  const startOrigin = currentDate.startOf('weeks'); // monday
+  const start = {
+    date: startOrigin.format('D'),
+    month: startOrigin.format('MMM'),
+  };
 
-  const isToday: boolean = today === anotherDay;
+  const endOrigin = currentDate.endOf('weeks'); // sunday
+  const end = {
+    date: endOrigin.format('D'),
+    month: endOrigin.format('MMM'),
+    year: endOrigin.format('YYYY'),
+  };
+
+  let res = '';
+  if (start.month === end.month) {
+    res = `${start.date} - ${end.date} ${end.month}, ${end.year} `;
+  } else {
+    res = `${start.date} ${start.month} - ${end.date} ${end.month}, ${end.year} `;
+  }
+
+  return res;
+}
+
+function getCustomDay(currentDate: Dayjs): string {
+  const number = currentDate.format('D');
+  const text = currentDate.format('dddd');
+  const month = currentDate.format('MMM');
+  const year = currentDate.format('YYYY');
+
+  const res = `${text} ${number} ${month}, ${year}`;
+  return res;
+}
+
+function checkToday(date: string, todayGlobal: Dayjs): boolean {
+  const todayString = todayGlobal.format(CONFIG.DATE_FORMAT);
+  const isToday: boolean = todayString === date;
   return isToday;
 }

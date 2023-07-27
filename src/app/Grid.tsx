@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { TimeUtils } from '../util';
 import { clsx } from '../util';
 import { Line } from './common';
-import { useCalendar } from '../hook';
+import { useCalendarState } from '../hook';
 
 const Wrapper = styled.div`
   touch-action: pan-y;
@@ -23,7 +23,7 @@ const Wrapper = styled.div`
 `;
 
 const Grid: React.FC<{}> = () => {
-  const calendarState = useCalendar();
+  const calendarState = useCalendarState();
 
   const renderRow = useCallback(() => {
     return TimeUtils.createTimes(calendarState.dayTime.end, calendarState.dayTime.start, calendarState.duration).map(

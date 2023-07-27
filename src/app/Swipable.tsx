@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import Dateline from './Dateline';
 import Grid from './Grid';
+import { useCalendarState } from '../hook';
 
 const Wrapper = styled.div`
   flex: 1;
@@ -9,11 +10,19 @@ const Wrapper = styled.div`
 `;
 
 const Swipable: React.FC<{}> = () => {
-  const [gridEl, setGridEl] = useState<HTMLDivElement | null>(null);
+  const [pseuHeight, setPseuHeight] = useState(0);
+  const swipableRef = useRef<HTMLDivElement | null>(null);
+  const calendarState = useCalendarState();
+
+  useEffect(() => {
+    if (swipableRef && swipableRef.current) {
+      setPseuHeight(swipableRef.current.clientHeight);
+    }
+  }, [calendarState.duration]);
 
   return (
-    <Wrapper data-idtf={'swipable'} ref={(ref) => setGridEl(ref)}>
-      {gridEl && <Dateline height={gridEl.clientHeight} />}
+    <Wrapper data-idtf={'swipable'} ref={swipableRef}>
+      <Dateline afterPseudoHeight={pseuHeight} />
       <Grid />
     </Wrapper>
   );

@@ -1,5 +1,5 @@
 import { CONFIG } from '../constant';
-import { TTime } from '../model';
+import { EViewMode, TTime } from '../model';
 
 export const TimeUtils = {
   calcDistanceBetweenTimes,
@@ -13,6 +13,8 @@ export const TimeUtils = {
   covertHourToSeconds,
   covertSecondsToHour,
   convertSecondsToHourString,
+
+  parseDurationToViewMode,
 };
 
 function calcDistanceBetweenTimes(end: number, start: number, duration: number, lineHeight: number): number {
@@ -102,4 +104,23 @@ function checkGroupTime(
     return true;
   }
   return false;
+}
+
+function parseDurationToViewMode(duration: number): string {
+  let res = '';
+  switch (duration) {
+    case CONFIG.VIEWMODE_LARGE:
+      res = EViewMode.LARGE;
+      break;
+    case CONFIG.VIEWMODE_MEDIUM:
+      res = EViewMode.MEDIUM;
+      break;
+    case CONFIG.VIEWMODE_SMALL:
+      res = EViewMode.SMALL;
+      break;
+    default:
+      res = EViewMode.MEDIUM;
+      break;
+  }
+  return res;
 }

@@ -1,10 +1,10 @@
-import React from 'react';
-import moment from 'moment';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import { clsx } from '../util';
 import { DateUtils } from '../util';
 import { Flex } from './common';
-import { useCalendar } from '../hook';
+import { useCalendarState } from '../hook';
+import { TDay } from '../model';
 
 const Wrapper = styled(Flex)`
   height: 60px;
@@ -14,7 +14,7 @@ const Wrapper = styled(Flex)`
   z-index: 1;
 `;
 
-const DatelineHeader = styled(Flex)<{ $height: number }>`
+const DatelineHeader = styled(Flex)<{ $afterPseudoHeight: number }>`
   flex: 1;
   background: transparent;
   font-weight: 500;
@@ -31,7 +31,7 @@ const DatelineHeader = styled(Flex)<{ $height: number }>`
   &::after {
     background: #eef0f2;
     width: 1px;
-    height: ${(props) => props.$height}px;
+    height: ${(props) => props.$afterPseudoHeight}px;
     position: absolute;
     top: 0;
     right: 0;
@@ -57,33 +57,33 @@ const DatelineNumber = styled.div`
 const DatelineText = styled.div`
   font-size: 14px;
   color: #67768c;
+  text-transform: capitalize;
   &.today {
     color: #037aff;
   }
 `;
 
-const Dateline: React.FC<{ height: any }> = ({ height }) => {
-  const calendarState = useCalendar();
+const Dateline: React.FC<{ afterPseudoHeight: number }> = ({ afterPseudoHeight }) => {
+  const calendarState = useCalendarState();
 
-  const render = () => {
-    //TODO: when user change week to day, the day should be today!
-    let week = DateUtils.getWeek();
-    if (calendarState.mode === 'DAY') week = week.slice(0, 1);
+  const render = useCallback(() => {
+    let dateline = DateUtils.getDateline(calendarState.currentDate);
+    let week: TDay[] = dateline.week.slice();
+    if (calendarState.viewMode === 'DAY') week = [dateline.today];
 
     return week.map((w, i) => {
-      const today: string = moment(w.origin).format(calendarState.dateFormat);
-      const isToday: boolean = DateUtils.isToday(today);
+      const isToday: boolean = DateUtils.checkToday(w.date, calendarState.todayGlobalIns);
       const classname = clsx({
         today: isToday,
       });
       return (
-        <DatelineHeader key={i} $justify={'center'} $align={'center'} $height={height || 0}>
+        <DatelineHeader key={i} $justify={'center'} $align={'center'} $afterPseudoHeight={afterPseudoHeight}>
           <DatelineNumber className={classname}>{w.number}</DatelineNumber>
           <DatelineText className={classname}>{w.text}</DatelineText>
         </DatelineHeader>
       );
     });
-  };
+  }, [afterPseudoHeight, calendarState.viewMode, calendarState.currentDate, calendarState.todayGlobalIns]);
 
   return <Wrapper data-idtf={'dateline'}>{render()}</Wrapper>;
 };

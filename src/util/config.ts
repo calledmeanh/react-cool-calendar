@@ -1,15 +1,17 @@
-import { TCalendarState } from '../model';
+import dayjs from 'dayjs';
+import { TCalendarStateForApp } from '../model';
 
-const createCalendarState = (): TCalendarState => {
-  const state: TCalendarState = {
+const createExampleCalendarState = (): TCalendarStateForApp => {
+  const state: TCalendarStateForApp = {
     duration: 0,
     timeType: 0,
     groupTime: 0,
     nowIndicator: true,
-    mode: 'DAY',
+    viewMode: 'WEEK',
     dateFormat: '',
     datetimeFormat: '',
     timeFormat: '',
+    locale: '',
     workingTime: {
       start: 0,
       end: 0,
@@ -18,10 +20,12 @@ const createCalendarState = (): TCalendarState => {
       start: 0,
       end: 0,
     },
+    todayGlobalIns: dayjs(),
+    currentDate: dayjs(),
   };
   return Object.create(state);
 };
 
 export const ConfigUtils = {
-  createCalendarState,
+  createExampleCalendarState,
 };
