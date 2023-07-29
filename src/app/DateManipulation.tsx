@@ -36,7 +36,7 @@ const DateManipulation: React.FC<{}> = () => {
   };
 
   return (
-    <Flex data-idtf={'daytime'} $align={'center'} $justify={'center'}>
+    <Flex data-idtf={'daytime'}>
       <Button $padding={[8, 12]} onClick={calendarState.viewMode === 'DAY' ? onPrevDay : onPrevWeek}>
         &#x2039;
       </Button>
@@ -49,9 +49,8 @@ const DateManipulation: React.FC<{}> = () => {
         today
       </Button>
       <Text style={{ minWidth: 210 }} $padding={[7, 12]} $align={'center'} $justify={'center'}>
-        {calendarState.viewMode === 'DAY'
-          ? DateUtils.getCustomDay(calendarState.currentDate)
-          : DateUtils.getCustomDateToDate(calendarState.currentDate)}
+        {calendarState.viewMode === 'DAY' && DateUtils.getCustomDay(calendarState.currentDate)}
+        {calendarState.viewMode === 'WEEK' && DateUtils.getCustomDateToDate(calendarState.currentDate)}
       </Text>
       <Button
         $padding={[8, 12]}

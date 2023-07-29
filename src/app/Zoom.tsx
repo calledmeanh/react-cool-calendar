@@ -8,7 +8,6 @@ import { CONFIG } from '../constant';
 type Opts = { value: EViewMode; text: string }[];
 const options: Opts = [
   { value: EViewMode.LARGE, text: 'large' },
-  { value: EViewMode.MEDIUM, text: 'medium' },
   { value: EViewMode.SMALL, text: 'small' },
 ];
 
@@ -22,14 +21,11 @@ const Zoom: React.FC<{}> = () => {
       case EViewMode.LARGE:
         dispath({ type: EAction.CHANGE_ZOOM, payload: CONFIG.VIEWMODE_LARGE });
         break;
-      case EViewMode.MEDIUM:
-        dispath({ type: EAction.CHANGE_ZOOM, payload: CONFIG.VIEWMODE_MEDIUM });
-        break;
       case EViewMode.SMALL:
         dispath({ type: EAction.CHANGE_ZOOM, payload: CONFIG.VIEWMODE_SMALL });
         break;
       default:
-        dispath({ type: EAction.CHANGE_ZOOM, payload: CONFIG.VIEWMODE_MEDIUM });
+        dispath({ type: EAction.CHANGE_ZOOM, payload: CONFIG.VIEWMODE_SMALL });
         break;
     }
   };

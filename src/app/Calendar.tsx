@@ -13,10 +13,8 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/vi';
 
 const Wrapper = styled(Flex)`
-  width: 100%;
   height: 100%;
   background: #f7f7f8;
-  position: relative;
   user-select: none;
 `;
 
@@ -30,7 +28,7 @@ const Calendar: React.FC<TCalendarStateForUser> = (userProps) => {
   const appProps: TCalendarStateForApp = { ...userProps, todayGlobalIns: dayjs(), currentDate: dayjs() };
   return (
     <CalendarProvider initialState={appProps}>
-      <Wrapper data-idtf={'calendar'} $dir={'column'} $justify={'center'} $align={'center'}>
+      <Wrapper data-idtf={'calendar'} $dir={'column'}>
         <Toolbar />
         <Scrolling />
       </Wrapper>

@@ -2,8 +2,6 @@ import styled from 'styled-components';
 import { Flex } from './Flex';
 
 export const Line = styled(Flex)`
-  flex-grow: 1;
-  flex-shrink: 0;
   min-height: 24px;
   max-height: 36px;
   color: #101928;

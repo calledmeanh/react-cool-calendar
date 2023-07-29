@@ -4,12 +4,11 @@ import { TimeUtils } from '../util';
 import { clsx } from '../util';
 import { Line } from './common';
 import { useCalendarState } from '../hook';
+import NowIndicator from './NowIndicator';
 
 const Wrapper = styled.div`
   touch-action: pan-y;
   position: relative;
-  width: 100%;
-  height: 100%;
   background-size: 8px 8px;
   background-image: linear-gradient(
     45deg,
@@ -39,12 +38,17 @@ const Grid: React.FC<{}> = () => {
           wt: workingTime,
           gt: groupTime,
         });
-        return <Line data-idtf={'line'} $justify={'flex-start'} $align={'center'} className={classname} key={i}></Line>;
+        return <Line data-idtf={'line'} className={classname} key={i}></Line>;
       }
     );
   }, [calendarState.duration, calendarState.dayTime, calendarState.workingTime, calendarState.groupTime]);
 
-  return <Wrapper data-idtf={'grid'}>{renderRow()}</Wrapper>;
+  return (
+    <Wrapper data-idtf={'grid'}>
+      <NowIndicator type={'LINE'} />
+      {renderRow()}
+    </Wrapper>
+  );
 };
 
 export default Grid;

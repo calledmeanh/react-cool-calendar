@@ -1,27 +1,14 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
-import { Flex, Line } from './common';
+import { Line } from './common';
 import { TimeUtils } from '../util';
 import { CONFIG } from '../constant';
 import { clsx } from '../util';
 import { useCalendarState } from '../hook';
+import NowIndicator from './NowIndicator';
 
-const Wrapper = styled(Flex)`
-  width: 48px;
-  height: max-content;
-`;
-
-/**
- * sticky to the header with dateline
- */
-const Box = styled.div`
-  flex-grow: 1;
-  flex-shrink: 0;
-  height: 60px;
-  background: #f7f7f8;
-  position: sticky;
-  top: 0;
-  z-index: 1;
+const Wrapper = styled.div`
+  position: relative;
 `;
 
 const Time: React.FC<{}> = () => {
@@ -35,7 +22,7 @@ const Time: React.FC<{}> = () => {
         const showTime: boolean = TimeUtils.displayTime(
           currentTime,
           calendarState.dayTime.start,
-          calendarState.duration * CONFIG.MAPPING_TIME[900]
+          calendarState.duration * CONFIG.MAPPING_TIME[calendarState.duration]
         );
         const classname = clsx({
           ngt: true,
@@ -50,8 +37,8 @@ const Time: React.FC<{}> = () => {
   }, [calendarState.duration, calendarState.dayTime]);
 
   return (
-    <Wrapper data-idtf={'time'} $dir={'column'}>
-      <Box />
+    <Wrapper data-idtf={'time'}>
+      <NowIndicator type={'PILL'} />
       {renderTime()}
     </Wrapper>
   );

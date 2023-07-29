@@ -49,6 +49,5 @@ export enum EAction {
 
 export enum EViewMode {
   LARGE = 'LARGE',
-  MEDIUM = 'MEDIUM',
   SMALL = 'SMALL',
 }

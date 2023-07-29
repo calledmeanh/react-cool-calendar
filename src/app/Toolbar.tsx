@@ -6,14 +6,13 @@ import Zoom from './Zoom';
 import DateManipulation from './DateManipulation';
 
 const Wrapper = styled(Flex)`
-  width: 100%;
   height: 68px;
   padding: 16px 24px;
 `;
 
 const Toolbar: React.FC<{}> = () => {
   return (
-    <Wrapper data-idtf={'toolbar'} $align={'center'} $justify={'space-between'}>
+    <Wrapper data-idtf={'toolbar'} $justify={'space-between'}>
       <Zoom />
       <DateManipulation />
       <ViewMode />

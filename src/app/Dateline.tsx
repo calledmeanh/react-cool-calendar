@@ -11,7 +11,7 @@ const Wrapper = styled(Flex)`
   background: #f7f7f8;
   position: sticky;
   top: 0;
-  z-index: 1;
+  z-index: 2;
 `;
 
 const DatelineHeader = styled(Flex)<{ $afterPseudoHeight: number }>`
