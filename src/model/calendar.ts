@@ -27,10 +27,7 @@ export type TTime = {
 export type TViewMode = 'DAY' | 'WEEK' | 'MONTH';
 
 export type TDay = { number: string; text: string; date: string };
-export type TDateline = {
-  week: TDay[];
-  today: TDay;
-};
+export type TDateline = TDay[];
 
 export type TCalendarAction = {
   type: EAction;

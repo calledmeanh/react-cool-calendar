@@ -1,7 +1,6 @@
 import { CONFIG } from '../constant';
-
 import dayjs, { Dayjs } from 'dayjs';
-import { TDateline } from '../model';
+import { TDateline, TViewMode } from '../model';
 
 export const DateUtils = {
   prevDay,
@@ -30,27 +29,30 @@ function nextWeek(currentDate: string): Dayjs {
   return dayjs(currentDate).add(7, 'days');
 }
 
-function getDateline(todayGlobal: Dayjs): TDateline {
+function getDateline(todayGlobal: Dayjs, viewMode: TViewMode): TDateline {
   let startOfWeek = todayGlobal.startOf('weeks'); // monday
   let endOfWeek = todayGlobal.endOf('weeks'); // sunday
 
-  const dateline: TDateline = {
-    week: [],
-    today: {
+  const dateline: TDateline = [];
+
+  if (viewMode === 'DAY') {
+    const today = {
       number: todayGlobal.format('DD'),
       text: todayGlobal.format('dddd'),
       date: todayGlobal.format(CONFIG.DATE_FORMAT),
-    },
-  };
-
-  while (startOfWeek <= endOfWeek) {
-    dateline.week.push({
-      number: startOfWeek.format('DD'),
-      text: startOfWeek.format('dddd'),
-      date: startOfWeek.format(CONFIG.DATE_FORMAT),
-    });
-    startOfWeek = startOfWeek.clone().add(1, 'd');
+    };
+    dateline.push(today);
+  } else if (viewMode === 'WEEK') {
+    while (startOfWeek <= endOfWeek) {
+      dateline.push({
+        number: startOfWeek.format('DD'),
+        text: startOfWeek.format('dddd'),
+        date: startOfWeek.format(CONFIG.DATE_FORMAT),
+      });
+      startOfWeek = startOfWeek.clone().add(1, 'd');
+    }
   }
+
   return dateline;
 }
 

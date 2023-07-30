@@ -10,20 +10,23 @@ const Wrapper = styled.div`
 `;
 
 const Swipable: React.FC<{}> = () => {
-  const [pseuHeight, setPseuHeight] = useState(0);
-  const swipableRef = useRef<HTMLDivElement | null>(null);
   const calendarState = useCalendarState();
+  const swipableRef = useRef<HTMLDivElement | null>(null);
+
+  const [pseuHeight, setPseuHeight] = useState(0);
+  const [width, setWidth] = useState(0);
 
   useEffect(() => {
     if (swipableRef && swipableRef.current) {
       setPseuHeight(swipableRef.current.clientHeight);
+      setWidth(swipableRef.current.clientWidth);
     }
   }, [calendarState.duration]);
 
   return (
     <Wrapper data-idtf={'swipable'} ref={swipableRef}>
       <Dateline afterPseudoHeight={pseuHeight} />
-      <Grid />
+      <Grid parentWidth={width} />
     </Wrapper>
   );
 };

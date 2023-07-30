@@ -20,21 +20,22 @@ const TimePill = styled(Flex)<{ $top: number }>`
   z-index: 1;
 `;
 
-// TODO: width lúc này ko còn là 100%, phải dựa theo width Dateline, left dựa vào swipable
-const TimeLine = styled.div<{ $top: number }>`
-  width: 100%;
+const TimeLine = styled.div<{ $top: number; $timelinePos?: { left: number; width: number } }>`
+  width: ${(props) => props.$timelinePos?.width}px;
   border-bottom: 1px solid #e45a74;
   pointer-events: none;
   position: absolute;
   top: ${(props) => props.$top}px;
+  left: ${(props) => props.$timelinePos?.left}px;
   z-index: 1;
 `;
 
 type TNowIndicator = {
   type: 'PILL' | 'LINE';
+  timelinePos?: { left: number; width: number };
 };
 
-const NowIndicator: React.FC<TNowIndicator> = ({ type }) => {
+const NowIndicator: React.FC<TNowIndicator> = ({ type, timelinePos }) => {
   const calendarState = useCalendarState();
   const [now, setNow] = useState({ position: 0, text: '00:00' });
 
@@ -105,7 +106,9 @@ const NowIndicator: React.FC<TNowIndicator> = ({ type }) => {
           {now.text}
         </TimePill>
       )}
-      {type === 'LINE' && Boolean(now.position) && <TimeLine $top={now.position + 9.5}></TimeLine>}
+      {type === 'LINE' && Boolean(now.position) && (
+        <TimeLine $top={now.position + 9.5} $timelinePos={timelinePos}></TimeLine>
+      )}
     </React.Fragment>
   );
 };

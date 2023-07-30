@@ -2,7 +2,7 @@
 
 Are components good? - checked  
 Single source of truth? - checked  
-Pass down props to Calendar because it's a props pass down by user and then based-on that create a state for app only? - checked  
+Pass down props to Calendar because it's a props pass down by user and then based-on that create a state for app only? - checked
 
 Work on outside calendar features such as:
 
@@ -13,7 +13,7 @@ Work on outside calendar features such as:
 Work on inside calendar features such as:
 
 - hover into calendar?
-- now indicator? - on process
+- now indicator? - checked
 
 # Rules
 
@@ -25,3 +25,4 @@ Work on inside calendar features such as:
   - lib
   - components (export default)
   - css
+  - useEffect should near the render of component for checking

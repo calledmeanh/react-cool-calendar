@@ -1,6 +1,6 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { TimeUtils } from '../util';
+import { DateUtils, TimeUtils } from '../util';
 import { clsx } from '../util';
 import { Line } from './common';
 import { useCalendarState } from '../hook';
@@ -21,8 +21,27 @@ const Wrapper = styled.div`
   box-shadow: -2px 0px 4px 0px rgba(164, 173, 186, 0.5);
 `;
 
-const Grid: React.FC<{}> = () => {
+const Grid: React.FC<{ parentWidth: number }> = ({ parentWidth }) => {
   const calendarState = useCalendarState();
+  const [timelinePos, setTimelinePos] = useState({ left: 0, width: 0 });
+
+  const getTimelinePos = useCallback(() => {
+    const dateline = DateUtils.getDateline(calendarState.currentDate, calendarState.viewMode);
+    const widthTimeline = parentWidth / dateline.length - 1; // 1 is border width
+
+    const today = calendarState.todayGlobalIns.format(calendarState.dateFormat);
+    const todayIdx = dateline.findIndex((d) => d.date === today);
+
+    if (todayIdx > -1) {
+      setTimelinePos({ left: widthTimeline * todayIdx, width: widthTimeline });
+    }
+  }, [
+    parentWidth,
+    calendarState.currentDate,
+    calendarState.viewMode,
+    calendarState.dateFormat,
+    calendarState.todayGlobalIns,
+  ]);
 
   const renderRow = useCallback(() => {
     return TimeUtils.createTimes(calendarState.dayTime.end, calendarState.dayTime.start, calendarState.duration).map(
@@ -43,9 +62,13 @@ const Grid: React.FC<{}> = () => {
     );
   }, [calendarState.duration, calendarState.dayTime, calendarState.workingTime, calendarState.groupTime]);
 
+  useEffect(() => {
+    getTimelinePos();
+  }, [getTimelinePos]);
+
   return (
     <Wrapper data-idtf={'grid'}>
-      <NowIndicator type={'LINE'} />
+      <NowIndicator type={'LINE'} timelinePos={timelinePos} />
       {renderRow()}
     </Wrapper>
   );

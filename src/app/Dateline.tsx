@@ -67,19 +67,17 @@ const Dateline: React.FC<{ afterPseudoHeight: number }> = ({ afterPseudoHeight }
   const calendarState = useCalendarState();
 
   const render = useCallback(() => {
-    let dateline = DateUtils.getDateline(calendarState.currentDate);
-    let week: TDay[] = dateline.week.slice();
-    if (calendarState.viewMode === 'DAY') week = [dateline.today];
+    const dateline = DateUtils.getDateline(calendarState.currentDate, calendarState.viewMode);
 
-    return week.map((w, i) => {
-      const isToday: boolean = DateUtils.checkToday(w.date, calendarState.todayGlobalIns);
+    return dateline.map((d, i) => {
+      const isToday: boolean = DateUtils.checkToday(d.date, calendarState.todayGlobalIns);
       const classname = clsx({
         today: isToday,
       });
       return (
         <DatelineHeader key={i} $justify={'center'} $align={'center'} $afterPseudoHeight={afterPseudoHeight}>
-          <DatelineNumber className={classname}>{w.number}</DatelineNumber>
-          <DatelineText className={classname}>{w.text}</DatelineText>
+          <DatelineNumber className={classname}>{d.number}</DatelineNumber>
+          <DatelineText className={classname}>{d.text}</DatelineText>
         </DatelineHeader>
       );
     });
