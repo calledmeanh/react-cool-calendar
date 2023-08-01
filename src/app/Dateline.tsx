@@ -4,7 +4,6 @@ import { clsx } from '../util';
 import { DateUtils } from '../util';
 import { Flex } from './common';
 import { useCalendarState } from '../hook';
-import { TDay } from '../model';
 
 const Wrapper = styled(Flex)`
   height: 60px;
@@ -63,7 +62,8 @@ const DatelineText = styled.div`
   }
 `;
 
-const Dateline: React.FC<{ afterPseudoHeight: number }> = ({ afterPseudoHeight }) => {
+type TDateline = { afterPseudoHeight: number };
+const Dateline: React.FC<TDateline> = ({ afterPseudoHeight }) => {
   const calendarState = useCalendarState();
 
   const render = useCallback(() => {

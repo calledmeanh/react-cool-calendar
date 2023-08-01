@@ -32,12 +32,13 @@ const TimeLine = styled.div<{ $top: number; $timelinePos?: { left: number; width
 
 type TNowIndicator = {
   type: 'PILL' | 'LINE';
-  timelinePos?: { left: number; width: number };
+  parentWidth?: number;
 };
 
-const NowIndicator: React.FC<TNowIndicator> = ({ type, timelinePos }) => {
+const NowIndicator: React.FC<TNowIndicator> = ({ type, parentWidth = 0 }) => {
   const calendarState = useCalendarState();
   const [now, setNow] = useState({ position: 0, text: '00:00' });
+  const [timelinePos, setTimelinePos] = useState({ width: 0, left: 0 });
 
   const getCurrentTime = useCallback(() => {
     const currentHours = calendarState.todayGlobalIns.hour();
@@ -78,6 +79,29 @@ const NowIndicator: React.FC<TNowIndicator> = ({ type, timelinePos }) => {
     },
     [calendarState.dayTime, calendarState.duration, calendarState.timeType]
   );
+
+  /* get position of timeline */
+  const getTimelineNowPos = useCallback(() => {
+    const dateline = DateUtils.getDateline(calendarState.currentDate, calendarState.viewMode);
+    const widthTimeline = parentWidth / dateline.length;
+
+    const today = calendarState.todayGlobalIns.format(calendarState.dateFormat);
+    const todayIdx = dateline.findIndex((d) => d.date === today);
+
+    if (todayIdx > -1) {
+      setTimelinePos({ width: widthTimeline, left: widthTimeline * todayIdx });
+    }
+  }, [
+    parentWidth,
+    calendarState.currentDate,
+    calendarState.viewMode,
+    calendarState.dateFormat,
+    calendarState.todayGlobalIns,
+  ]);
+
+  useEffect(() => {
+    getTimelineNowPos();
+  }, [getTimelineNowPos]);
 
   /* update now-indicator when re-render to fit the position while user is changing duration */
   useEffect(() => {

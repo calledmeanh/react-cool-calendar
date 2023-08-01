@@ -2,7 +2,7 @@ import React from 'react';
 import { Select, Option } from './common';
 import { useCalendarState, useCalendarDispatch } from '../hook';
 import { EAction, EViewMode } from '../model';
-import { TimeUtils, getValueFromUserInput } from '../util';
+import { TimeUtils, ElementUtils } from '../util';
 import { CONFIG } from '../constant';
 
 type Opts = { value: EViewMode; text: string }[];
@@ -16,7 +16,7 @@ const Zoom: React.FC<{}> = () => {
   const dispath = useCalendarDispatch();
 
   const onSelectZoom = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = getValueFromUserInput(e);
+    const value = ElementUtils.getValueFromUserInput(e);
     switch (value) {
       case EViewMode.LARGE:
         dispath({ type: EAction.CHANGE_ZOOM, payload: CONFIG.VIEWMODE_LARGE });

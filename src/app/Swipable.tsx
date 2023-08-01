@@ -12,14 +12,13 @@ const Wrapper = styled.div`
 const Swipable: React.FC<{}> = () => {
   const calendarState = useCalendarState();
   const swipableRef = useRef<HTMLDivElement | null>(null);
-
   const [pseuHeight, setPseuHeight] = useState(0);
   const [width, setWidth] = useState(0);
 
   useEffect(() => {
     if (swipableRef && swipableRef.current) {
-      setPseuHeight(swipableRef.current.clientHeight);
-      setWidth(swipableRef.current.clientWidth);
+      setPseuHeight(swipableRef.current.offsetHeight);
+      setWidth(swipableRef.current.offsetWidth);
     }
   }, [calendarState.duration]);
 

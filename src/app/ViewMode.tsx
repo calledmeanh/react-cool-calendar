@@ -1,8 +1,8 @@
 import React from 'react';
 import { Select, Option } from './common';
 import { EAction, TViewMode } from '../model';
-import { getValueFromUserInput } from '../util';
 import { useCalendarDispatch, useCalendarState } from '../hook';
+import { ElementUtils } from '../util';
 
 type Opts = { value: TViewMode; text: string }[];
 const options: Opts = [
@@ -16,7 +16,7 @@ const ViewMode: React.FC<{}> = () => {
   const dispath = useCalendarDispatch();
 
   const onSelectMode = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = getValueFromUserInput(e);
+    const value = ElementUtils.getValueFromUserInput(e);
     dispath({ type: EAction.CHANGE_MODE, payload: value });
   };
 

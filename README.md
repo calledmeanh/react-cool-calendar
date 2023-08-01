@@ -12,7 +12,7 @@ Work on outside calendar features such as:
 
 Work on inside calendar features such as:
 
-- hover into calendar?
+- hover into calendar? - checked
 - now indicator? - checked
 
 # Rules
