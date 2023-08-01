@@ -6,11 +6,9 @@ import { Flex } from './common';
 const Wrapper = styled(Flex)<{ $rect: TRect }>`
   width: ${(props) => props.$rect.width}px;
   height: ${(props) => props.$rect.height}px;
-  top: ${(props) => props.$rect.top}px;
-  left: ${(props) => props.$rect.left}px;
+  transform: translateX(${(props) => props.$rect.left}px) translateY(${(props) => props.$rect.top}px);
   background: #68a6ec;
   color: #fff;
-  transition: left 0.2s linear;
   position: absolute;
   z-index: 1;
 `;

@@ -28,13 +28,14 @@ const DatelineHeader = styled(Flex)<{ $afterPseudoHeight: number }>`
     box-shadow: none;
   }
   &::after {
-    background: #eef0f2;
     width: 1px;
+    background: #eef0f2;
     height: ${(props) => props.$afterPseudoHeight}px;
     position: absolute;
     top: 0;
     right: 0;
     content: '';
+    pointer-events: none;
   }
 `;
 

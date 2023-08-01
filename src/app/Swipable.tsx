@@ -17,8 +17,8 @@ const Swipable: React.FC<{}> = () => {
 
   useEffect(() => {
     if (swipableRef && swipableRef.current) {
-      setPseuHeight(swipableRef.current.offsetHeight);
-      setWidth(swipableRef.current.offsetWidth);
+      setPseuHeight(Math.floor(swipableRef.current.offsetHeight));
+      setWidth(Math.floor(swipableRef.current.offsetWidth));
     }
   }, [calendarState.duration]);
 

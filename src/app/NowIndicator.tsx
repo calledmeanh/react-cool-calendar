@@ -16,7 +16,7 @@ const TimePill = styled(Flex)<{ $top: number }>`
   line-height: 12px;
   font-weight: 600;
   position: absolute;
-  top: ${(props) => props.$top}px;
+  transform: translateY(${(props) => props.$top}px);
   z-index: 1;
 `;
 
@@ -25,8 +25,7 @@ const TimeLine = styled.div<{ $top: number; $timelinePos?: { left: number; width
   border-bottom: 1px solid #e45a74;
   pointer-events: none;
   position: absolute;
-  top: ${(props) => props.$top}px;
-  left: ${(props) => props.$timelinePos?.left}px;
+  transform: translateX(${(props) => props.$timelinePos?.left}px) translateY(${(props) => props.$top}px);
   z-index: 1;
 `;
 
