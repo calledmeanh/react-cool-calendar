@@ -43,7 +43,6 @@ const Grid: React.FC<TGrid> = ({ parentWidth }) => {
     if (!isShowGhost) setShowGhost(true);
 
     const gridEl = e.currentTarget;
-    console.log(gridEl.clientWidth, gridEl.offsetWidth)
     const leftOutside: number = ElementUtils.getOffsetToDocument(gridEl, 'left');
     const topOutside: number = ElementUtils.getOffsetToDocument(gridEl, 'top');
 
