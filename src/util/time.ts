@@ -10,13 +10,15 @@ export const TimeUtils = {
   displayTime,
   checkWorkingTime,
 
-  covertHourToSeconds,
-  covertSecondsToHour,
+  covertHourMinuteToSeconds,
+  covertSecondsToHourMinute,
   convertSecondsToHourString,
+  convertMinuteToSeconds,
 
   parseDurationToViewMode,
 };
 
+/* calculate top position based-on time */
 function calcDistanceBetweenTimes(end: number, start: number, duration: number, lineHeight: number): number {
   const jumps = calcTimeStep(end, start, duration);
   let height: number = jumps * lineHeight;
@@ -27,6 +29,7 @@ function calcDistanceBetweenTimes(end: number, start: number, duration: number, 
   return height + restHeight;
 }
 
+/* calculate total steps based-on start and end time */
 function calcTimeStep(end: number, start: number, duration: number): number {
   const S = end - start;
   const step = S / duration;
@@ -39,12 +42,13 @@ function createTimes(end: number, start: number, duration: number): number[] {
   return times;
 }
 
+/* get something like that --> 00:00 AM */
 function convertSecondsToHourString(seconds: number, timeType = 24): string {
   let tempSeconds = seconds;
   if (timeType === 12 && seconds >= 13 * CONFIG.SECONDS_PER_HOUR) {
     tempSeconds = seconds - 12 * CONFIG.SECONDS_PER_HOUR;
   }
-  let time = covertSecondsToHour(Math.abs(tempSeconds));
+  let time = covertSecondsToHourMinute(Math.abs(tempSeconds));
 
   let timeString = `${formatHourOrMinute(time.hour)}:${formatHourOrMinute(time.minute)}`;
 
@@ -55,7 +59,7 @@ function convertSecondsToHourString(seconds: number, timeType = 24): string {
   return timeString;
 }
 
-function covertSecondsToHour(seconds: number): { hour: number; minute: number } {
+function covertSecondsToHourMinute(seconds: number): { hour: number; minute: number } {
   const hour = Math.floor(seconds / CONFIG.SECONDS_PER_HOUR);
   const minute = (seconds - hour * CONFIG.SECONDS_PER_HOUR) / CONFIG.SECONDS_PER_MINUTE;
   return {
@@ -68,11 +72,19 @@ function formatHourOrMinute(data: number): string {
   return ('0' + data).slice(-2);
 }
 
-function covertHourToSeconds(hour: number, minute: number): number {
-  const result = hour * CONFIG.SECONDS_PER_HOUR + minute * CONFIG.SECONDS_PER_MINUTE;
-  return result;
+function covertHourMinuteToSeconds(hour: number, minute: number): number {
+  return convertHourToSeconds(hour) + convertMinuteToSeconds(minute);
 }
 
+function convertHourToSeconds(hour: number) {
+  return hour * CONFIG.SECONDS_PER_HOUR;
+}
+
+function convertMinuteToSeconds(minute: number) {
+  return minute * CONFIG.SECONDS_PER_MINUTE;
+}
+
+/* display time followed by duration */
 function displayTime(current: number, start: number, duration: number): boolean {
   return (current - start) % duration === 0 ? true : false;
 }

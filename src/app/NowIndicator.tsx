@@ -42,7 +42,7 @@ const NowIndicator: React.FC<TNowIndicator> = ({ type, parentWidth = 0 }) => {
   const getCurrentTime = useCallback(() => {
     const currentHours = calendarState.todayGlobalIns.hour();
     const currentMinutes = calendarState.todayGlobalIns.minute();
-    const res: number = TimeUtils.covertHourToSeconds(currentHours, currentMinutes);
+    const res: number = TimeUtils.covertHourMinuteToSeconds(currentHours, currentMinutes);
 
     return res;
   }, [calendarState.todayGlobalIns]);
@@ -60,7 +60,7 @@ const NowIndicator: React.FC<TNowIndicator> = ({ type, parentWidth = 0 }) => {
         const hourEachInterval = dateEachInterval.hour();
         const minuteEachInterval = dateEachInterval.minute();
 
-        const timeEachInterval: number = TimeUtils.covertHourToSeconds(hourEachInterval, minuteEachInterval);
+        const timeEachInterval: number = TimeUtils.covertHourMinuteToSeconds(hourEachInterval, minuteEachInterval);
 
         const position: number = TimeUtils.calcDistanceBetweenTimes(
           timeEachInterval,
