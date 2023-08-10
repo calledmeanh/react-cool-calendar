@@ -14,6 +14,9 @@ Work on inside calendar features such as:
 
 - hover into calendar? - checked
 - now indicator? - checked
+- layout algorithms events? - working on
+- CRUD events? 
+- drag/drop events?
 
 # Rules
 
