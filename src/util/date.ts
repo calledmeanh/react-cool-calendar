@@ -14,19 +14,19 @@ export const DateUtils = {
 };
 
 function prevDay(currentDate: string): Dayjs {
-  return dayjs(currentDate).subtract(1, 'days');
+  return dayjs(currentDate).subtract(1, 'd');
 }
 
 function nextDay(currentDate: string): Dayjs {
-  return dayjs(currentDate).add(1, 'days');
+  return dayjs(currentDate).add(1, 'd');
 }
 
 function prevWeek(currentDate: string): Dayjs {
-  return dayjs(currentDate).subtract(7, 'days');
+  return dayjs(currentDate).subtract(7, 'd');
 }
 
 function nextWeek(currentDate: string): Dayjs {
-  return dayjs(currentDate).add(7, 'days');
+  return dayjs(currentDate).add(7, 'd');
 }
 
 function getDateline(todayGlobal: Dayjs, viewMode: TViewMode): TDateline {
