@@ -12,11 +12,22 @@ export type TCalendarStateForUser = {
   locale: string;
   workingTime: TTime;
   dayTime: TTime;
+  appointments: TAppointment[];
 };
 
 export type TCalendarStateForApp = TCalendarStateForUser & {
   todayGlobalIns: Dayjs;
   currentDate: Dayjs;
+};
+
+export type TAppointment = {
+  id: string;
+  startTime: number;
+  duration: number;
+  title: string;
+  content: string;
+  status: EStatus;
+  createdAt: Dayjs;
 };
 
 export type TTime = {
@@ -36,7 +47,6 @@ export type TCalendarAction = {
   payload: any;
 };
 
-
 export enum EAction {
   CHANGE_MODE = 'CHANGE_MODE',
   CHANGE_ZOOM = 'CHANGE_ZOOM',
@@ -50,4 +60,11 @@ export enum EAction {
 export enum EViewMode {
   LARGE = 'LARGE',
   SMALL = 'SMALL',
+}
+
+export enum EStatus {
+  CREATE = 'CREATE',
+  PROCESS = 'PROCESS',
+  DONE = 'DONE',
+  CANCEL = 'CANCEL',
 }

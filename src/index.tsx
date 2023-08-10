@@ -4,6 +4,8 @@ import reportWebVitals from './reportWebVitals';
 import Calendar from './app/Calendar';
 import { CONFIG } from './constant';
 import './index.css';
+import { EStatus } from './model';
+import dayjs from 'dayjs';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
@@ -28,6 +30,80 @@ root.render(
           start: 0 * CONFIG.SECONDS_PER_HOUR,
           end: 24 * CONFIG.SECONDS_PER_HOUR,
         }}
+        appointments={[
+          {
+            id: '1',
+            startTime: 18 * CONFIG.SECONDS_PER_HOUR,
+            duration: 120,
+            title: 'This is an appt 1',
+            content: 'You only live once',
+            status: EStatus.CREATE,
+            createdAt: dayjs(),
+          },
+          {
+            id: '2',
+            startTime: 13 * CONFIG.SECONDS_PER_HOUR,
+            duration: 168,
+            title: 'This is an appt 2',
+            content: 'You only live once',
+            status: EStatus.DONE,
+            createdAt: dayjs(),
+          },
+          {
+            id: '3',
+            startTime: 9 * CONFIG.SECONDS_PER_HOUR,
+            duration: 180,
+            title: 'This is an appt 3',
+            content: 'You only live once',
+            status: EStatus.CANCEL,
+            createdAt: dayjs(),
+          },
+          {
+            id: '4',
+            startTime: 7 * CONFIG.SECONDS_PER_HOUR,
+            duration: 60,
+            title: 'This is an appt 4',
+            content: 'You only live once',
+            status: EStatus.PROCESS,
+            createdAt: dayjs(),
+          },
+          {
+            id: '5',
+            startTime: 7 * CONFIG.SECONDS_PER_HOUR,
+            duration: 90,
+            title: 'This is an appt 5',
+            content: 'You only live once',
+            status: EStatus.PROCESS,
+            createdAt: dayjs(),
+          },
+          {
+            id: '6',
+            startTime: 13 * CONFIG.SECONDS_PER_HOUR,
+            duration: 45,
+            title: 'This is an appt 6',
+            content: 'You only live once',
+            status: EStatus.PROCESS,
+            createdAt: dayjs(),
+          },
+          {
+            id: '7',
+            startTime: 18 * CONFIG.SECONDS_PER_HOUR,
+            duration: 120,
+            title: 'This is an appt 7',
+            content: 'You only live once',
+            status: EStatus.PROCESS,
+            createdAt: dayjs(),
+          },
+          {
+            id: '8',
+            startTime: 19 * CONFIG.SECONDS_PER_HOUR,
+            duration: 180,
+            title: 'This is an appt 8',
+            content: 'You only live once',
+            status: EStatus.PROCESS,
+            createdAt: dayjs(),
+          },
+        ]}
       />
     </div>
   </React.StrictMode>

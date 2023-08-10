@@ -22,6 +22,7 @@ const createExampleCalendarState = (): TCalendarStateForApp => {
     },
     todayGlobalIns: dayjs(),
     currentDate: dayjs(),
+    appointments: []
   };
   return Object.create(state);
 };

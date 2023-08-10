@@ -1,11 +1,12 @@
 import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
-import { DateUtils, ElementUtils, TimeUtils } from '../util';
+import { AppointmentUtils, DateUtils, ElementUtils, TimeUtils } from '../util';
 import { clsx } from '../util';
 import { Line } from './common';
 import { useCalendarState } from '../hook';
 import NowIndicator from './NowIndicator';
 import Ghost from './Ghost';
+import Appointment from './Appointment';
 
 const Wrapper = styled.div`
   touch-action: pan-y;
@@ -55,7 +56,7 @@ const Grid: React.FC<TGrid> = ({ parentWidth }) => {
     const offsetX: number = e.pageX - leftOutside + scroll.left;
     const offsetY: number = e.pageY - topOutside + scroll.top;
 
-    const lineIdx = Math.floor(offsetY / 24);
+    const lineIdx = Math.floor(offsetY / 24); // 24 is the height of line, hardcode for now
     const seconds = lineIdx * calendarState.duration + calendarState.dayTime.start;
 
     const time = TimeUtils.convertSecondsToHourString(seconds, calendarState.timeType);
@@ -90,6 +91,13 @@ const Grid: React.FC<TGrid> = ({ parentWidth }) => {
     <Wrapper data-idtf={'grid'} onMouseMove={onMouseMove} onMouseLeave={onMouseLeave}>
       <NowIndicator type={'LINE'} parentWidth={parentWidth} />
       {isShowGhost && <Ghost value={{ ...ghost }} />}
+
+      {AppointmentUtils.layoutAlgorithm(calendarState.appointments, {
+        daytimeStart: calendarState.dayTime.start,
+        duration: calendarState.duration,
+      }).map((appt: any) => {
+        return <Appointment key={appt.id} value={appt} />;
+      })}
       {renderRow()}
     </Wrapper>
   );
