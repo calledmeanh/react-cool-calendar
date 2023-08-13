@@ -5,7 +5,8 @@ import Swipable from './Swipable';
 import Interval from './Interval';
 
 const Wrapper = styled(Flex)`
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
 `;
 
