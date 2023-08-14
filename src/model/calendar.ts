@@ -12,7 +12,7 @@ export type TCalendarStateForUser = {
   locale: string;
   workingTime: TTime;
   dayTime: TTime;
-  appointments: TAppointment[];
+  appointments: TAppointmentForUser[];
 };
 
 export type TCalendarStateForApp = TCalendarStateForUser & {
@@ -20,7 +20,7 @@ export type TCalendarStateForApp = TCalendarStateForUser & {
   currentDate: Dayjs;
 };
 
-export type TAppointment = {
+export type TAppointmentForUser = {
   id: string;
   startTime: number;
   duration: number;
@@ -28,6 +28,10 @@ export type TAppointment = {
   content: string;
   status: EStatus;
   createdAt: Dayjs;
+};
+
+export type TAppointmentForApp = TAppointmentForUser & TRect & {
+  endTime: number
 };
 
 export type TTime = {
