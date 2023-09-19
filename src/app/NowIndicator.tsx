@@ -83,7 +83,7 @@ const NowIndicator: React.FC<TNowIndicator> = ({ type, parentWidth = 0 }) => {
     const dateline = DateUtils.getDateline(calendarState.currentDate, calendarState.viewMode);
     const widthTimeline = parentWidth / dateline.length;
 
-    const todayIdx = dateline.findIndex((d) => d.origin === calendarState.todayGlobalIns);
+    const todayIdx = dateline.findIndex((d) => DateUtils.isEqual(d.origin,calendarState.todayGlobalIns));
 
     if (todayIdx > -1) {
       setTimelinePos({ width: widthTimeline, left: widthTimeline * todayIdx });
