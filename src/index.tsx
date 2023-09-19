@@ -17,7 +17,7 @@ root.render(
         timeType={24}
         groupTime={60 * CONFIG.SECONDS_PER_HOUR}
         nowIndicator={true}
-        viewMode={'DAY'}
+        viewMode={'WEEK'}
         dateFormat="MM/DD/YYYY"
         datetimeFormat="MM DD YYYY hh:mm:ss"
         timeFormat="hh:mm:ss"
