@@ -16,6 +16,7 @@ function layoutAlgorithm(
     daytimeStart: number;
     duration: number;
     columnWidth: number;
+    datelineLength: number;
   }
 ) {
   let columns: TAppointmentForApp[][] = [];
@@ -37,7 +38,7 @@ function layoutAlgorithm(
   // iterate over the sorted array
   events.forEach((e: TAppointmentForApp) => {
     if (lastEventEnding !== null && e.top >= lastEventEnding) {
-      packEvents(columns, opts.columnWidth);
+      packEvents(columns, opts.columnWidth, opts.datelineLength);
       columns = [];
       lastEventEnding = null;
     }
@@ -45,7 +46,7 @@ function layoutAlgorithm(
     let placed = false;
     for (let i = 0; i < columns.length; i++) {
       let col = columns[i];
-      if (!isOverlapped(col[col.length - 1], e)) {
+      if (!checkOverlapped(col[col.length - 1], e)) {
         col.push(e);
         placed = true;
         break;
@@ -62,18 +63,18 @@ function layoutAlgorithm(
   });
 
   if (columns.length > 0) {
-    packEvents(columns, opts.columnWidth);
+    packEvents(columns, opts.columnWidth, opts.datelineLength);
   }
   return events;
 }
 
-function packEvents(columns: TAppointmentForApp[][], columnWidth: number) {
+function packEvents(columns: TAppointmentForApp[][], columnWidth: number, datelineLength: number) {
   let n = columns.length;
   for (let i = 0; i < n; i++) {
     let col = columns[i];
     for (let j = 0; j < col.length; j++) {
       let cell = col[j];
-      cell.left = (i / n) * 100;
+      cell.left = ((i / n) * 100) / datelineLength;
       cell.width = columnWidth / n - 1;
     }
   }
@@ -108,7 +109,7 @@ function calcApptPos(
   };
 }
 
-function isOverlapped(a: TAppointmentForApp, b: TAppointmentForApp) {
+function checkOverlapped(a: TAppointmentForApp, b: TAppointmentForApp) {
   const { top: start } = a;
   const { top: otherStart } = b;
   const end = start + a.height;

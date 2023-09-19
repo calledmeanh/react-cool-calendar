@@ -71,7 +71,7 @@ const Dateline: React.FC<TDateline> = ({ afterPseudoHeight }) => {
     const dateline = DateUtils.getDateline(calendarState.currentDate, calendarState.viewMode);
 
     return dateline.map((d, i) => {
-      const isToday: boolean = DateUtils.checkToday(d.date, calendarState.todayGlobalIns);
+      const isToday: boolean = DateUtils.isEqual(d.origin, calendarState.todayGlobalIns);
       const classname = clsx({
         today: isToday,
       });

@@ -48,10 +48,9 @@ const NowIndicator: React.FC<TNowIndicator> = ({ type, parentWidth = 0 }) => {
   }, [calendarState.todayGlobalIns]);
 
   const checkToday = useCallback(() => {
-    const currentDate = calendarState.currentDate.format(calendarState.dateFormat);
-    const res: boolean = DateUtils.checkToday(currentDate, calendarState.todayGlobalIns);
+    const res: boolean = DateUtils.isEqual(calendarState.currentDate, calendarState.todayGlobalIns);
     return res;
-  }, [calendarState.currentDate, calendarState.dateFormat, calendarState.todayGlobalIns]);
+  }, [calendarState.currentDate, calendarState.todayGlobalIns]);
 
   const updateEachInterval = useCallback(
     (currentTime: number, today: boolean) => {
@@ -84,8 +83,7 @@ const NowIndicator: React.FC<TNowIndicator> = ({ type, parentWidth = 0 }) => {
     const dateline = DateUtils.getDateline(calendarState.currentDate, calendarState.viewMode);
     const widthTimeline = parentWidth / dateline.length;
 
-    const today = calendarState.todayGlobalIns.format(calendarState.dateFormat);
-    const todayIdx = dateline.findIndex((d) => d.date === today);
+    const todayIdx = dateline.findIndex((d) => d.origin === calendarState.todayGlobalIns);
 
     if (todayIdx > -1) {
       setTimelinePos({ width: widthTimeline, left: widthTimeline * todayIdx });
@@ -94,7 +92,6 @@ const NowIndicator: React.FC<TNowIndicator> = ({ type, parentWidth = 0 }) => {
     parentWidth,
     calendarState.currentDate,
     calendarState.viewMode,
-    calendarState.dateFormat,
     calendarState.todayGlobalIns,
   ]);
 

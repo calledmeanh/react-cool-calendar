@@ -1,19 +1,14 @@
 import React from 'react';
 import { styled } from 'styled-components';
-import { TAppointment } from '../model';
+import { TAppointmentForApp, TRect } from '../model';
 import { Flex } from './common';
 import { TimeUtils } from '../util';
 
-const Wrapper = styled.div<{
-  $rect: {
-    top: number;
-    height: number;
-  };
-}>`
-  top: ${(props) => props.$rect.top}px;
-  left: 0px;
-  width: 150px;
+const Wrapper = styled.div<{ $rect: TRect }>`
+  width: ${(props) => props.$rect.width}px;
   height: ${(props) => props.$rect.height}px;
+  top: ${(props) => props.$rect.top}px;
+  left: ${(props) => props.$rect.left}%;
 
   border: 1px solid black;
   background: #a5dff8;
@@ -27,7 +22,7 @@ const Wrapper = styled.div<{
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  
+
   cursor: pointer;
   position: absolute;
 
@@ -38,18 +33,19 @@ const Content = styled(Flex)`
   padding: 3px 4px 3px 8px;
 `;
 
-type TApptCus = TAppointment & {
-  rect: {
-    top: number;
-    height: number;
-  };
-};
-
-const Appointment: React.FC<{ value: TApptCus }> = ({ value }) => {
+const Appointment: React.FC<{ value: TAppointmentForApp }> = ({ value }) => {
   const start = TimeUtils.convertSecondsToHourString(value.startTime);
-  const end = TimeUtils.convertSecondsToHourString(value.startTime + TimeUtils.convertMinuteToSeconds(value.duration));
+  const end = TimeUtils.convertSecondsToHourString(value.endTime);
+
+  const rect = {
+    top: value.top,
+    left: value.left,
+    width: value.width,
+    height: value.height,
+  };
+
   return (
-    <Wrapper $rect={value.rect}>
+    <Wrapper $rect={rect}>
       <Content $dir={'column'}>
         <div>
           {start}-{end}

@@ -17,7 +17,7 @@ root.render(
         timeType={24}
         groupTime={60 * CONFIG.SECONDS_PER_HOUR}
         nowIndicator={true}
-        viewMode={'WEEK'}
+        viewMode={'DAY'}
         dateFormat="MM/DD/YYYY"
         datetimeFormat="MM DD YYYY hh:mm:ss"
         timeFormat="hh:mm:ss"
@@ -33,7 +33,7 @@ root.render(
         appointments={[
           {
             id: '1',
-            startTime: 18 * CONFIG.SECONDS_PER_HOUR,
+            startTime: 7 * CONFIG.SECONDS_PER_HOUR,
             duration: 120,
             title: 'This is an appt 1',
             content: 'You only live once',
@@ -42,8 +42,8 @@ root.render(
           },
           {
             id: '2',
-            startTime: 13 * CONFIG.SECONDS_PER_HOUR,
-            duration: 168,
+            startTime: 8 * CONFIG.SECONDS_PER_HOUR,
+            duration: 200,
             title: 'This is an appt 2',
             content: 'You only live once',
             status: EStatus.DONE,
@@ -52,7 +52,7 @@ root.render(
           {
             id: '3',
             startTime: 9 * CONFIG.SECONDS_PER_HOUR,
-            duration: 180,
+            duration: 150,
             title: 'This is an appt 3',
             content: 'You only live once',
             status: EStatus.CANCEL,
@@ -61,7 +61,7 @@ root.render(
           {
             id: '4',
             startTime: 7 * CONFIG.SECONDS_PER_HOUR,
-            duration: 60,
+            duration: 120,
             title: 'This is an appt 4',
             content: 'You only live once',
             status: EStatus.PROCESS,
@@ -69,8 +69,8 @@ root.render(
           },
           {
             id: '5',
-            startTime: 7 * CONFIG.SECONDS_PER_HOUR,
-            duration: 90,
+            startTime: 6 * CONFIG.SECONDS_PER_HOUR,
+            duration: 120,
             title: 'This is an appt 5',
             content: 'You only live once',
             status: EStatus.PROCESS,
@@ -78,8 +78,8 @@ root.render(
           },
           {
             id: '6',
-            startTime: 13 * CONFIG.SECONDS_PER_HOUR,
-            duration: 45,
+            startTime: 9 * CONFIG.SECONDS_PER_HOUR,
+            duration: 90,
             title: 'This is an appt 6',
             content: 'You only live once',
             status: EStatus.PROCESS,
@@ -87,21 +87,21 @@ root.render(
           },
           {
             id: '7',
-            startTime: 18 * CONFIG.SECONDS_PER_HOUR,
-            duration: 120,
+            startTime: 9 * CONFIG.SECONDS_PER_HOUR,
+            duration: 90,
             title: 'This is an appt 7',
             content: 'You only live once',
             status: EStatus.PROCESS,
-            createdAt: dayjs(),
+            createdAt: dayjs().subtract(1, 'd'),
           },
           {
             id: '8',
-            startTime: 19 * CONFIG.SECONDS_PER_HOUR,
-            duration: 180,
+            startTime: 7 * CONFIG.SECONDS_PER_HOUR,
+            duration: 90,
             title: 'This is an appt 8',
             content: 'You only live once',
             status: EStatus.PROCESS,
-            createdAt: dayjs(),
+            createdAt: dayjs().add(1, 'd'),
           },
         ]}
       />

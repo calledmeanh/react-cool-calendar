@@ -3,43 +3,43 @@ import dayjs, { Dayjs } from 'dayjs';
 import { TDateline, TViewMode } from '../model';
 
 export const DateUtils = {
-  prevDay,
-  nextDay,
-  prevWeek,
-  nextWeek,
+  getPrevDay,
+  getNextDay,
+  getPrevWeek,
+  getNextWeek,
   getDateline,
   getCustomDateToDate,
   getCustomDay,
-  checkToday,
+  isEqual,
 };
 
-function prevDay(currentDate: string): Dayjs {
+function getPrevDay(currentDate: string): Dayjs {
   return dayjs(currentDate).subtract(1, 'd');
 }
 
-function nextDay(currentDate: string): Dayjs {
+function getNextDay(currentDate: string): Dayjs {
   return dayjs(currentDate).add(1, 'd');
 }
 
-function prevWeek(currentDate: string): Dayjs {
+function getPrevWeek(currentDate: string): Dayjs {
   return dayjs(currentDate).subtract(7, 'd');
 }
 
-function nextWeek(currentDate: string): Dayjs {
+function getNextWeek(currentDate: string): Dayjs {
   return dayjs(currentDate).add(7, 'd');
 }
 
-function getDateline(todayGlobal: Dayjs, viewMode: TViewMode): TDateline {
-  let startOfWeek = todayGlobal.startOf('weeks'); // monday
-  let endOfWeek = todayGlobal.endOf('weeks'); // sunday
+function getDateline(currentDate: Dayjs, viewMode: TViewMode): TDateline {
+  let startOfWeek = currentDate.startOf('weeks'); // monday
+  let endOfWeek = currentDate.endOf('weeks'); // sunday
 
   const dateline: TDateline = [];
 
   if (viewMode === 'DAY') {
     const today = {
-      number: todayGlobal.format('DD'),
-      text: todayGlobal.format('dddd'),
-      date: todayGlobal.format(CONFIG.DATE_FORMAT),
+      number: currentDate.format('DD'),
+      text: currentDate.format('dddd'),
+      origin: currentDate,
     };
     dateline.push(today);
   } else if (viewMode === 'WEEK') {
@@ -47,7 +47,7 @@ function getDateline(todayGlobal: Dayjs, viewMode: TViewMode): TDateline {
       dateline.push({
         number: startOfWeek.format('DD'),
         text: startOfWeek.format('dddd'),
-        date: startOfWeek.format(CONFIG.DATE_FORMAT),
+        origin: startOfWeek,
       });
       startOfWeek = startOfWeek.clone().add(1, 'd');
     }
@@ -90,8 +90,10 @@ function getCustomDay(currentDate: Dayjs): string {
   return res;
 }
 
-function checkToday(date: string, todayGlobal: Dayjs): boolean {
-  const todayString = todayGlobal.format(CONFIG.DATE_FORMAT);
-  const isToday: boolean = todayString === date;
-  return isToday;
+
+function isEqual(dayA: Dayjs, dayB: Dayjs) {
+  const dayAStr = dayA.format(CONFIG.DATE_FORMAT);
+  const dayBStr = dayB.format(CONFIG.DATE_FORMAT);
+  const res = dayAStr === dayBStr;
+  return res;
 }

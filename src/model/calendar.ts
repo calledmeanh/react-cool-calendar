@@ -41,7 +41,7 @@ export type TTime = {
 
 export type TViewMode = 'DAY' | 'WEEK' | 'MONTH';
 
-export type TDay = { number: string; text: string; date: string };
+export type TDay = { number: string; text: string; origin: Dayjs };
 export type TDateline = TDay[];
 
 export type TRect = { width: number; height: number; top: number; left: number };

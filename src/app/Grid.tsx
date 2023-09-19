@@ -7,6 +7,7 @@ import { useCalendarState } from '../hook';
 import NowIndicator from './NowIndicator';
 import Ghost from './Ghost';
 import Appointment from './Appointment';
+import { TAppointmentForUser, TAppointmentForApp } from '../model';
 
 const Wrapper = styled.div`
   touch-action: pan-y;
@@ -68,6 +69,28 @@ const Grid: React.FC<TGrid> = ({ parentWidth }) => {
     setShowGhost(false);
   };
 
+  const renderAppt = (apptProp: TAppointmentForUser[]): TAppointmentForUser[] => {
+    let appts = apptProp.slice();
+    if (calendarState.viewMode === 'DAY') {
+      appts = appts.filter((a) => {
+        return DateUtils.isEqual(a.createdAt, calendarState.currentDate);
+      });
+    } else if (calendarState.viewMode === 'WEEK') {
+      // neu la week thi phai chinh lai cai vi tri left cua appts theo dung column
+    }
+    console.log('renderAppt ~ appts:', appts);
+    return appts;
+  };
+
+  /* {AppointmentUtils.layoutAlgorithm(calendarState.appointments, {
+        daytimeStart: calendarState.dayTime.start,
+        duration: calendarState.duration,
+        columnWidth: widthTimeline,
+        datelineLength: dateline.length,
+      }).map((appt: TAppointmentForApp) => {
+        return <Appointment key={appt.id} value={appt} />;
+      })} */
+
   const renderRow = useCallback(() => {
     return TimeUtils.createTimes(calendarState.dayTime.end, calendarState.dayTime.start, calendarState.duration).map(
       (t, i) => {
@@ -86,18 +109,20 @@ const Grid: React.FC<TGrid> = ({ parentWidth }) => {
       }
     );
   }, [calendarState.duration, calendarState.dayTime, calendarState.workingTime, calendarState.groupTime]);
-
   return (
-    <Wrapper data-idtf={'grid'} onMouseMove={onMouseMove} onMouseLeave={onMouseLeave}>
+    <Wrapper data-idtf={'grid'} /* onMouseMove={onMouseMove} */ onMouseLeave={onMouseLeave}>
       <NowIndicator type={'LINE'} parentWidth={parentWidth} />
       {isShowGhost && <Ghost value={{ ...ghost }} />}
 
-      {AppointmentUtils.layoutAlgorithm(calendarState.appointments, {
+      {AppointmentUtils.layoutAlgorithm(renderAppt(calendarState.appointments), {
         daytimeStart: calendarState.dayTime.start,
         duration: calendarState.duration,
-      }).map((appt: any) => {
+        columnWidth: widthTimeline,
+        datelineLength: dateline.length,
+      }).map((appt: TAppointmentForApp) => {
         return <Appointment key={appt.id} value={appt} />;
       })}
+
       {renderRow()}
     </Wrapper>
   );

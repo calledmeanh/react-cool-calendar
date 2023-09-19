@@ -12,22 +12,22 @@ const DateManipulation: React.FC<{}> = () => {
   const today = calendarState.todayGlobalIns.format(calendarState.dateFormat);
 
   const onPrevDay = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    const prevDay = DateUtils.prevDay(curDate);
+    const prevDay = DateUtils.getPrevDay(curDate);
     dispath({ type: EAction.PREV_DAY, payload: prevDay });
   };
 
   const onNextDay = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    const nextDay = DateUtils.nextDay(curDate);
+    const nextDay = DateUtils.getNextDay(curDate);
     dispath({ type: EAction.NEXT_DAY, payload: nextDay });
   };
 
   const onPrevWeek = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    const prevWeek = DateUtils.prevWeek(curDate);
+    const prevWeek = DateUtils.getPrevWeek(curDate);
     dispath({ type: EAction.PREV_WEEK, payload: prevWeek });
   };
 
   const onNextWeek = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    const nextWeek = DateUtils.nextWeek(curDate);
+    const nextWeek = DateUtils.getNextWeek(curDate);
     dispath({ type: EAction.NEXT_WEEK, payload: nextWeek });
   };
 
@@ -48,7 +48,7 @@ const DateManipulation: React.FC<{}> = () => {
       >
         today
       </Button>
-      <Text style={{ minWidth: 210 }} $padding={[7, 12]} $align={'center'} $justify={'center'}>
+      <Text style={{ minWidth: 200, fontSize: 14 }} $padding={[7, 12]} $align={'center'} $justify={'center'}>
         {calendarState.viewMode === 'DAY' && DateUtils.getCustomDay(calendarState.currentDate)}
         {calendarState.viewMode === 'WEEK' && DateUtils.getCustomDateToDate(calendarState.currentDate)}
       </Text>
