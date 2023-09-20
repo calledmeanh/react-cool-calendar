@@ -1,13 +1,14 @@
-import { TAppointmentForApp, TAppointmentForUser } from '../model';
+import { EStatus, TAppointmentForApp, TAppointmentForUser } from '../model';
 import { TimeUtils } from './time';
 import { CONFIG } from '../constant';
 
 export const AppointmentUtils = {
   layoutAlgorithm,
+  getApptColorByStatus,
 };
 
 /* 
-  this algorithm takes a list of appointment and return the ordered appointments: 
+  this algorithm takes a list of appointment and return the appointment with top,left,width,height attribute
   https://stackoverflow.com/questions/11311410/visualization-of-calendar-events-algorithm-to-layout-events-with-maximum-width 
  */
 function layoutAlgorithm(
@@ -16,7 +17,7 @@ function layoutAlgorithm(
     daytimeStart: number;
     duration: number;
     columnWidth: number;
-    datelineLength: number;
+    weekcolumnIndex: number;
   }
 ) {
   let columns: TAppointmentForApp[][] = [];
@@ -38,7 +39,7 @@ function layoutAlgorithm(
   // iterate over the sorted array
   events.forEach((e: TAppointmentForApp) => {
     if (lastEventEnding !== null && e.top >= lastEventEnding) {
-      packEvents(columns, opts.columnWidth, opts.datelineLength);
+      packEvents(columns, { ...opts });
       columns = [];
       lastEventEnding = null;
     }
@@ -63,19 +64,28 @@ function layoutAlgorithm(
   });
 
   if (columns.length > 0) {
-    packEvents(columns, opts.columnWidth, opts.datelineLength);
+    packEvents(columns, { ...opts });
   }
   return events;
 }
 
-function packEvents(columns: TAppointmentForApp[][], columnWidth: number, datelineLength: number) {
-  let n = columns.length;
+function packEvents(
+  columnAppt: TAppointmentForApp[][],
+  otps: {
+    columnWidth: number;
+    weekcolumnIndex: number;
+  }
+) {
+  let n = columnAppt.length;
   for (let i = 0; i < n; i++) {
-    let col = columns[i];
+    let col = columnAppt[i];
     for (let j = 0; j < col.length; j++) {
-      let cell = col[j];
-      cell.left = ((i / n) * 100) / datelineLength;
-      cell.width = columnWidth / n - 1;
+      // cell.l eft = ((i / n) * 100) / datelineLength;
+      const cell = col[j];
+      const cellWidth = otps.columnWidth / n - 1;
+      const cellLeft = cellWidth * i + i + otps.columnWidth * otps.weekcolumnIndex;
+      cell.left = cellLeft;
+      cell.width = cellWidth;
     }
   }
 }
@@ -126,4 +136,21 @@ function checkOverlapped(a: TAppointmentForApp, b: TAppointmentForApp) {
   }
 
   return false;
+}
+
+function getApptColorByStatus(color: EStatus) {
+  switch (color) {
+    case EStatus.BOOKED:
+      return '#3093e8';
+    case EStatus.CONFIRMED:
+      return '#6950f3';
+    case EStatus.ARRIVED:
+      return '#f19101';
+    case EStatus.STARTED:
+      return '#00a36d';
+    case EStatus.NOSHOW:
+      return '#da2346';
+    default:
+      return '#3093e8';
+  }
 }

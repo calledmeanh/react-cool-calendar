@@ -70,50 +70,52 @@ const Grid: React.FC<TGrid> = ({ parentWidth }) => {
   };
 
   const renderAppt = (apptProp: TAppointmentForUser[]) => {
+    // appt origin
     let appts = apptProp.slice();
+
     if (calendarState.viewMode === 'DAY') {
-      appts = appts.filter((a) => {
+      const showAppt = appts.filter((a) => {
         return DateUtils.isEqual(a.createdAt, calendarState.currentDate);
       });
 
-      return AppointmentUtils.layoutAlgorithm(appts, {
+      return AppointmentUtils.layoutAlgorithm(showAppt, {
         daytimeStart: calendarState.dayTime.start,
         duration: calendarState.duration,
         columnWidth: widthTimeline,
-        datelineLength: dateline.length,
+        weekcolumnIndex: 0,
       }).map((appt: TAppointmentForApp) => {
         return <Appointment key={appt.id} value={appt} />;
       });
+    
     } else if (calendarState.viewMode === 'WEEK') {
-      /* 
-        neu la week thi phai chinh lai cai vi tri left cua appts theo dung column
-        loc appts theo dung ngay` trong tuan (tao. thanh` cai mang 2 chieu xong roi duyet no de hien len) -- checked
-        sau do chay mang 2 chieu roi ap dung thuat toan layout algorithm events
-      */
+      // iterate over the array to sort the appointment's "createdAt" attribute relative to the column
       const columnAppt: TAppointmentForUser[][] = [];
-      // console.log('dateline:', dateline);
       dateline.forEach((d) => {
         const apptBox: TAppointmentForUser[] = [];
         appts.forEach((a) => {
           const res = DateUtils.isEqual(d.origin, a.createdAt);
-          if (res) {
-            apptBox.push(a);
-          }
+          if (res) apptBox.push(a);
         });
         columnAppt.push(apptBox);
       });
-      console.log('dateline.forEach ~ columnAppt:', columnAppt);
+
+      // iterate over the 2D-array and convert it to 1D-array with applied "layout algorithm"
+      const showAppt: TAppointmentForApp[] = [];
+      columnAppt.forEach((ca, i) => {
+        const apptReodered = AppointmentUtils.layoutAlgorithm(ca, {
+          daytimeStart: calendarState.dayTime.start,
+          duration: calendarState.duration,
+          columnWidth: widthTimeline,
+          weekcolumnIndex: i,
+        });
+        showAppt.push(...apptReodered);
+      });
+
+      return showAppt.map((appt: TAppointmentForApp) => {
+        return <Appointment key={appt.id} value={appt} />;
+      });
     }
   };
-
-  /* {AppointmentUtils.layoutAlgorithm(calendarState.appointments, {
-        daytimeStart: calendarState.dayTime.start,
-        duration: calendarState.duration,
-        columnWidth: widthTimeline,
-        datelineLength: dateline.length,
-      }).map((appt: TAppointmentForApp) => {
-        return <Appointment key={appt.id} value={appt} />;
-      })} */
 
   const renderRow = useCallback(() => {
     return TimeUtils.createTimes(calendarState.dayTime.end, calendarState.dayTime.start, calendarState.duration).map(

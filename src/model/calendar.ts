@@ -31,7 +31,7 @@ export type TAppointmentForUser = {
 };
 
 export type TAppointmentForApp = TAppointmentForUser & TRect & {
-  endTime: number
+    endTime: number;
 };
 
 export type TTime = {
@@ -67,8 +67,9 @@ export enum EViewMode {
 }
 
 export enum EStatus {
-  CREATE = 'CREATE',
-  PROCESS = 'PROCESS',
-  DONE = 'DONE',
-  CANCEL = 'CANCEL',
+  BOOKED = 'BOOKED', // #3093e8 - blue
+  CONFIRMED = 'CONFIRMED', // #6950f3 - orange
+  ARRIVED = 'ARRIVED', // #f19101 - purple
+  STARTED = 'STARTED', // #00a36d - green
+  NOSHOW = 'NOWSHOW', // #da2346 - red
 }

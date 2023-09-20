@@ -1,17 +1,17 @@
 import React from 'react';
 import { styled } from 'styled-components';
-import { TAppointmentForApp, TRect } from '../model';
+import { EStatus, TAppointmentForApp, TRect } from '../model';
 import { Flex } from './common';
-import { TimeUtils } from '../util';
+import { AppointmentUtils, TimeUtils } from '../util';
 
-const Wrapper = styled.div<{ $rect: TRect }>`
+const Wrapper = styled.div<{ $rect: TRect; $status: EStatus }>`
   width: ${(props) => props.$rect.width}px;
   height: ${(props) => props.$rect.height}px;
   top: ${(props) => props.$rect.top}px;
-  left: ${(props) => props.$rect.left}%;
+  left: ${(props) => props.$rect.left}px;
 
   border: 1px solid black;
-  background: #a5dff8;
+  background: ${(props) => AppointmentUtils.getApptColorByStatus(props.$status)};
   border-color: #a5dff8;
   color: #101928;
   font-size: 12px;
@@ -45,7 +45,7 @@ const Appointment: React.FC<{ value: TAppointmentForApp }> = ({ value }) => {
   };
 
   return (
-    <Wrapper $rect={rect}>
+    <Wrapper $rect={rect} $status={value.status}>
       <Content $dir={'column'}>
         <div>
           {start}-{end}
