@@ -1,6 +1,6 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
-import { AppointmentUtils, DateUtils, ElementUtils, TimeUtils } from '../util';
+import { AppointmentUtils, DateUtils, TimeUtils } from '../util';
 import { clsx } from '../util';
 import { Line } from './common';
 import { useCalendarState } from '../hook';
@@ -30,44 +30,9 @@ type TGrid = {
 
 const Grid: React.FC<TGrid> = ({ parentWidth }) => {
   const calendarState = useCalendarState();
-  const [ghost, setGhost] = useState({ rect: { width: 0, height: 0, top: 0, left: 0 }, time: '' });
-  const [isShowGhost, setShowGhost] = useState(false);
-  /*
-    pageX,Y are relative to the top left corner of the whole rendered page (including parts hidden by scrolling)
-    clientX, Y are relative to the top left corner of the visible part of the page, "seen" through browser window
-    screenX,Y are relative to the physical screen 
-  */
+
   const dateline = DateUtils.getDateline(calendarState.currentDate, calendarState.viewMode);
   const widthTimeline = parentWidth / dateline.length;
-  const element = { width: widthTimeline, height: 24 };
-
-  const onMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    if (!isShowGhost) setShowGhost(true);
-
-    const gridEl = e.currentTarget;
-    const leftOutside: number = ElementUtils.getOffsetToDocument(gridEl, 'left');
-    const topOutside: number = ElementUtils.getOffsetToDocument(gridEl, 'top');
-
-    const scrollEl = gridEl.parentElement?.parentElement;
-    const scroll = {
-      top: scrollEl ? scrollEl.scrollTop : 0,
-      left: scrollEl ? scrollEl.scrollLeft : 0,
-    };
-
-    const offsetX: number = e.pageX - leftOutside + scroll.left;
-    const offsetY: number = e.pageY - topOutside + scroll.top;
-
-    const lineIdx = Math.floor(offsetY / 24); // 24 is the height of line, hardcode for now
-    const seconds = lineIdx * calendarState.duration + calendarState.dayTime.start;
-
-    const time = TimeUtils.convertSecondsToHourString(seconds, calendarState.timeType);
-    const rect = ElementUtils.calcRectFromMouse(offsetX, offsetY, element);
-    setGhost({ rect, time });
-  };
-
-  const onMouseLeave = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    setShowGhost(false);
-  };
 
   const renderAppt = (apptProp: TAppointmentForUser[]) => {
     // appt origin
@@ -86,7 +51,6 @@ const Grid: React.FC<TGrid> = ({ parentWidth }) => {
       }).map((appt: TAppointmentForApp) => {
         return <Appointment key={appt.id} value={appt} />;
       });
-    
     } else if (calendarState.viewMode === 'WEEK') {
       // iterate over the array to sort the appointment's "createdAt" attribute relative to the column
       const columnAppt: TAppointmentForUser[][] = [];
@@ -136,9 +100,9 @@ const Grid: React.FC<TGrid> = ({ parentWidth }) => {
     );
   }, [calendarState.duration, calendarState.dayTime, calendarState.workingTime, calendarState.groupTime]);
   return (
-    <Wrapper data-idtf={'grid'} /* onMouseMove={onMouseMove} */ onMouseLeave={onMouseLeave}>
+    <Wrapper data-idtf={'grid'}>
       <NowIndicator type={'LINE'} parentWidth={parentWidth} />
-      {isShowGhost && <Ghost value={{ ...ghost }} />}
+      <Ghost parentWidth={parentWidth} />
 
       {renderAppt(calendarState.appointments)}
 
