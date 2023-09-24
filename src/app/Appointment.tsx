@@ -11,7 +11,7 @@ const Wrapper = styled.div`
   left: 0;
   bottom: 0;
   right: 0;
-  z-index: 1;
+  z-index: 2;
 `;
 // Appointment is the place to hold these "appt" down-belown
 const Appointment: React.FC<{ parentWidth: number }> = ({ parentWidth }) => {
@@ -91,10 +91,14 @@ const Container = styled.div<{ $rect: TRect; $status: EStatus }>`
 
   cursor: pointer;
   position: absolute;
+  &:hover {
+    box-shadow: 0 3px 5px 0 rgb(0 0 0 / 25%);
+  }
 `;
 
 const Content = styled(Flex)`
   padding: 3px 4px 3px 8px;
+  pointer-events: none;
 `;
 
 const Appt: React.FC<{ value: TAppointmentForApp }> = ({ value }) => {
@@ -109,7 +113,7 @@ const Appt: React.FC<{ value: TAppointmentForApp }> = ({ value }) => {
   };
 
   return (
-    <Container $rect={rect} $status={value.status}>
+    <Container data-idtf={'appt'} $rect={rect} $status={value.status}>
       <Content $dir={'column'}>
         <div>
           {start}-{end}
