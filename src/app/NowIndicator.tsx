@@ -17,7 +17,7 @@ const TimePill = styled(Flex)<{ $top: number }>`
   font-weight: 600;
   position: absolute;
   transform: translateY(${(props) => props.$top}px);
-  z-index: 1;
+  z-index: 3;
 `;
 
 const TimeLine = styled.div<{ $top: number; $timelinePos?: { left: number; width: number } }>`
@@ -26,7 +26,7 @@ const TimeLine = styled.div<{ $top: number; $timelinePos?: { left: number; width
   pointer-events: none;
   position: absolute;
   transform: translateX(${(props) => props.$timelinePos?.left}px) translateY(${(props) => props.$top}px);
-  z-index: 1;
+  z-index: 3;
 `;
 
 type TNowIndicator = {

@@ -10,7 +10,7 @@ const Wrapper = styled(Flex)`
   background: #f7f7f8;
   position: sticky;
   top: 0;
-  z-index: 2;
+  z-index: 4;
 `;
 
 const DatelineHeader = styled(Flex)<{ $afterPseudoHeight: number }>`

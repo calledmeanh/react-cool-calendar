@@ -11,6 +11,7 @@ const Wrapper = styled.div`
   left: 0;
   bottom: 0;
   right: 0;
+  z-index: 1;
 `;
 // Appointment is the place to hold these "appt" down-belown
 const Appointment: React.FC<{ parentWidth: number }> = ({ parentWidth }) => {
@@ -90,8 +91,6 @@ const Container = styled.div<{ $rect: TRect; $status: EStatus }>`
 
   cursor: pointer;
   position: absolute;
-
-  z-index: 1;
 `;
 
 const Content = styled(Flex)`
