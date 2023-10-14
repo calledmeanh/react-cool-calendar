@@ -5,7 +5,7 @@ import Ghost from './Ghost';
 import Appointment from './Appointment';
 import Row from './Row';
 import { useCalendarState } from '../hook';
-import { DateUtils, ElementUtils, TimeUtils } from '../util';
+import { ElementUtils, TimeUtils } from '../util';
 
 const Wrapper = styled.div`
   touch-action: pan-y;
@@ -22,15 +22,15 @@ const Wrapper = styled.div`
   box-shadow: -2px 0px 4px 0px rgba(164, 173, 186, 0.5);
 `;
 
-type TGrid = { parentWidth: number };
+type TGrid = { widthTimeline: number };
 
-const Grid: React.FC<TGrid> = ({ parentWidth }) => {
+const Grid: React.FC<TGrid> = ({ widthTimeline }) => {
   const calendarState = useCalendarState();
-  const [ghost, setGhost] = useState({ rect: { width: 0, height: 0, top: 0, left: 0 }, time: '' });
+
+  const [time, setTime] = useState('');
+  const [position, setPosition] = useState({ top: 0, left: 0 });
   const [isShowGhost, setShowGhost] = useState(false);
 
-  const dateline = DateUtils.getDateline(calendarState.currentDate, calendarState.viewMode);
-  const widthTimeline = parentWidth / dateline.length;
   const element = { width: widthTimeline, height: 24 };
   /*
     pageX,Y are relative to the top left corner of the whole rendered page (including parts hidden by scrolling)
@@ -58,12 +58,17 @@ const Grid: React.FC<TGrid> = ({ parentWidth }) => {
     const offsetX: number = e.pageX - leftOutside + scroll.left;
     const offsetY: number = e.pageY - topOutside + scroll.top;
 
-    const lineIdx = Math.floor(offsetY / 24); // 24 is the height of line, hardcode for now
+    const colIdx: number = Math.floor(offsetX / element.width);
+    const lineIdx = Math.floor(offsetY / element.height); // 24 is the height of line, hardcode for now
+
+    const top: number = lineIdx * element.height;
+    const left: number = colIdx * element.width;
+
     const seconds = lineIdx * calendarState.duration + calendarState.dayTime.start;
     const time = TimeUtils.convertSecondsToHourString(seconds, calendarState.timeType);
-    const rect = ElementUtils.calcRectFromMouse(offsetX, offsetY, element);
 
-    setGhost({ rect, time });
+    setPosition({ top, left });
+    setTime(time);
   };
 
   const onMouseLeave = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -72,9 +77,14 @@ const Grid: React.FC<TGrid> = ({ parentWidth }) => {
 
   return (
     <Wrapper data-idtf={'grid'} onMouseMove={onMouseMove} onMouseLeave={onMouseLeave}>
-      <NowIndicator type={'LINE'} parentWidth={parentWidth} />
-      {isShowGhost && <Ghost value={ghost} />}
-      <Appointment parentWidth={parentWidth} />
+      <NowIndicator type={'LINE'} widthTimeline={widthTimeline} />
+      {isShowGhost && (
+        <Ghost
+          time={time}
+          rect={{ top: position.top, left: position.left, width: element.width, height: element.height }}
+        />
+      )}
+      <Appointment widthTimeline={widthTimeline} mousePosition={position} />
       <Row />
     </Wrapper>
   );

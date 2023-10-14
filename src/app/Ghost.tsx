@@ -19,10 +19,10 @@ type TGhost = {
   time: string;
 };
 
-const Ghost: React.FC<{ value: TGhost }> = ({ value }) => {
+const Ghost: React.FC<TGhost> = ({ rect, time }) => {
   return (
-    <Wrapper data-idtf={'ghost'} $rect={value.rect}>
-      {value.time}
+    <Wrapper data-idtf={'ghost'} $rect={rect}>
+      {time}
     </Wrapper>
   );
 };
