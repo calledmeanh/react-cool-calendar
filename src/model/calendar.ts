@@ -32,6 +32,7 @@ export type TAppointmentForUser = {
 
 export type TAppointmentForApp = TAppointmentForUser & TRect & {
     endTime: number;
+    weekcolumnIndex: number;
 };
 
 export type TTime = {

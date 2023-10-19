@@ -24,7 +24,7 @@ function layoutAlgorithm(
   let lastEventEnding: number | null = null;
 
   let events: TAppointmentForApp[] = appts.map((appt) => {
-    return { ...appt, ...calcApptPos(appt, { ...opts }), width: 0, left: 0 };
+    return { ...appt, ...calcApptPos(appt, { ...opts }), width: 0, left: 0, weekcolumnIndex: opts.weekcolumnIndex };
   });
 
   // sort it by starting time, and then by ending time.
@@ -83,6 +83,8 @@ function packEvents(
       // cell.l eft = ((i / n) * 100) / datelineLength;
       const cell = col[j];
       const cellWidth = otps.columnWidth / n - 1;
+      // cellWidth * i + i: là vị trí của các phần tử con bên trong cột tuần
+      // otps.columnWidth * otps.weekcolumnIndex: là vị trí bắt đầu left của các ptử con
       const cellLeft = cellWidth * i + i + otps.columnWidth * otps.weekcolumnIndex;
       cell.left = cellLeft;
       cell.width = cellWidth;
