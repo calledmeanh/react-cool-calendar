@@ -16,13 +16,13 @@ const Wrapper = styled(Flex)<{ $rect: TRect }>`
 
 type TGhost = {
   rect: TRect;
-  time: string;
+  timeEachCell: string;
 };
 
-const Ghost: React.FC<TGhost> = ({ rect, time }) => {
+const Ghost: React.FC<TGhost> = ({ rect, timeEachCell }) => {
   return (
     <Wrapper data-idtf={'ghost'} $rect={rect}>
-      {time}
+      {timeEachCell}
     </Wrapper>
   );
 };

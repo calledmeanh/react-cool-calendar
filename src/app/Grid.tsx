@@ -27,7 +27,7 @@ type TGrid = { widthTimeline: number };
 const Grid: React.FC<TGrid> = ({ widthTimeline }) => {
   const calendarState = useCalendarState();
 
-  const [time, setTime] = useState('');
+  const [timeEachCell, setTimeEachCell] = useState('');
   const [position, setPosition] = useState({ top: 0, left: 0 });
   const [isShowGhost, setShowGhost] = useState(false);
 
@@ -42,7 +42,7 @@ const Grid: React.FC<TGrid> = ({ widthTimeline }) => {
 
     const gridEl = e.currentTarget;
     const dataIdtf = (e.target as HTMLElement).getAttribute('data-idtf');
-    if (dataIdtf === 'appt') {
+    if (dataIdtf === 'appt-booking') {
       setShowGhost(false);
     }
 
@@ -68,7 +68,7 @@ const Grid: React.FC<TGrid> = ({ widthTimeline }) => {
     const time = TimeUtils.convertSecondsToHourString(seconds, calendarState.timeType);
 
     setPosition({ top, left });
-    setTime(time);
+    setTimeEachCell(time);
   };
 
   const onMouseLeave = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -80,7 +80,7 @@ const Grid: React.FC<TGrid> = ({ widthTimeline }) => {
       <NowIndicator type={'LINE'} widthTimeline={widthTimeline} />
       {isShowGhost && (
         <Ghost
-          time={time}
+          timeEachCell={timeEachCell}
           rect={{ top: position.top, left: position.left, width: element.width, height: element.height }}
         />
       )}
