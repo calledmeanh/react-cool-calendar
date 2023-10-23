@@ -5,6 +5,7 @@ import { CONFIG } from '../constant';
 export const AppointmentUtils = {
   layoutAlgorithm,
   getApptColorByStatus,
+  getApptTime
 };
 
 /* 
@@ -138,6 +139,17 @@ function checkOverlapped(a: TAppointmentForApp, b: TAppointmentForApp) {
   }
 
   return false;
+}
+
+function getApptTime(startTime: number, duration: number, lineHeight: number, apptHeight: number, timeType: number) {
+  let startTimeStr: string = TimeUtils.convertSecondsToHourString(startTime, timeType);
+  let endTime: number = startTime + ((apptHeight + 1) * duration) / lineHeight; // vi da -1 height nen phai +1 lai
+  let endTimeStr: string = TimeUtils.convertSecondsToHourString(endTime, timeType);
+
+  return {
+    startTimeStr,
+    endTimeStr,
+  };
 }
 
 function getApptColorByStatus(color: EStatus) {

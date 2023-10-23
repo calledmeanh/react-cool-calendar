@@ -3,6 +3,7 @@ import { styled } from 'styled-components';
 import { EStatus, TAppointmentForApp } from '../model';
 import { Flex } from './common';
 import { AppointmentUtils, TimeUtils, clsx } from '../util';
+import { useCalendarState } from '../hook';
 
 const Wrapper = styled.div<{ $status: EStatus }>`
   // background: ${(props) => AppointmentUtils.getApptColorByStatus(props.$status)}
@@ -47,6 +48,7 @@ type TApptBooking = {
 };
 
 const ApptBooking: React.FC<TApptBooking> = ({ value, mousePosition, widthTimeline, onCreateClone, onDeleteClone }) => {
+  const calendarState = useCalendarState();
   const isTouchRef = useRef(false);
   const shiftXRef = useRef(0);
   const shiftYRef = useRef(0);
@@ -56,10 +58,6 @@ const ApptBooking: React.FC<TApptBooking> = ({ value, mousePosition, widthTimeli
 
   const start = TimeUtils.convertSecondsToHourString(value.startTime);
   const end = TimeUtils.convertSecondsToHourString(value.endTime);
-
-  let classname = clsx({
-    drag: false,
-  });
 
   const onMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     setTimeout(() => {
@@ -100,9 +98,21 @@ const ApptBooking: React.FC<TApptBooking> = ({ value, mousePosition, widthTimeli
     }
   }, [mousePosition.left, mousePosition.top]);
 
+  const lineIdx = position.top / 24;
+  const startTime = lineIdx * calendarState.duration + calendarState.dayTime.start;
+  const { startTimeStr, endTimeStr } = AppointmentUtils.getApptTime(
+    startTime,
+    calendarState.duration,
+    24,
+    value.height,
+    calendarState.timeType
+  );
+
   const updatedWidth = isTouchRef.current ? widthTimeline : value.width;
   const updatedLeft = isTouchRef.current ? mousePosition.left : position.left;
-  // TODO: làm tiếp tục với thời gian appt
+  const updatedStartTime = isTouchRef.current ? startTimeStr : start;
+  const updatedEndTime = isTouchRef.current ? endTimeStr : end;
+
   return (
     <Wrapper
       data-idtf={'appt-booking'}
@@ -112,13 +122,12 @@ const ApptBooking: React.FC<TApptBooking> = ({ value, mousePosition, widthTimeli
         width: updatedWidth,
         height: value.height,
       }}
-      className={classname}
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}
     >
       <Content $dir={'column'}>
         <div>
-          {start}-{end}
+          {updatedStartTime}-{updatedEndTime}
         </div>
         <div>{value.title}</div>
         <div>{value.content}</div>
