@@ -16,7 +16,7 @@ Work on inside calendar features such as:
 - now indicator? - checked
 - layout appts algorithm? - checked
 - CRUD appts? 
-- drag/drop appts?
+- drag/drop appts? - working on
 
 # Rules
 
