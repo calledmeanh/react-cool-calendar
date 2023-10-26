@@ -43,6 +43,8 @@ function calendarReducer(state: TCalendarStateForApp, action: TCalendarAction): 
       return { ...state, currentDate: action.payload };
     case EAction.GET_TODAY:
       return { ...state, currentDate: action.payload };
+      case EAction.UPDATE_APPT:
+      return { ...state, appointments: action.payload };
     default: {
       throw Error('Unknown action: ' + action.type);
     }

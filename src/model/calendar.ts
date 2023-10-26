@@ -60,6 +60,7 @@ export enum EAction {
   PREV_WEEK = 'PREV_WEEK',
   NEXT_WEEK = 'NEXT_WEEK',
   GET_TODAY = 'GET_TODAY',
+  UPDATE_APPT = "UPDATE_APPT"
 }
 
 export enum EViewMode {
