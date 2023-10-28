@@ -13,7 +13,7 @@ root.render(
     <div style={{ width: '100vw', height: '100vh', padding: '2.4rem' }}>
       {/* Calendar should take props from user pass in, this value below is just for temporary */}
       <Calendar
-        duration={CONFIG.VIEWMODE_SMALL}
+        duration={CONFIG.ZOOMMODE_SMALL}
         timeType={24}
         groupTime={60 * CONFIG.SECONDS_PER_HOUR}
         nowIndicator={true}

@@ -22,10 +22,10 @@ const Zoom: React.FC<{}> = () => {
         dispath({ type: EAction.CHANGE_ZOOM, payload: CONFIG.VIEWMODE_LARGE });
         break;
       case EViewMode.SMALL:
-        dispath({ type: EAction.CHANGE_ZOOM, payload: CONFIG.VIEWMODE_SMALL });
+        dispath({ type: EAction.CHANGE_ZOOM, payload: CONFIG.ZOOMMODE_SMALL });
         break;
       default:
-        dispath({ type: EAction.CHANGE_ZOOM, payload: CONFIG.VIEWMODE_SMALL });
+        dispath({ type: EAction.CHANGE_ZOOM, payload: CONFIG.ZOOMMODE_SMALL });
         break;
     }
   };

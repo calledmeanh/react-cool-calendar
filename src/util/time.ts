@@ -124,7 +124,7 @@ function parseDurationToViewMode(duration: number): string {
     case CONFIG.VIEWMODE_LARGE:
       res = EViewMode.LARGE;
       break;
-    case CONFIG.VIEWMODE_SMALL:
+    case CONFIG.ZOOMMODE_SMALL:
       res = EViewMode.SMALL;
       break;
     default:
