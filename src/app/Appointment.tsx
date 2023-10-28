@@ -1,8 +1,8 @@
 import React, { useRef, useState } from 'react';
 import { styled } from 'styled-components';
-import { TAppointmentForApp, TAppointmentForUser } from '../model';
+import { EAction, TAppointmentForApp, TAppointmentForUser } from '../model';
 import { AppointmentUtils, DateUtils } from '../util';
-import { useCalendarState } from '../hook';
+import { useCalendarDispatch, useCalendarState } from '../hook';
 import ApptBooking from './ApptBooking';
 import ApptClone from './ApptClone';
 
@@ -22,6 +22,7 @@ type TAppointment = {
 
 const Appointment: React.FC<TAppointment> = ({ widthTimeline, mousePosition }) => {
   const calendarState = useCalendarState();
+  const dispath = useCalendarDispatch();
   const appointmentRef = useRef<HTMLDivElement | null>(null);
   const [apptClone, setApptClone] = useState<TAppointmentForApp | null>(null);
 
@@ -48,8 +49,8 @@ const Appointment: React.FC<TAppointment> = ({ widthTimeline, mousePosition }) =
             value={appt}
             widthTimeline={widthTimeline}
             mousePosition={mousePosition}
-            onCreateClone={onCreateClone}
-            onDeleteClone={onDeleteClone}
+            onPressAppt={onPressAppt}
+            onReleaseAppt={onReleaseAppt}
           />
         );
       });
@@ -84,22 +85,41 @@ const Appointment: React.FC<TAppointment> = ({ widthTimeline, mousePosition }) =
             value={appt}
             widthTimeline={widthTimeline}
             mousePosition={mousePosition}
-            onCreateClone={onCreateClone}
-            onDeleteClone={onDeleteClone}
+            onPressAppt={onPressAppt}
+            onReleaseAppt={onReleaseAppt}
           />
         );
       });
     }
   };
 
-  const onCreateClone = (value: TAppointmentForApp) => {
+  const onPressAppt = (value: TAppointmentForApp) => {
     if (value.id) setApptClone(value);
   };
 
-  const onDeleteClone = (id: string) => {
+  const onReleaseAppt = (id: string, startTime: number) => {
     if (apptClone && id && apptClone.id === id) {
       setApptClone(null);
     }
+
+    const newWeekColIdx = Math.round(mousePosition.left / widthTimeline);
+    const dayCustom = dateline[newWeekColIdx];
+    const payload = {
+      startTime,
+      createdAt: dayCustom.origin,
+    };
+
+    let apptCopy = calendarState.appointments.slice();
+    for (let i = 0; i < apptCopy.length; i++) {
+      if (id === apptCopy[i].id) {
+        apptCopy[i] = {
+          ...apptCopy[i],
+          ...payload,
+        };
+        break;
+      }
+    }
+    dispath({ type: EAction.UPDATE_APPT, payload: apptCopy });
   };
 
   return (

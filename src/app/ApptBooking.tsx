@@ -1,10 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { styled } from 'styled-components';
-import { EAction, EStatus, TAppointmentForApp } from '../model';
+import { EStatus, TAppointmentForApp } from '../model';
 import { Flex } from './common';
-import { AppointmentUtils, DateUtils, TimeUtils } from '../util';
+import { AppointmentUtils, TimeUtils } from '../util';
 import { useCalendarDispatch, useCalendarState } from '../hook';
-import dayjs from 'dayjs';
 
 const Wrapper = styled.div<{ $status: EStatus }>`
   // background: ${(props) => AppointmentUtils.getApptColorByStatus(props.$status)}
@@ -44,13 +43,12 @@ type TApptBooking = {
   value: TAppointmentForApp;
   mousePosition: { top: number; left: number };
   widthTimeline: number;
-  onCreateClone: (value: TAppointmentForApp) => void;
-  onDeleteClone: (id: string) => void;
+  onPressAppt: (value: TAppointmentForApp) => void;
+  onReleaseAppt: (id: string, startTime: number) => void;
 };
 
-const ApptBooking: React.FC<TApptBooking> = ({ value, mousePosition, widthTimeline, onCreateClone, onDeleteClone }) => {
+const ApptBooking: React.FC<TApptBooking> = ({ value, mousePosition, widthTimeline, onPressAppt, onReleaseAppt }) => {
   const calendarState = useCalendarState();
-  const dispath = useCalendarDispatch();
 
   const isTouchRef = useRef(false);
   const shiftXRef = useRef(0);
@@ -59,23 +57,16 @@ const ApptBooking: React.FC<TApptBooking> = ({ value, mousePosition, widthTimeli
   // vị trí ban đầu khi được tính toán xong bởi thuật toán layout
   const [position, setPosition] = useState({ top: value.top, left: value.left });
 
-  const startStr = TimeUtils.convertSecondsToHourString(value.startTime);
-  const endStr = TimeUtils.convertSecondsToHourString(value.endTime);
-
   const lineIdx = position.top / 24;
   const startTime = lineIdx * calendarState.duration + calendarState.dayTime.start;
-  const { startTimeStr, endTimeStr } = AppointmentUtils.getApptTime(
-    startTime,
-    calendarState.duration,
-    24,
-    value.height,
-    calendarState.timeType
-  );
+  const endTime = startTime + ((value.height + 1) * calendarState.duration) / 24; // vi da -1 height nen phai +1 lai
+  const newStartTime = isTouchRef.current ? startTime : value.startTime;
+  const newEndTime = isTouchRef.current ? endTime : value.endTime;
 
+  const updatedStartTime = TimeUtils.convertSecondsToHourString(newStartTime);
+  const updatedEndTime = TimeUtils.convertSecondsToHourString(newEndTime);
   const updatedWidth = isTouchRef.current ? widthTimeline : value.width;
   const updatedLeft = isTouchRef.current ? mousePosition.left : position.left;
-  const updatedStartTime = isTouchRef.current ? startTimeStr : startStr;
-  const updatedEndTime = isTouchRef.current ? endTimeStr : endStr;
 
   const onMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     isTouchRef.current = true;
@@ -85,7 +76,7 @@ const ApptBooking: React.FC<TApptBooking> = ({ value, mousePosition, widthTimeli
 
     (e.target as HTMLElement).classList.add('drag');
 
-    onCreateClone({ ...value, top: position.top, left: position.left });
+    onPressAppt({ ...value, top: position.top, left: position.left });
   };
 
   const onMouseUp = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -98,36 +89,7 @@ const ApptBooking: React.FC<TApptBooking> = ({ value, mousePosition, widthTimeli
 
     (e.target as HTMLElement).classList.remove('drag');
 
-    onDeleteClone(value.id);
-
-    /* 
-      TODO: update appt when finish drag
-      Hiện tại chức năng kéo và thả về mặt cơ bản là đã xong (thay đổi vị trí top,left & start,end)
-      Tiếp theo là refactor code của 2 Appointment và ApptBooking
-        - Chuyển hết logic xử lý drag & drop về Appointment
-        - ApptBooking chỉ có nhiệm vụ là nhận dữ liệu truyền đến và hiện
-      Sau đó refactor lại toàn bộ code để nắm trc khi làm feature tiếp theo
-    */
-    const dateline = DateUtils.getDateline(calendarState.currentDate, calendarState.viewMode);
-    const newWeekColIdx = Math.round(mousePosition.left / widthTimeline);
-    const dayCustom = dateline[newWeekColIdx];
-    const payload = {
-      startTime,
-      createdAt: dayCustom.origin,
-    };
-
-    let apptCopy = calendarState.appointments.slice();
-    for (let i = 0; i < apptCopy.length; i++) {
-      if (value.id === apptCopy[i].id) {
-        apptCopy[i] = {
-          ...apptCopy[i],
-          ...payload,
-        };
-        break;
-      }
-    }
-
-    dispath({ type: EAction.UPDATE_APPT, payload: apptCopy });
+    onReleaseAppt(value.id, startTime);
   };
 
   // re-render the position of appt
