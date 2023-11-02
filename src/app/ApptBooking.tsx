@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useCallback, useRef, useState } from 'react';
 import { styled } from 'styled-components';
 import { EStatus, TAppointmentForApp } from '../model';
 import { Flex } from './common';
 import { AppointmentUtils, TimeUtils } from '../util';
-import { useCalendarDispatch, useCalendarState } from '../hook';
+import { useCalendarState } from '../hook';
 
 const Wrapper = styled.div<{ $status: EStatus }>`
   // background: ${(props) => AppointmentUtils.getApptColorByStatus(props.$status)}
@@ -51,8 +51,15 @@ const ApptBooking: React.FC<TApptBooking> = ({ value, mousePosition, widthTimeli
   const calendarState = useCalendarState();
 
   const isTouchRef = useRef(false);
-  const shiftXRef = useRef(0);
-  const shiftYRef = useRef(0);
+  const origDeltaX = useRef(0);
+  const origDeltaY = useRef(0);
+
+  let removeAutoScrollInterval: Function;
+
+  const distanceFromApptToEdge = 0; // khoang cach giua appt va cac diem? canh.
+  const autoScrollThreshold = value.height / 3; // nguong de bat dau auto scroll
+  const speed = 300;
+  const fps = 1000 / 60;
 
   // vị trí ban đầu khi được tính toán xong bởi thuật toán layout
   const [position, setPosition] = useState({ top: value.top, left: value.left });
@@ -71,10 +78,12 @@ const ApptBooking: React.FC<TApptBooking> = ({ value, mousePosition, widthTimeli
   const onMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     isTouchRef.current = true;
 
-    shiftXRef.current = mousePosition.left - position.left;
-    shiftYRef.current = mousePosition.top - position.top;
+    origDeltaX.current = mousePosition.left - position.left;
+    origDeltaY.current = mousePosition.top - position.top;
 
     (e.target as HTMLElement).classList.add('drag');
+
+    removeAutoScrollInterval && removeAutoScrollInterval();
 
     onPressAppt({ ...value, top: position.top, left: position.left });
   };
@@ -82,15 +91,53 @@ const ApptBooking: React.FC<TApptBooking> = ({ value, mousePosition, widthTimeli
   const onMouseUp = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     isTouchRef.current = false;
 
-    setPosition({
-      top: mousePosition.top - shiftYRef.current,
-      left: mousePosition.left - shiftXRef.current,
-    });
+    onDragging();
 
     (e.target as HTMLElement).classList.remove('drag');
 
     onReleaseAppt(value.id, startTime);
   };
+
+  const onDragging = useCallback(() => {
+
+    removeAutoScrollInterval && removeAutoScrollInterval();
+
+    const distanceUp = mousePosition.top - origDeltaY.current; // distance from mouse to appt's top
+    const distanceDown = value.height - origDeltaY.current; // distance from mouse to appt's bottom
+    const steps = TimeUtils.calcTimeStep(
+      calendarState.dayTime.end,
+      calendarState.dayTime.start,
+      calendarState.duration
+    );
+    const maxGridHeight = steps * 24;
+
+    // TODO: đã xong drag đến giới hạn đầu và cuối, cbi làm drag & drop advance
+    if (distanceUp <= 0) {
+      // top
+      setPosition({
+        top: 0,
+        left: mousePosition.left - origDeltaX.current,
+      });
+    } else if (mousePosition.top + distanceDown >= maxGridHeight) {
+      // botoom
+      setPosition({
+        top: maxGridHeight - value.height,
+        left: mousePosition.left - origDeltaX.current,
+      });
+    } else {
+      setPosition({
+        top: mousePosition.top - origDeltaY.current,
+        left: mousePosition.left - origDeltaX.current,
+      });
+    }
+  }, [
+    mousePosition.left,
+    mousePosition.top,
+    calendarState.dayTime.end,
+    calendarState.dayTime.start,
+    calendarState.duration,
+    value.height,
+  ]);
 
   // re-render the position of appt
   useEffect(() => {
@@ -100,12 +147,9 @@ const ApptBooking: React.FC<TApptBooking> = ({ value, mousePosition, widthTimeli
   // when move mouse around
   useEffect(() => {
     if (isTouchRef.current) {
-      setPosition({
-        top: mousePosition.top - shiftYRef.current,
-        left: mousePosition.left - shiftXRef.current,
-      });
+      onDragging();
     }
-  }, [mousePosition.left, mousePosition.top]);
+  }, [onDragging]);
 
   return (
     <Wrapper

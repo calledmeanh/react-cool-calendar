@@ -16,6 +16,7 @@ export const TimeUtils = {
   convertMinuteToSeconds,
 
   parseDurationToViewMode,
+  wrapperSetInterval
 };
 
 /* calculate top position based-on time */
@@ -132,4 +133,11 @@ function parseDurationToViewMode(duration: number): string {
       break;
   }
   return res;
+}
+
+function wrapperSetInterval(handler: Function, time: number) {
+  const intervalId: number = setInterval(handler, time);
+  return () => {
+    clearInterval(intervalId);
+  };
 }
