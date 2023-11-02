@@ -23,12 +23,11 @@ type TAppointment = {
 const Appointment: React.FC<TAppointment> = ({ widthTimeline, mousePosition }) => {
   const calendarState = useCalendarState();
   const dispath = useCalendarDispatch();
-  const appointmentRef = useRef<HTMLDivElement | null>(null);
   const [apptClone, setApptClone] = useState<TAppointmentForApp | null>(null);
 
   const dateline = DateUtils.getDateline(calendarState.currentDate, calendarState.viewMode);
 
-  const renderApptCb = (apptProp: TAppointmentForUser[]) => {
+  const render = (apptProp: TAppointmentForUser[]) => {
     // appt origin
     let appts = apptProp.slice();
 
@@ -123,9 +122,9 @@ const Appointment: React.FC<TAppointment> = ({ widthTimeline, mousePosition }) =
   };
 
   return (
-    <Wrapper data-idtf={'appointment'} ref={appointmentRef}>
+    <Wrapper data-idtf={'appointment'}>
       {apptClone && <ApptClone value={apptClone} />}
-      {renderApptCb(calendarState.appointments)}
+      {render(calendarState.appointments)}
     </Wrapper>
   );
 };

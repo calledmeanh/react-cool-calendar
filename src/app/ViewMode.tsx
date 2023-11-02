@@ -11,7 +11,7 @@ const options: Opts = [
   // { value: 'MONTH', text: 'month' },
 ];
 
-const ViewMode: React.FC<{}> = () => {
+const ViewMode: React.FC = () => {
   const calendarState = useCalendarState();
   const dispath = useCalendarDispatch();
 

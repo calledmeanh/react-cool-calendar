@@ -18,7 +18,7 @@ const Box = styled.div`
   z-index: 4;
 `;
 
-const Interval: React.FC<{}> = () => {
+const Interval: React.FC = () => {
   return (
     <Wrapper data-idtf={'interval'}>
       <Box />

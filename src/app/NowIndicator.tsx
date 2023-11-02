@@ -115,12 +115,12 @@ const NowIndicator: React.FC<TNowIndicator> = ({ type, widthTimeline = 0 }) => {
 
   return (
     <React.Fragment>
-      {type === 'PILL' && calendarState.viewMode === 'DAY' && Boolean(now.position) && (
+      {type === 'PILL' && calendarState.viewMode === 'DAY' && Boolean(now.position) && calendarState.nowIndicator && (
         <TimePill $align={'center'} $justify={'center'} $top={now.position}>
           {now.text}
         </TimePill>
       )}
-      {type === 'LINE' && Boolean(now.position) && (
+      {type === 'LINE' && Boolean(now.position) && calendarState.nowIndicator && (
         <TimeLine $top={now.position + 9.5} $timelinePos={timelinePos}></TimeLine>
       )}
     </React.Fragment>

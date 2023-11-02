@@ -10,7 +10,7 @@ const Wrapper = styled(Flex)`
   padding: 16px 24px;
 `;
 
-const Toolbar: React.FC<{}> = () => {
+const Toolbar: React.FC = () => {
   return (
     <Wrapper data-idtf={'toolbar'} $justify={'space-between'}>
       <Zoom />

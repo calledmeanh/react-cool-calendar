@@ -11,7 +11,7 @@ const options: Opts = [
   { value: EViewMode.SMALL, text: 'small' },
 ];
 
-const Zoom: React.FC<{}> = () => {
+const Zoom: React.FC = () => {
   const calendarState = useCalendarState();
   const dispath = useCalendarDispatch();
 
@@ -19,7 +19,7 @@ const Zoom: React.FC<{}> = () => {
     const value = ElementUtils.getValueFromUserInput(e);
     switch (value) {
       case EViewMode.LARGE:
-        dispath({ type: EAction.CHANGE_ZOOM, payload: CONFIG.VIEWMODE_LARGE });
+        dispath({ type: EAction.CHANGE_ZOOM, payload: CONFIG.ZOOMMODE_LARGE });
         break;
       case EViewMode.SMALL:
         dispath({ type: EAction.CHANGE_ZOOM, payload: CONFIG.ZOOMMODE_SMALL });
@@ -32,7 +32,7 @@ const Zoom: React.FC<{}> = () => {
 
   return (
     <Select
-      data-idtf={'calendar-zoom'}
+      data-idtf={'zoom'}
       $padding={[8, 12]}
       $isborderradius
       value={TimeUtils.parseDurationToViewMode(calendarState.duration)}

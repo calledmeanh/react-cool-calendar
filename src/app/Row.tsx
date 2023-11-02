@@ -4,11 +4,9 @@ import { useCalendarState } from '../hook';
 import { TimeUtils, clsx } from '../util';
 import { Line } from './common';
 
-const Wrapper = styled.div`
-  
-`;
+const Wrapper = styled.div``;
 
-const Row: React.FC<{}> = () => {
+const Row: React.FC = () => {
   const calendarState = useCalendarState();
 
   const renderRow = useCallback(() => {

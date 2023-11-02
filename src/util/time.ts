@@ -122,7 +122,7 @@ function checkGroupTime(
 function parseDurationToViewMode(duration: number): string {
   let res = '';
   switch (duration) {
-    case CONFIG.VIEWMODE_LARGE:
+    case CONFIG.ZOOMMODE_LARGE:
       res = EViewMode.LARGE;
       break;
     case CONFIG.ZOOMMODE_SMALL:

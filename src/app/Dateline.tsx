@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
-import { clsx } from '../util';
+import { TimeUtils, clsx } from '../util';
 import { DateUtils } from '../util';
 import { Flex } from './common';
 import { useCalendarState } from '../hook';
@@ -63,9 +63,11 @@ const DatelineText = styled.div`
   }
 `;
 
-type TDateline = { afterPseudoHeight: number };
-const Dateline: React.FC<TDateline> = ({ afterPseudoHeight }) => {
+const Dateline: React.FC = () => {
   const calendarState = useCalendarState();
+
+  const steps = TimeUtils.calcTimeStep(calendarState.dayTime.end, calendarState.dayTime.start, calendarState.duration);
+  const maxGridHeight = steps * 24;
 
   const render = useCallback(() => {
     const dateline = DateUtils.getDateline(calendarState.currentDate, calendarState.viewMode);
@@ -76,13 +78,13 @@ const Dateline: React.FC<TDateline> = ({ afterPseudoHeight }) => {
         today: isToday,
       });
       return (
-        <DatelineHeader key={i} $justify={'center'} $align={'center'} $afterPseudoHeight={afterPseudoHeight}>
+        <DatelineHeader key={i} $justify={'center'} $align={'center'} $afterPseudoHeight={maxGridHeight}>
           <DatelineNumber className={classname}>{d.number}</DatelineNumber>
           <DatelineText className={classname}>{d.text}</DatelineText>
         </DatelineHeader>
       );
     });
-  }, [afterPseudoHeight, calendarState.viewMode, calendarState.currentDate, calendarState.todayGlobalIns]);
+  }, [maxGridHeight, calendarState.viewMode, calendarState.currentDate, calendarState.todayGlobalIns]);
 
   return <Wrapper data-idtf={'dateline'}>{render()}</Wrapper>;
 };

@@ -11,7 +11,7 @@ const Wrapper = styled.div`
   position: relative;
 `;
 
-const Time: React.FC<{}> = () => {
+const Time: React.FC = () => {
   const calendarState = useCalendarState();
 
   const renderTime = useCallback(() => {

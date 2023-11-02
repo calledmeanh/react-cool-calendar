@@ -2,7 +2,7 @@ import React, { useEffect, useCallback, useRef, useState } from 'react';
 import { styled } from 'styled-components';
 import { EStatus, TAppointmentForApp } from '../model';
 import { Flex } from './common';
-import { AppointmentUtils, TimeUtils } from '../util';
+import { AppointmentUtils, ElementUtils, TimeUtils } from '../util';
 import { useCalendarState } from '../hook';
 
 const Wrapper = styled.div<{ $status: EStatus }>`
@@ -86,6 +86,11 @@ const ApptBooking: React.FC<TApptBooking> = ({ value, mousePosition, widthTimeli
     removeAutoScrollInterval && removeAutoScrollInterval();
 
     onPressAppt({ ...value, top: position.top, left: position.left });
+
+    // found the key for advance dragging
+    // TODO: đọc lại đoạn code Swipable và Grid vì mới chỉnh sửa chỗ widthTimeLine vì chỗ width ở Swipable đã ko còn hữu dụng nữa nên xóa chuyển logic vào Grid
+    const topOutside: number = ElementUtils.getOffsetToDocument(e.currentTarget, 'top');
+    console.log('useEffect ~ topOutside:', topOutside);
   };
 
   const onMouseUp = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -99,11 +104,11 @@ const ApptBooking: React.FC<TApptBooking> = ({ value, mousePosition, widthTimeli
   };
 
   const onDragging = useCallback(() => {
-
     removeAutoScrollInterval && removeAutoScrollInterval();
 
     const distanceUp = mousePosition.top - origDeltaY.current; // distance from mouse to appt's top
     const distanceDown = value.height - origDeltaY.current; // distance from mouse to appt's bottom
+    const distanceLeft = mousePosition.left - origDeltaX.current;
     const steps = TimeUtils.calcTimeStep(
       calendarState.dayTime.end,
       calendarState.dayTime.start,
@@ -116,18 +121,18 @@ const ApptBooking: React.FC<TApptBooking> = ({ value, mousePosition, widthTimeli
       // top
       setPosition({
         top: 0,
-        left: mousePosition.left - origDeltaX.current,
+        left: distanceLeft,
       });
     } else if (mousePosition.top + distanceDown >= maxGridHeight) {
       // botoom
       setPosition({
         top: maxGridHeight - value.height,
-        left: mousePosition.left - origDeltaX.current,
+        left: distanceLeft,
       });
     } else {
       setPosition({
-        top: mousePosition.top - origDeltaY.current,
-        left: mousePosition.left - origDeltaX.current,
+        top: distanceUp,
+        left: distanceLeft,
       });
     }
   }, [

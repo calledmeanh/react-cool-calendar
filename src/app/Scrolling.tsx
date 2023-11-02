@@ -10,7 +10,7 @@ const Wrapper = styled(Flex)`
   -webkit-overflow-scrolling: touch;
 `;
 
-const Scrolling: React.FC<{}> = () => {
+const Scrolling: React.FC = () => {
   return (
     <Wrapper data-idtf={'scrolling'}>
       <Interval />

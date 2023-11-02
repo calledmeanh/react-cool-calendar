@@ -4,7 +4,7 @@ import { EAction } from '../model';
 import { DateUtils } from '../util';
 import { Flex, Button, Text } from './common';
 
-const DateManipulation: React.FC<{}> = () => {
+const DateManipulation: React.FC = () => {
   const calendarState = useCalendarState();
   const dispath = useCalendarDispatch();
 
