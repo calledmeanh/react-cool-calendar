@@ -27,12 +27,10 @@ const Grid: React.FC = () => {
 
   const gridRef = useRef<HTMLDivElement | null>(null);
   const [gridWidth, setGridWidth] = useState(0);
+  const [scrollEl, setScrollEl] = useState<HTMLElement | null>(null);
   const [timeEachCell, setTimeEachCell] = useState('');
-  const [position, setPosition] = useState({ top: 0, left: 0 });
+  const [position, setPosition] = useState({ top: 0, left: 0, pageY: 0, pageX: 0 });
   const [isShowGhost, setShowGhost] = useState(false);
-
-  const leftOutsideRef = useRef(0);
-  const topOutsideRef = useRef(0);
 
   const dateline = DateUtils.getDateline(calendarState.currentDate, calendarState.viewMode);
   const widthTimeline = gridWidth / dateline.length;
@@ -45,23 +43,19 @@ const Grid: React.FC = () => {
   const onMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (!isShowGhost) setShowGhost(true);
 
-    const gridEl = e.currentTarget;
     const dataIdtf = (e.target as HTMLElement).getAttribute('data-idtf');
     if (dataIdtf === 'appt-booking') {
       setShowGhost(false);
     }
 
-    const scrollEl = gridEl.parentElement?.parentElement;
-    const scroll = {
-      top: scrollEl ? scrollEl.scrollTop : 0,
-      left: scrollEl ? scrollEl.scrollLeft : 0,
-    };
+    const topOutside: number = ElementUtils.getOffsetToDocument(gridRef.current, 'top');
+    const leftOutside: number = ElementUtils.getOffsetToDocument(gridRef.current, 'left');
 
-    const offsetX: number = e.pageX - leftOutsideRef.current + scroll.left;
-    const offsetY: number = e.pageY - topOutsideRef.current + scroll.top;
+    const offsetY: number = e.pageY - topOutside + (scrollEl?.scrollTop || 0);
+    const offsetX: number = e.pageX - leftOutside + (scrollEl?.scrollLeft || 0);
 
-    const colIdx: number = Math.floor(offsetX / widthTimeline);
     const lineIdx = Math.floor(offsetY / 24); // 24 is the height of line, hardcode for now
+    const colIdx: number = Math.floor(offsetX / widthTimeline);
 
     const top: number = lineIdx * 24;
     const left: number = colIdx * widthTimeline;
@@ -69,7 +63,7 @@ const Grid: React.FC = () => {
     const seconds = lineIdx * calendarState.duration + calendarState.dayTime.start;
     const time = TimeUtils.convertSecondsToHourString(seconds, calendarState.timeType);
 
-    setPosition({ top, left });
+    setPosition({ top, left, pageY: e.pageY, pageX: e.pageX });
     setTimeEachCell(time);
   };
 
@@ -78,10 +72,9 @@ const Grid: React.FC = () => {
   };
 
   useEffect(() => {
-    if (gridRef && gridRef.current) {
+    if (gridRef && gridRef.current && gridRef.current.parentElement) {
       setGridWidth(gridRef.current.offsetWidth);
-      leftOutsideRef.current = ElementUtils.getOffsetToDocument(gridRef.current, 'left');
-      topOutsideRef.current = ElementUtils.getOffsetToDocument(gridRef.current, 'top');
+      setScrollEl(gridRef.current.parentElement.parentElement);
     }
   }, []);
 
@@ -94,7 +87,7 @@ const Grid: React.FC = () => {
           rect={{ top: position.top, left: position.left, width: widthTimeline, height: 24 }}
         />
       )}
-      <Appointment widthTimeline={widthTimeline} mousePosition={position} />
+      <Appointment scrollEl={scrollEl} widthTimeline={widthTimeline} mousePosition={position} />
       <Row />
     </Wrapper>
   );

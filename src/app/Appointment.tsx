@@ -16,11 +16,12 @@ const Wrapper = styled.div`
 `;
 
 type TAppointment = {
+  scrollEl: HTMLElement | null;
   widthTimeline: number;
-  mousePosition: { top: number; left: number };
+  mousePosition: { top: number; left: number; pageY: number; pageX: number };
 };
 
-const Appointment: React.FC<TAppointment> = ({ widthTimeline, mousePosition }) => {
+const Appointment: React.FC<TAppointment> = ({ scrollEl, widthTimeline, mousePosition }) => {
   const calendarState = useCalendarState();
   const dispath = useCalendarDispatch();
   const [apptClone, setApptClone] = useState<TAppointmentForApp | null>(null);
@@ -46,6 +47,7 @@ const Appointment: React.FC<TAppointment> = ({ widthTimeline, mousePosition }) =
           <ApptBooking
             key={appt.id}
             value={appt}
+            scrollEl={scrollEl}
             widthTimeline={widthTimeline}
             mousePosition={mousePosition}
             onPressAppt={onPressAppt}
@@ -82,6 +84,7 @@ const Appointment: React.FC<TAppointment> = ({ widthTimeline, mousePosition }) =
           <ApptBooking
             key={appt.id}
             value={appt}
+            scrollEl={scrollEl}
             widthTimeline={widthTimeline}
             mousePosition={mousePosition}
             onPressAppt={onPressAppt}

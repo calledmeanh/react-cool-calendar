@@ -41,25 +41,35 @@ const Content = styled(Flex)`
 
 type TApptBooking = {
   value: TAppointmentForApp;
-  mousePosition: { top: number; left: number };
+  scrollEl: HTMLElement | null;
+  mousePosition: { top: number; left: number; pageY: number; pageX: number };
   widthTimeline: number;
   onPressAppt: (value: TAppointmentForApp) => void;
   onReleaseAppt: (id: string, startTime: number) => void;
 };
 
-const ApptBooking: React.FC<TApptBooking> = ({ value, mousePosition, widthTimeline, onPressAppt, onReleaseAppt }) => {
+const ApptBooking: React.FC<TApptBooking> = ({
+  value,
+  scrollEl,
+  mousePosition,
+  widthTimeline,
+  onPressAppt,
+  onReleaseAppt,
+}) => {
   const calendarState = useCalendarState();
 
   const isTouchRef = useRef(false);
   const origDeltaX = useRef(0);
   const origDeltaY = useRef(0);
+  const topEdgeRef = useRef(0);
 
   let removeAutoScrollInterval: Function;
+  let distanceFromApptToEdge = 0; // khoang cach giua appt va cac diem? canh
 
-  const distanceFromApptToEdge = 0; // khoang cach giua appt va cac diem? canh.
   const autoScrollThreshold = value.height / 3; // nguong de bat dau auto scroll
   const speed = 300;
   const fps = 1000 / 60;
+  const floorY = Math.floor(mousePosition.pageY / 24) * 24;
 
   // vị trí ban đầu khi được tính toán xong bởi thuật toán layout
   const [position, setPosition] = useState({ top: value.top, left: value.left });
@@ -87,10 +97,7 @@ const ApptBooking: React.FC<TApptBooking> = ({ value, mousePosition, widthTimeli
 
     onPressAppt({ ...value, top: position.top, left: position.left });
 
-    // found the key for advance dragging
-    // TODO: đọc lại đoạn code Swipable và Grid vì mới chỉnh sửa chỗ widthTimeLine vì chỗ width ở Swipable đã ko còn hữu dụng nữa nên xóa chuyển logic vào Grid
-    const topOutside: number = ElementUtils.getOffsetToDocument(e.currentTarget, 'top');
-    console.log('useEffect ~ topOutside:', topOutside);
+    topEdgeRef.current = ElementUtils.getOffsetToDocument(e.currentTarget, 'top');
   };
 
   const onMouseUp = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -103,8 +110,23 @@ const ApptBooking: React.FC<TApptBooking> = ({ value, mousePosition, widthTimeli
     onReleaseAppt(value.id, startTime);
   };
 
+  /**
+   * tinh toan toc do dua tren luc keo cua 1 vat so voi diem tua.
+   * @param distance khoang cach giua vat va diem tua.
+   * @param height chieu cao cua vat
+   * @param container chieu cao cua vat chua'
+   * @param speed toc do ban dau
+   */
+  const calcSpeedForce = (distance: number, height: number, containerHeight: number, speed: number) => {
+    return Math.abs((distance - height) / containerHeight) * speed;
+  };
+
   const onDragging = useCallback(() => {
-    removeAutoScrollInterval && removeAutoScrollInterval();
+    let currScrollY = scrollEl?.scrollTop || 0;
+    const scrollHeight = scrollEl?.offsetHeight || 0;
+    const maxScrollY = scrollEl?.scrollHeight || 0;
+    const maxWindowY = window.innerHeight;
+    const maxWindowX = window.innerWidth;
 
     const distanceUp = mousePosition.top - origDeltaY.current; // distance from mouse to appt's top
     const distanceDown = value.height - origDeltaY.current; // distance from mouse to appt's bottom
@@ -115,9 +137,43 @@ const ApptBooking: React.FC<TApptBooking> = ({ value, mousePosition, widthTimeli
       calendarState.duration
     );
     const maxGridHeight = steps * 24;
+    const topEdgeAfter = topEdgeRef.current - autoScrollThreshold;
 
-    // TODO: đã xong drag đến giới hạn đầu và cuối, cbi làm drag & drop advance
-    if (distanceUp <= 0) {
+    let tempTop = position.top;
+    if (floorY - origDeltaY.current - autoScrollThreshold <= topEdgeAfter) {
+      distanceFromApptToEdge = topEdgeAfter - mousePosition.pageY;
+      const speedWithForce = calcSpeedForce(distanceFromApptToEdge, value.height, scrollHeight, speed) / 5;
+
+      removeAutoScrollInterval && removeAutoScrollInterval();
+      console.log('speedWithForce:', speedWithForce); // gia tri qua lon nen su dung 6.45 thay the tam
+
+      removeAutoScrollInterval = TimeUtils.wrapperSetInterval(() => {
+        currScrollY -= 6.45;
+        tempTop -= 6.45;
+        setPosition({ top: tempTop, left: distanceLeft });
+
+        if (currScrollY <= 0 || position.top <= 0) {
+          currScrollY = 0;
+          setPosition({
+            top: 0,
+            left: distanceLeft,
+          });
+
+          removeAutoScrollInterval && removeAutoScrollInterval();
+        }
+
+        if (scrollEl) {
+          scrollEl.scrollTop = currScrollY;
+        }
+      }, fps);
+    } else {
+      setPosition({
+        top: distanceUp,
+        left: distanceLeft,
+      });
+    }
+
+    /* if (distanceUp <= 0) {
       // top
       setPosition({
         top: 0,
@@ -134,7 +190,7 @@ const ApptBooking: React.FC<TApptBooking> = ({ value, mousePosition, widthTimeli
         top: distanceUp,
         left: distanceLeft,
       });
-    }
+    } */
   }, [
     mousePosition.left,
     mousePosition.top,
