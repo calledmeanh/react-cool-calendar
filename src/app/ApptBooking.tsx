@@ -4,6 +4,7 @@ import { EStatus, TAppointmentForApp } from '../model';
 import { Flex } from './common';
 import { AppointmentUtils, ElementUtils, TimeUtils } from '../util';
 import { useCalendarState } from '../hook';
+import { CONFIG } from '../constant';
 
 const Wrapper = styled.div<{ $status: EStatus }>`
   // background: ${(props) => AppointmentUtils.getApptColorByStatus(props.$status)}
@@ -23,7 +24,6 @@ const Wrapper = styled.div<{ $status: EStatus }>`
 
   cursor: pointer;
   position: absolute;
-  transition: transform 0.15s cubic-bezier(0, 0, 1, 1), width 0.15s cubic-bezier(0, 0, 1, 1);
   &:hover {
     box-shadow: 0 3px 5px 0 rgb(0 0 0 / 25%);
   }
@@ -41,7 +41,7 @@ const Content = styled(Flex)`
 
 type TApptBooking = {
   value: TAppointmentForApp;
-  scrollEl: HTMLElement | null;
+  scrollEl: HTMLDivElement | null;
   mousePosition: { top: number; left: number; pageY: number; pageX: number };
   widthTimeline: number;
   onPressAppt: (value: TAppointmentForApp) => void;
@@ -62,13 +62,11 @@ const ApptBooking: React.FC<TApptBooking> = ({
   const origDeltaX = useRef(0);
   const origDeltaY = useRef(0);
   const topEdgeRef = useRef(0);
-
-  let removeAutoScrollInterval: Function;
-  let distanceFromApptToEdge = 0; // khoang cach giua appt va cac diem? canh
+  const calendarRef = useRef<HTMLDivElement | null>(null);
+  const removeAutoScrollInterval = useRef(() => {});
 
   const autoScrollThreshold = value.height / 3; // nguong de bat dau auto scroll
-  const speed = 300;
-  const fps = 1000 / 60;
+
   const floorY = Math.floor(mousePosition.pageY / 24) * 24;
 
   // vị trí ban đầu khi được tính toán xong bởi thuật toán layout
@@ -91,13 +89,14 @@ const ApptBooking: React.FC<TApptBooking> = ({
     origDeltaX.current = mousePosition.left - position.left;
     origDeltaY.current = mousePosition.top - position.top;
 
-    (e.target as HTMLElement).classList.add('drag');
+    (e.target as HTMLDivElement).classList.add('drag');
 
-    removeAutoScrollInterval && removeAutoScrollInterval();
+    removeAutoScrollInterval.current && removeAutoScrollInterval.current();
 
     onPressAppt({ ...value, top: position.top, left: position.left });
 
     topEdgeRef.current = ElementUtils.getOffsetToDocument(e.currentTarget, 'top');
+    calendarRef.current = ElementUtils.getParentNodeFrom(e.currentTarget, 'calendar') as HTMLDivElement | null;
   };
 
   const onMouseUp = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -105,92 +104,97 @@ const ApptBooking: React.FC<TApptBooking> = ({
 
     onDragging();
 
-    (e.target as HTMLElement).classList.remove('drag');
+    (e.target as HTMLDivElement).classList.remove('drag');
 
     onReleaseAppt(value.id, startTime);
   };
 
-  /**
-   * tinh toan toc do dua tren luc keo cua 1 vat so voi diem tua.
-   * @param distance khoang cach giua vat va diem tua.
-   * @param height chieu cao cua vat
-   * @param container chieu cao cua vat chua'
-   * @param speed toc do ban dau
-   */
-  const calcSpeedForce = (distance: number, height: number, containerHeight: number, speed: number) => {
-    return Math.abs((distance - height) / containerHeight) * speed;
-  };
-
   const onDragging = useCallback(() => {
-    let currScrollY = scrollEl?.scrollTop || 0;
-    const scrollHeight = scrollEl?.offsetHeight || 0;
-    const maxScrollY = scrollEl?.scrollHeight || 0;
-    const maxWindowY = window.innerHeight;
-    const maxWindowX = window.innerWidth;
+    const calendarHeight = calendarRef.current?.offsetHeight || 0;
 
-    const distanceUp = mousePosition.top - origDeltaY.current; // distance from mouse to appt's top
-    const distanceDown = value.height - origDeltaY.current; // distance from mouse to appt's bottom
+    let currScrollY = scrollEl?.scrollTop || 0;
+    const offsetScrollY = scrollEl?.offsetHeight || 0;
+    const maxScrollY = scrollEl?.scrollHeight || 0;
+
+    let curApptTop = position.top;
+
+    // distance from mouse to
+    const distanceUp = mousePosition.top - origDeltaY.current;
     const distanceLeft = mousePosition.left - origDeltaX.current;
+    const distanceDown = value.height - origDeltaY.current;
+
     const steps = TimeUtils.calcTimeStep(
       calendarState.dayTime.end,
       calendarState.dayTime.start,
       calendarState.duration
     );
     const maxGridHeight = steps * 24;
-    const topEdgeAfter = topEdgeRef.current - autoScrollThreshold;
 
-    let tempTop = position.top;
-    if (floorY - origDeltaY.current - autoScrollThreshold <= topEdgeAfter) {
-      distanceFromApptToEdge = topEdgeAfter - mousePosition.pageY;
-      const speedWithForce = calcSpeedForce(distanceFromApptToEdge, value.height, scrollHeight, speed) / 5;
+    /* auto scroll to top while dragging if match condition */
+    //TODO: mini bug - nếu appt đang bị che bởi top và bottom thì sao??
+    // ================ TOP ================
+    if (floorY - origDeltaY.current - autoScrollThreshold <= topEdgeRef.current - autoScrollThreshold && scrollEl) {
+      removeAutoScrollInterval.current && removeAutoScrollInterval.current();
 
-      removeAutoScrollInterval && removeAutoScrollInterval();
-      console.log('speedWithForce:', speedWithForce); // gia tri qua lon nen su dung 6.45 thay the tam
+      removeAutoScrollInterval.current = TimeUtils.wrapperSetInterval(() => {
+        currScrollY -= CONFIG.SPEED;
+        curApptTop -= CONFIG.SPEED;
 
-      removeAutoScrollInterval = TimeUtils.wrapperSetInterval(() => {
-        currScrollY -= 6.45;
-        tempTop -= 6.45;
-        setPosition({ top: tempTop, left: distanceLeft });
+        setPosition((prev) => ({
+          ...prev,
+          top: curApptTop,
+        }));
 
         if (currScrollY <= 0 || position.top <= 0) {
           currScrollY = 0;
-          setPosition({
+          setPosition((prev) => ({
+            ...prev,
             top: 0,
-            left: distanceLeft,
-          });
+          }));
 
-          removeAutoScrollInterval && removeAutoScrollInterval();
+          removeAutoScrollInterval.current && removeAutoScrollInterval.current();
         }
 
-        if (scrollEl) {
-          scrollEl.scrollTop = currScrollY;
-        }
-      }, fps);
-    } else {
-      setPosition({
-        top: distanceUp,
-        left: distanceLeft,
-      });
+        scrollEl.scrollTop = currScrollY;
+      }, CONFIG.FPS);
     }
+    // ================ BOTTOM ================
+    else if (floorY  + autoScrollThreshold >= calendarHeight && scrollEl) {
+      removeAutoScrollInterval.current && removeAutoScrollInterval.current();
 
-    /* if (distanceUp <= 0) {
-      // top
-      setPosition({
-        top: 0,
-        left: distanceLeft,
-      });
-    } else if (mousePosition.top + distanceDown >= maxGridHeight) {
-      // botoom
-      setPosition({
-        top: maxGridHeight - value.height,
-        left: distanceLeft,
-      });
+      removeAutoScrollInterval.current = TimeUtils.wrapperSetInterval(() => {
+        currScrollY += CONFIG.SPEED;
+        curApptTop += CONFIG.SPEED;
+        setPosition((prev) => ({
+          ...prev,
+          top: curApptTop,
+        }));
+
+        if (currScrollY + offsetScrollY >= maxScrollY || position.top + value.height >= maxGridHeight) {
+          currScrollY = maxScrollY - offsetScrollY;
+          setPosition((prev) => ({
+            ...prev,
+            top: maxGridHeight - value.height,
+          }));
+          removeAutoScrollInterval.current && removeAutoScrollInterval.current();
+        }
+
+        scrollEl.scrollTop = currScrollY;
+      }, CONFIG.FPS);
     } else {
       setPosition({
         top: distanceUp,
         left: distanceLeft,
       });
-    } */
+
+      if (mousePosition.top + distanceDown >= maxGridHeight) {
+        // botoom
+        setPosition({
+          top: maxGridHeight - value.height,
+          left: distanceLeft,
+        });
+      }
+    }
   }, [
     mousePosition.left,
     mousePosition.top,
@@ -198,9 +202,13 @@ const ApptBooking: React.FC<TApptBooking> = ({
     calendarState.dayTime.start,
     calendarState.duration,
     value.height,
+    autoScrollThreshold,
+    floorY,
+    position.top,
+    scrollEl,
   ]);
 
-  // re-render the position of appt
+  // re-render the first position of appt
   useEffect(() => {
     setPosition({ top: value.top, left: value.left });
   }, [value.top, value.left]);

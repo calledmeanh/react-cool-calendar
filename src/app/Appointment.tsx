@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { styled } from 'styled-components';
 import { EAction, TAppointmentForApp, TAppointmentForUser } from '../model';
 import { AppointmentUtils, DateUtils } from '../util';
@@ -16,7 +16,7 @@ const Wrapper = styled.div`
 `;
 
 type TAppointment = {
-  scrollEl: HTMLElement | null;
+  scrollEl: HTMLDivElement | null;
   widthTimeline: number;
   mousePosition: { top: number; left: number; pageY: number; pageX: number };
 };
@@ -26,7 +26,7 @@ const Appointment: React.FC<TAppointment> = ({ scrollEl, widthTimeline, mousePos
   const dispath = useCalendarDispatch();
   const [apptClone, setApptClone] = useState<TAppointmentForApp | null>(null);
 
-  const dateline = DateUtils.getDateline(calendarState.currentDate, calendarState.viewMode);
+const dateline = DateUtils.getDateline(calendarState.currentDate, calendarState.viewMode);
 
   const render = (apptProp: TAppointmentForUser[]) => {
     // appt origin

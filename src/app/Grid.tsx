@@ -27,7 +27,7 @@ const Grid: React.FC = () => {
 
   const gridRef = useRef<HTMLDivElement | null>(null);
   const [gridWidth, setGridWidth] = useState(0);
-  const [scrollEl, setScrollEl] = useState<HTMLElement | null>(null);
+  const [scrollEl, setScrollEl] = useState<HTMLDivElement | null>(null);
   const [timeEachCell, setTimeEachCell] = useState('');
   const [position, setPosition] = useState({ top: 0, left: 0, pageY: 0, pageX: 0 });
   const [isShowGhost, setShowGhost] = useState(false);
@@ -43,7 +43,7 @@ const Grid: React.FC = () => {
   const onMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (!isShowGhost) setShowGhost(true);
 
-    const dataIdtf = (e.target as HTMLElement).getAttribute('data-idtf');
+    const dataIdtf = (e.target as HTMLDivElement).getAttribute('data-idtf');
     if (dataIdtf === 'appt-booking') {
       setShowGhost(false);
     }
@@ -74,7 +74,7 @@ const Grid: React.FC = () => {
   useEffect(() => {
     if (gridRef && gridRef.current && gridRef.current.parentElement) {
       setGridWidth(gridRef.current.offsetWidth);
-      setScrollEl(gridRef.current.parentElement.parentElement);
+      setScrollEl(gridRef.current.parentElement.parentElement as HTMLDivElement);
     }
   }, []);
 

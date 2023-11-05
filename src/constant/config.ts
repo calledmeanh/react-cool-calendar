@@ -13,6 +13,9 @@ const MAPPING_TIME: any = {
 
 const DATE_FORMAT = 'MM/DD/YYYY';
 
+const SPEED = 15;
+const FPS = 1000 / 60;
+
 export const CONFIG = {
   SECONDS_PER_HOUR,
   SECONDS_PER_MINUTE,
@@ -21,4 +24,6 @@ export const CONFIG = {
   ZOOMMODE_SMALL,
   MAPPING_TIME,
   DATE_FORMAT,
+  SPEED,
+  FPS
 };

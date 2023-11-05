@@ -1,6 +1,7 @@
 export const ElementUtils = {
   getValueFromUserInput,
   getOffsetToDocument,
+  getParentNodeFrom,
 };
 
 /**
@@ -19,4 +20,16 @@ function getOffsetToDocument(elem: any, dir: 'left' | 'top'): number {
     }
   } while ((elem = elem.offsetParent));
   return value;
+}
+
+function getParentNodeFrom(elem: any, targetData: string) {
+  let target = null;
+  do {
+    const dataIdtf = elem.getAttribute('data-idtf');
+    if (dataIdtf === targetData) {
+      target = elem;
+      return target;
+    }
+  } while ((elem = elem.parentElement));
+  return target;
 }
