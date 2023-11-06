@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Time from './Time';
+import { CONFIG } from '../constant';
 
 const Wrapper = styled.div`
   width: 48px;
@@ -20,7 +21,7 @@ const Box = styled.div`
 
 const Interval: React.FC = () => {
   return (
-    <Wrapper data-idtf={'interval'}>
+    <Wrapper data-idtf={CONFIG.DATA_IDTF.INTERVAL}>
       <Box />
       <Time />
     </Wrapper>

@@ -37,7 +37,7 @@ const Time: React.FC = () => {
   }, [calendarState.duration, calendarState.dayTime]);
 
   return (
-    <Wrapper data-idtf={'time'}>
+    <Wrapper data-idtf={CONFIG.DATA_IDTF.TIME}>
       <NowIndicator type={'PILL'} />
       {renderTime()}
     </Wrapper>

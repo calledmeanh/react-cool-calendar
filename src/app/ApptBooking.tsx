@@ -93,7 +93,10 @@ const ApptBooking: React.FC<TApptBooking> = ({
     removeAutoScrollInterval.current && removeAutoScrollInterval.current();
 
     topEdgeRef.current = ElementUtils.getOffsetToDocument(e.currentTarget, 'top');
-    calendarRef.current = ElementUtils.getParentNodeFrom(e.currentTarget, 'calendar') as HTMLDivElement | null;
+    calendarRef.current = ElementUtils.getParentNodeFrom(
+      e.currentTarget,
+      CONFIG.DATA_IDTF.CALENDAR
+    ) as HTMLDivElement | null;
 
     onPressAppt({ ...value, top: position.top, left: position.left });
   };
@@ -200,7 +203,6 @@ const ApptBooking: React.FC<TApptBooking> = ({
         });
       }
     }
-
   }, [
     mousePosition.left,
     mousePosition.top,
@@ -228,7 +230,7 @@ const ApptBooking: React.FC<TApptBooking> = ({
 
   return (
     <Wrapper
-      data-idtf={'appt-booking'}
+      data-idtf={CONFIG.DATA_IDTF.APPT_BOOKING}
       $status={value.status}
       style={{
         transform: `translateX(${updatedLeft}px) translateY(${position.top}px)`,

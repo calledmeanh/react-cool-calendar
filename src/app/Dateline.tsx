@@ -4,6 +4,7 @@ import { TimeUtils, clsx } from '../util';
 import { DateUtils } from '../util';
 import { Flex } from './common';
 import { useCalendarState } from '../hook';
+import { CONFIG } from '../constant';
 
 const Wrapper = styled(Flex)`
   height: 60px;
@@ -86,7 +87,7 @@ const Dateline: React.FC = () => {
     });
   }, [maxGridHeight, calendarState.viewMode, calendarState.currentDate, calendarState.todayGlobalIns]);
 
-  return <Wrapper data-idtf={'dateline'}>{render()}</Wrapper>;
+  return <Wrapper data-idtf={CONFIG.DATA_IDTF.DATELINE}>{render()}</Wrapper>;
 };
 
 export default Dateline;

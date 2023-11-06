@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Flex } from './common';
 import Swipable from './Swipable';
 import Interval from './Interval';
+import { CONFIG } from '../constant';
 
 const Wrapper = styled(Flex)`
   overflow-y: auto;
@@ -12,7 +13,7 @@ const Wrapper = styled(Flex)`
 
 const Scrolling: React.FC = () => {
   return (
-    <Wrapper data-idtf={'scrolling'}>
+    <Wrapper data-idtf={CONFIG.DATA_IDTF.SCROLLING}>
       <Interval />
       <Swipable />
     </Wrapper>

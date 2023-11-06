@@ -3,6 +3,7 @@ import { Select, Option } from './common';
 import { EAction, TViewMode } from '../model';
 import { useCalendarDispatch, useCalendarState } from '../hook';
 import { ElementUtils } from '../util';
+import { CONFIG } from '../constant';
 
 type Opts = { value: TViewMode; text: string }[];
 const options: Opts = [
@@ -22,7 +23,7 @@ const ViewMode: React.FC = () => {
 
   return (
     <Select
-      data-idtf={'mode'}
+      data-idtf={CONFIG.DATA_IDTF.VIEWMODE}
       $padding={[8, 12]}
       $isborderradius
       value={calendarState.viewMode}

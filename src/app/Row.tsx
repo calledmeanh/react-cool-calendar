@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useCalendarState } from '../hook';
 import { TimeUtils, clsx } from '../util';
 import { Line } from './common';
+import { CONFIG } from '../constant';
 
 const Wrapper = styled.div``;
 
@@ -28,7 +29,7 @@ const Row: React.FC = () => {
     );
   }, [calendarState.duration, calendarState.dayTime, calendarState.workingTime, calendarState.groupTime]);
 
-  return <Wrapper data-idtf={'row'}>{renderRow()}</Wrapper>;
+  return <Wrapper data-idtf={CONFIG.DATA_IDTF.ROW}>{renderRow()}</Wrapper>;
 };
 
 export default Row;

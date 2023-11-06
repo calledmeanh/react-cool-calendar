@@ -6,6 +6,7 @@ import Appointment from './Appointment';
 import Row from './Row';
 import { useCalendarState } from '../hook';
 import { DateUtils, ElementUtils, TimeUtils } from '../util';
+import { CONFIG } from '../constant';
 
 const Wrapper = styled.div`
   touch-action: pan-y;
@@ -43,8 +44,8 @@ const Grid: React.FC = () => {
   const onMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (!isShowGhost) setShowGhost(true);
 
-    const dataIdtf = (e.target as HTMLDivElement).getAttribute('data-idtf');
-    if (dataIdtf === 'appt-booking') {
+    const dataIdtf = (e.target as HTMLDivElement).getAttribute(CONFIG.DATA_IDTF.THIS);
+    if (dataIdtf === CONFIG.DATA_IDTF.APPT_BOOKING) {
       setShowGhost(false);
     }
 
@@ -79,7 +80,7 @@ const Grid: React.FC = () => {
   }, []);
 
   return (
-    <Wrapper data-idtf={'grid'} onMouseMove={onMouseMove} onMouseLeave={onMouseLeave} ref={gridRef}>
+    <Wrapper data-idtf={CONFIG.DATA_IDTF.GRID} onMouseMove={onMouseMove} onMouseLeave={onMouseLeave} ref={gridRef}>
       <NowIndicator type={'LINE'} widthTimeline={widthTimeline} />
       {isShowGhost && (
         <Ghost

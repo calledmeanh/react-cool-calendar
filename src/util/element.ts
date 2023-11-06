@@ -1,3 +1,5 @@
+import { CONFIG } from '../constant';
+
 export const ElementUtils = {
   getValueFromUserInput,
   getOffsetToDocument,
@@ -25,7 +27,7 @@ function getOffsetToDocument(elem: any, dir: 'left' | 'top'): number {
 function getParentNodeFrom(elem: any, targetData: string) {
   let target = null;
   do {
-    const dataIdtf = elem.getAttribute('data-idtf');
+    const dataIdtf = elem.getAttribute(CONFIG.DATA_IDTF.THIS);
     if (dataIdtf === targetData) {
       target = elem;
       return target;

@@ -5,6 +5,7 @@ import { AppointmentUtils, DateUtils } from '../util';
 import { useCalendarDispatch, useCalendarState } from '../hook';
 import ApptBooking from './ApptBooking';
 import ApptClone from './ApptClone';
+import { CONFIG } from '../constant';
 
 const Wrapper = styled.div`
   position: absolute;
@@ -125,7 +126,7 @@ const dateline = DateUtils.getDateline(calendarState.currentDate, calendarState.
   };
 
   return (
-    <Wrapper data-idtf={'appointment'}>
+    <Wrapper data-idtf={CONFIG.DATA_IDTF.APPOINTMENT}>
       {apptClone && <ApptClone value={apptClone} />}
       {render(calendarState.appointments)}
     </Wrapper>

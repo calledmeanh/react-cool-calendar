@@ -3,6 +3,7 @@ import { styled } from 'styled-components';
 import { TAppointmentForApp } from '../model';
 import { Flex } from './common';
 import { TimeUtils } from '../util';
+import { CONFIG } from '../constant';
 
 const Wrapper = styled.div`
   background: #fff;
@@ -37,7 +38,7 @@ const ApptClone: React.FC<TApptClone> = ({ value }) => {
 
   return (
     <Wrapper
-      data-idtf={'appt-clone'}
+      data-idtf={CONFIG.DATA_IDTF.APPT_CLONE}
       style={{
         transform: `translateX(${value.left}px) translateY(${value.top}px)`,
         width: value.width,

@@ -16,6 +16,26 @@ const DATE_FORMAT = 'MM/DD/YYYY';
 const SPEED = 15;
 const FPS = 1000 / 60;
 
+const DATA_IDTF = {
+  THIS: 'data-idtf',
+  CALENDAR: 'calendar',
+  TOOLBAR: 'toolbar',
+  ZOOM: 'zoom',
+  DAYTIME: 'daytime',
+  VIEWMODE: 'viewmode',
+  SCROLLING: 'scrolling',
+  INTERVAL: 'interval',
+  TIME: 'time',
+  SWIPABLE: 'swipable',
+  DATELINE: 'dateline',
+  GRID: 'grid',
+  GHOST: 'ghost',
+  APPOINTMENT: 'appointment',
+  APPT_CLONE: 'appt-clone',
+  APPT_BOOKING: 'appt-booking',
+  ROW: 'row',
+};
+
 export const CONFIG = {
   SECONDS_PER_HOUR,
   SECONDS_PER_MINUTE,
@@ -25,5 +45,6 @@ export const CONFIG = {
   MAPPING_TIME,
   DATE_FORMAT,
   SPEED,
-  FPS
+  FPS,
+  DATA_IDTF,
 };

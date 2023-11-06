@@ -11,6 +11,7 @@ import dayjs from 'dayjs';
   By default, Day.js comes with English locale only. If you need other locales, you can load them on demand. 
 */
 import 'dayjs/locale/vi';
+import { CONFIG } from '../constant';
 
 const Wrapper = styled(Flex)`
   height: 100%;
@@ -28,7 +29,7 @@ const Calendar: React.FC<TCalendarStateForUser> = (userProps) => {
   const appProps: TCalendarStateForApp = { ...userProps, todayGlobalIns: dayjs(), currentDate: dayjs() };
   return (
     <CalendarProvider initialState={appProps}>
-      <Wrapper data-idtf={'calendar'} $dir={'column'}>
+      <Wrapper data-idtf={CONFIG.DATA_IDTF.CALENDAR} $dir={'column'}>
         <Toolbar />
         <Scrolling />
       </Wrapper>

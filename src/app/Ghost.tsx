@@ -2,6 +2,7 @@ import React from 'react';
 import { styled } from 'styled-components';
 import { TRect } from '../model';
 import { Flex } from './common';
+import { CONFIG } from '../constant';
 
 const Wrapper = styled(Flex)<{ $rect: TRect }>`
   width: ${(props) => props.$rect.width}px;
@@ -23,7 +24,7 @@ type TGhost = {
 
 const Ghost: React.FC<TGhost> = ({ rect, timeEachCell }) => {
   return (
-    <Wrapper data-idtf={'ghost'} $rect={rect}>
+    <Wrapper data-idtf={CONFIG.DATA_IDTF.GHOST} $rect={rect}>
       {timeEachCell}
     </Wrapper>
   );

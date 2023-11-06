@@ -3,6 +3,7 @@ import { useCalendarDispatch, useCalendarState } from '../hook';
 import { EAction } from '../model';
 import { DateUtils } from '../util';
 import { Flex, Button, Text } from './common';
+import { CONFIG } from '../constant';
 
 const DateManipulation: React.FC = () => {
   const calendarState = useCalendarState();
@@ -36,7 +37,7 @@ const DateManipulation: React.FC = () => {
   };
 
   return (
-    <Flex data-idtf={'daytime'}>
+    <Flex data-idtf={CONFIG.DATA_IDTF.DAYTIME}>
       <Button $padding={[8, 12]} onClick={calendarState.viewMode === 'DAY' ? onPrevDay : onPrevWeek}>
         &#x2039;
       </Button>
