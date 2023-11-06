@@ -65,16 +65,15 @@ const ApptBooking: React.FC<TApptBooking> = ({
   const calendarRef = useRef<HTMLDivElement | null>(null);
   const removeAutoScrollInterval = useRef(() => {});
 
-  const autoScrollThreshold = value.height / 3; // nguong de bat dau auto scroll
-
+  const autoScrollThreshold = useRef(value.height / 5); // threshold to start auto scroll
   const floorY = Math.floor(mousePosition.pageY / 24) * 24;
 
-  // vị trí ban đầu khi được tính toán xong bởi thuật toán layout
+  // initial position when calculated by the layout algorithm
   const [position, setPosition] = useState({ top: value.top, left: value.left });
 
   const lineIdx = position.top / 24;
   const startTime = lineIdx * calendarState.duration + calendarState.dayTime.start;
-  const endTime = startTime + ((value.height + 1) * calendarState.duration) / 24; // vi da -1 height nen phai +1 lai
+  const endTime = startTime + ((value.height + 1) * calendarState.duration) / 24;
   const newStartTime = isTouchRef.current ? startTime : value.startTime;
   const newEndTime = isTouchRef.current ? endTime : value.endTime;
 
@@ -93,18 +92,18 @@ const ApptBooking: React.FC<TApptBooking> = ({
 
     removeAutoScrollInterval.current && removeAutoScrollInterval.current();
 
-    onPressAppt({ ...value, top: position.top, left: position.left });
-
     topEdgeRef.current = ElementUtils.getOffsetToDocument(e.currentTarget, 'top');
     calendarRef.current = ElementUtils.getParentNodeFrom(e.currentTarget, 'calendar') as HTMLDivElement | null;
+
+    onPressAppt({ ...value, top: position.top, left: position.left });
   };
 
   const onMouseUp = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     isTouchRef.current = false;
 
-    onDragging();
-
     (e.target as HTMLDivElement).classList.remove('drag');
+
+    onDragging();
 
     onReleaseAppt(value.id, startTime);
   };
@@ -121,7 +120,7 @@ const ApptBooking: React.FC<TApptBooking> = ({
     // distance from mouse to
     const distanceUp = mousePosition.top - origDeltaY.current;
     const distanceLeft = mousePosition.left - origDeltaX.current;
-    const distanceDown = value.height - origDeltaY.current;
+    const distanceDown = mousePosition.top + (value.height - origDeltaY.current);
 
     const steps = TimeUtils.calcTimeStep(
       calendarState.dayTime.end,
@@ -130,71 +129,78 @@ const ApptBooking: React.FC<TApptBooking> = ({
     );
     const maxGridHeight = steps * 24;
 
-    /* auto scroll to top while dragging if match condition */
-    //TODO: mini bug - nếu appt đang bị che bởi top và bottom thì sao??
-    // ================ TOP ================
-    if (floorY - origDeltaY.current - autoScrollThreshold <= topEdgeRef.current - autoScrollThreshold && scrollEl) {
-      removeAutoScrollInterval.current && removeAutoScrollInterval.current();
-
-      removeAutoScrollInterval.current = TimeUtils.wrapperSetInterval(() => {
-        currScrollY -= CONFIG.SPEED;
-        curApptTop -= CONFIG.SPEED;
-
-        setPosition((prev) => ({
-          ...prev,
-          top: curApptTop,
-        }));
-
-        if (currScrollY <= 0 || position.top <= 0) {
-          currScrollY = 0;
-          setPosition((prev) => ({
-            ...prev,
-            top: 0,
-          }));
-
-          removeAutoScrollInterval.current && removeAutoScrollInterval.current();
-        }
-
-        scrollEl.scrollTop = currScrollY;
-      }, CONFIG.FPS);
-    }
-    // ================ BOTTOM ================
-    else if (floorY  + autoScrollThreshold >= calendarHeight && scrollEl) {
-      removeAutoScrollInterval.current && removeAutoScrollInterval.current();
-
-      removeAutoScrollInterval.current = TimeUtils.wrapperSetInterval(() => {
-        currScrollY += CONFIG.SPEED;
-        curApptTop += CONFIG.SPEED;
-        setPosition((prev) => ({
-          ...prev,
-          top: curApptTop,
-        }));
-
-        if (currScrollY + offsetScrollY >= maxScrollY || position.top + value.height >= maxGridHeight) {
-          currScrollY = maxScrollY - offsetScrollY;
-          setPosition((prev) => ({
-            ...prev,
-            top: maxGridHeight - value.height,
-          }));
-          removeAutoScrollInterval.current && removeAutoScrollInterval.current();
-        }
-
-        scrollEl.scrollTop = currScrollY;
-      }, CONFIG.FPS);
-    } else {
+    // touch the edge of top
+    if (distanceUp <= 0) {
       setPosition({
-        top: distanceUp,
+        top: 0,
         left: distanceLeft,
       });
+    }
+    // touch the edge of botoom
+    else if (distanceDown >= maxGridHeight) {
+      setPosition({
+        top: maxGridHeight - value.height,
+        left: distanceLeft,
+      });
+    } else {
+      /* auto scroll to top while dragging if match condition */
+      // ================ TOP ================
+      if (floorY - autoScrollThreshold.current <= topEdgeRef.current && scrollEl) {
+        removeAutoScrollInterval.current && removeAutoScrollInterval.current();
 
-      if (mousePosition.top + distanceDown >= maxGridHeight) {
-        // botoom
+        removeAutoScrollInterval.current = TimeUtils.wrapperSetInterval(() => {
+          currScrollY -= CONFIG.SPEED;
+          curApptTop -= CONFIG.SPEED;
+
+          setPosition((prev) => ({
+            ...prev,
+            top: curApptTop,
+          }));
+
+          if (currScrollY <= 0 || position.top <= 0) {
+            currScrollY = 0;
+            setPosition((prev) => ({
+              ...prev,
+              top: 0,
+            }));
+
+            removeAutoScrollInterval.current && removeAutoScrollInterval.current();
+          }
+
+          scrollEl.scrollTop = currScrollY;
+        }, CONFIG.FPS);
+      }
+      // ================ BOTTOM ================
+      else if (floorY + autoScrollThreshold.current >= calendarHeight && scrollEl) {
+        removeAutoScrollInterval.current && removeAutoScrollInterval.current();
+
+        removeAutoScrollInterval.current = TimeUtils.wrapperSetInterval(() => {
+          currScrollY += CONFIG.SPEED;
+          curApptTop += CONFIG.SPEED;
+          setPosition((prev) => ({
+            ...prev,
+            top: curApptTop,
+          }));
+
+          if (currScrollY + offsetScrollY >= maxScrollY || position.top + value.height >= maxGridHeight) {
+            currScrollY = maxScrollY - offsetScrollY;
+            setPosition((prev) => ({
+              ...prev,
+              top: maxGridHeight - value.height,
+            }));
+            removeAutoScrollInterval.current && removeAutoScrollInterval.current();
+          }
+
+          scrollEl.scrollTop = currScrollY;
+        }, CONFIG.FPS);
+      } else {
         setPosition({
-          top: maxGridHeight - value.height,
+          top: distanceUp,
           left: distanceLeft,
         });
       }
     }
+
   }, [
     mousePosition.left,
     mousePosition.top,
