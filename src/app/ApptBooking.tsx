@@ -82,6 +82,19 @@ const ApptBooking: React.FC<TApptBooking> = ({
   const updatedWidth = isTouchRef.current ? widthTimeline : value.width;
   const updatedLeft = isTouchRef.current ? mousePosition.left : position.left;
 
+  const calendarHeight = calendarRef.current?.offsetHeight || 0;
+
+  const offsetScrollY = scrollEl?.offsetHeight || 0;
+  const maxScrollY = scrollEl?.scrollHeight || 0;
+
+  // distance from mouse to
+  const distanceUp = mousePosition.top - origDeltaY.current;
+  const distanceLeft = mousePosition.left - origDeltaX.current;
+  const distanceDown = mousePosition.top + (value.height - origDeltaY.current);
+
+  const steps = TimeUtils.calcTimeStep(calendarState.dayTime.end, calendarState.dayTime.start, calendarState.duration);
+  const maxGridHeight = steps * 24;
+
   const onMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     isTouchRef.current = true;
 
@@ -92,6 +105,7 @@ const ApptBooking: React.FC<TApptBooking> = ({
 
     removeAutoScrollInterval.current && removeAutoScrollInterval.current();
 
+    // save data for later use
     topEdgeRef.current = ElementUtils.getOffsetToDocument(e.currentTarget, 'top');
     calendarRef.current = ElementUtils.getParentNodeFrom(
       e.currentTarget,
@@ -112,25 +126,8 @@ const ApptBooking: React.FC<TApptBooking> = ({
   };
 
   const onDragging = useCallback(() => {
-    const calendarHeight = calendarRef.current?.offsetHeight || 0;
-
     let currScrollY = scrollEl?.scrollTop || 0;
-    const offsetScrollY = scrollEl?.offsetHeight || 0;
-    const maxScrollY = scrollEl?.scrollHeight || 0;
-
     let curApptTop = position.top;
-
-    // distance from mouse to
-    const distanceUp = mousePosition.top - origDeltaY.current;
-    const distanceLeft = mousePosition.left - origDeltaX.current;
-    const distanceDown = mousePosition.top + (value.height - origDeltaY.current);
-
-    const steps = TimeUtils.calcTimeStep(
-      calendarState.dayTime.end,
-      calendarState.dayTime.start,
-      calendarState.duration
-    );
-    const maxGridHeight = steps * 24;
 
     // touch the edge of top
     if (distanceUp <= 0) {
@@ -197,6 +194,7 @@ const ApptBooking: React.FC<TApptBooking> = ({
           scrollEl.scrollTop = currScrollY;
         }, CONFIG.FPS);
       } else {
+        removeAutoScrollInterval.current && removeAutoScrollInterval.current();
         setPosition({
           top: distanceUp,
           left: distanceLeft,
@@ -204,16 +202,18 @@ const ApptBooking: React.FC<TApptBooking> = ({
       }
     }
   }, [
-    mousePosition.left,
-    mousePosition.top,
-    calendarState.dayTime.end,
-    calendarState.dayTime.start,
-    calendarState.duration,
     value.height,
     autoScrollThreshold,
     floorY,
     position.top,
     scrollEl,
+    calendarHeight,
+    distanceDown,
+    distanceLeft,
+    distanceUp,
+    maxGridHeight,
+    maxScrollY,
+    offsetScrollY,
   ]);
 
   // re-render the first position of appt
