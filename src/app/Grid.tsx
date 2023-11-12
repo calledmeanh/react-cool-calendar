@@ -36,6 +36,10 @@ const Grid: React.FC = () => {
   const dateline = DateUtils.getDateline(calendarState.currentDate, calendarState.viewMode);
   const widthTimeline = gridWidth / dateline.length;
 
+  const onMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (e.button === 2) return; // right click
+  };
+
   /*
     pageX,Y are relative to the top left corner of the whole rendered page (including parts hidden by scrolling)
     clientX, Y are relative to the top left corner of the visible part of the page, "seen" through browser window
@@ -72,6 +76,11 @@ const Grid: React.FC = () => {
     setShowGhost(false);
   };
 
+  /* disabled right click on grid */
+  const onRightClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.preventDefault();
+  };
+
   useEffect(() => {
     if (gridRef && gridRef.current && gridRef.current.parentElement) {
       setGridWidth(gridRef.current.offsetWidth);
@@ -80,7 +89,14 @@ const Grid: React.FC = () => {
   }, []);
 
   return (
-    <Wrapper data-idtf={CONFIG.DATA_IDTF.GRID} onMouseMove={onMouseMove} onMouseLeave={onMouseLeave} ref={gridRef}>
+    <Wrapper
+      data-idtf={CONFIG.DATA_IDTF.GRID}
+      onMouseDown={onMouseDown}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
+      onContextMenu={onRightClick}
+      ref={gridRef}
+    >
       <NowIndicator type={'LINE'} widthTimeline={widthTimeline} />
       {isShowGhost && (
         <Ghost
