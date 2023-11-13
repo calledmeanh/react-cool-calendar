@@ -7,11 +7,8 @@ import { useCalendarState } from '../hook';
 import { CONFIG } from '../constant';
 
 const Wrapper = styled.div<{ $status: EStatus }>`
-  // background: ${(props) => AppointmentUtils.getApptColorByStatus(props.$status)}
-
-  background: ${CONFIG.CSS.APPT_BG_COLORS.BOOKED};
-  border: 1px solid ${CONFIG.CSS.APPT_BG_COLORS.BOOKED};
-
+  background: ${(props) => AppointmentUtils.getApptColorByStatus(props.$status)};
+  border: 1px solid ${(props) => AppointmentUtils.getApptColorByStatus(props.$status)};
   color: ${CONFIG.CSS.FONT_DARK_COLOR};
   font-size: 12px;
   line-height: 16px;

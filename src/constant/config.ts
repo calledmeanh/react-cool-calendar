@@ -65,9 +65,13 @@ const CSS = {
     SECONDARY: '#fff',
   },
 
-  // TODO: add more status colors then move to spacing, size, transition
+  // TODO: add spacing, size, transition
   APPT_BG_COLORS: {
     BOOKED: '#a5dff8',
+    CONFIRMED: '#a5f8c3',
+    ARRIVED: '#f7d7a4',
+    STARTED: '#a5b3f8',
+    NOSHOW: '#f8a5a5',
     CLONE: '#fff',
   },
   DATELINE_COLORS: {

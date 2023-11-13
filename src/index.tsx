@@ -55,7 +55,7 @@ root.render(
             duration: 150,
             title: '3',
             content: 'You only live once',
-            status: EStatus.BOOKED,
+            status: EStatus.ARRIVED,
             createdAt: dayjs(),
           },
           {
@@ -64,7 +64,7 @@ root.render(
             duration: 120,
             title: '4',
             content: 'You only live once',
-            status: EStatus.CONFIRMED,
+            status: EStatus.NOSHOW,
             createdAt: dayjs(),
           },
           {
@@ -73,7 +73,7 @@ root.render(
             duration: 120,
             title: '5',
             content: 'You only live once',
-            status: EStatus.ARRIVED,
+            status: EStatus.BOOKED,
             createdAt: dayjs(),
           },
           {
@@ -82,7 +82,7 @@ root.render(
             duration: 90,
             title: '6',
             content: 'You only live once',
-            status: EStatus.ARRIVED,
+            status: EStatus.CONFIRMED,
             createdAt: dayjs(),
           },
           {
@@ -91,7 +91,7 @@ root.render(
             duration: 90,
             title: '7',
             content: 'You only live once',
-            status: EStatus.STARTED,
+            status: EStatus.ARRIVED,
             createdAt: dayjs().subtract(1, 'd'),
           },
           {
@@ -109,7 +109,7 @@ root.render(
             duration: 90,
             title: '9',
             content: 'You only live once',
-            status: EStatus.STARTED,
+            status: EStatus.NOSHOW,
             createdAt: dayjs().add(2, 'd'),
           },
           {
@@ -118,7 +118,7 @@ root.render(
             duration: 90,
             title: '10',
             content: 'You only live once',
-            status: EStatus.STARTED,
+            status: EStatus.BOOKED,
             createdAt: dayjs().add(2, 'd'),
           },
           {
@@ -127,7 +127,7 @@ root.render(
             duration: 180,
             title: '11',
             content: 'You only live once',
-            status: EStatus.STARTED,
+            status: EStatus.CONFIRMED,
             createdAt: dayjs().add(2, 'd'),
           },
           {
@@ -136,7 +136,7 @@ root.render(
             duration: 180,
             title: '12',
             content: 'You only live once',
-            status: EStatus.BOOKED,
+            status: EStatus.NOSHOW,
             createdAt: dayjs().subtract(2, 'd'),
           },
           {

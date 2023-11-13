@@ -83,8 +83,8 @@ function packEvents(
       // cell.l eft = ((i / n) * 100) / datelineLength;
       const cell = col[j];
       const cellWidth = otps.columnWidth / n - 1;
-      // cellWidth * i + i: là vị trí của các phần tử con bên trong cột tuần
-      // otps.columnWidth * otps.weekcolumnIndex: là vị trí bắt đầu left của các ptử con
+      // cellWidth * i + i: is the position of child elements inside week column
+      // otps.columnWidth * otps.weekcolumnIndex: is the left position of child elements
       const cellLeft = cellWidth * i + i + otps.columnWidth * otps.weekcolumnIndex;
       cell.left = cellLeft;
       cell.width = cellWidth;
@@ -143,16 +143,16 @@ function checkOverlapped(a: TAppointmentForApp, b: TAppointmentForApp) {
 function getApptColorByStatus(color: EStatus) {
   switch (color) {
     case EStatus.BOOKED:
-      return '#3093e8';
+      return CONFIG.CSS.APPT_BG_COLORS.BOOKED;
     case EStatus.CONFIRMED:
-      return '#6950f3';
+      return CONFIG.CSS.APPT_BG_COLORS.CONFIRMED;
     case EStatus.ARRIVED:
-      return '#f19101';
+      return CONFIG.CSS.APPT_BG_COLORS.ARRIVED;
     case EStatus.STARTED:
-      return '#00a36d';
+      return CONFIG.CSS.APPT_BG_COLORS.STARTED;
     case EStatus.NOSHOW:
-      return '#da2346';
+      return CONFIG.CSS.APPT_BG_COLORS.NOSHOW;
     default:
-      return '#3093e8';
+      return CONFIG.CSS.APPT_BG_COLORS.BOOKED;
   }
 }
