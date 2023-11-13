@@ -9,8 +9,8 @@ const Wrapper = styled(Flex)<{ $rect: TRect }>`
   height: ${(props) => props.$rect.height}px;
   line-height: ${(props) => props.$rect.height}px;
   padding: 0 5px;
-  background: #68a6ec;
-  color: #fff;
+  background: ${CONFIG.CSS.HIGHLIGHT_PRIMARY_COLOR};
+  color: ${CONFIG.CSS.HIGHLIGHT_SECONDARY_COLOR};
   position: absolute;
   z-index: 1;
   transform: translateX(${(props) => props.$rect.left}px) translateY(${(props) => props.$rect.top}px);

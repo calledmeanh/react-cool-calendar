@@ -36,6 +36,45 @@ const DATA_IDTF = {
   ROW: 'row',
 };
 
+const CSS = {
+  GRAY_PRIMARY_COLOR: '#f7f7f8',
+  GRAY_SECONDARY_COLOR: '#eef0f2',
+  GRAY_THIRD_COLOR: '#d5d7da',
+
+  FONT_DARK_COLOR: '#101928',
+  FONT_LIGHT_COLOR: '#67768c',
+
+  HIGHLIGHT_PRIMARY_COLOR: '#037aff',
+  HIGHLIGHT_SECONDARY_COLOR: '#fff',
+
+  DISABLED_COLOR: '#dee3e7',
+
+  LIGHT_THEME_BG_COLOR: '#fff',
+
+  // wt = working time
+  WT_COLORS: {
+    PRIMARY: '#fff',
+    STROKE: {
+      PRIMARY: '#10192833',
+      SECONDARY: '#00000000',
+    },
+  },
+
+  NOWINDICATOR_COLORS: {
+    PRIMARY: '#e45a74',
+    SECONDARY: '#fff',
+  },
+
+  // TODO: add more status colors then move to spacing, size, transition
+  APPT_BG_COLORS: {
+    BOOKED: '#a5dff8',
+    CLONE: '#fff',
+  },
+  DATELINE_COLORS: {
+    HOVER: '#fff',
+  },
+};
+
 export const CONFIG = {
   SECONDS_PER_HOUR,
   SECONDS_PER_MINUTE,
@@ -47,4 +86,5 @@ export const CONFIG = {
   SPEED,
   FPS,
   DATA_IDTF,
+  CSS,
 };

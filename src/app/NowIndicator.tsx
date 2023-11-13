@@ -4,14 +4,15 @@ import { Flex } from './common';
 import { useCalendarState } from '../hook';
 import { DateUtils, TimeUtils } from '../util';
 import dayjs from 'dayjs';
+import { CONFIG } from '../constant';
 
 const TimePill = styled(Flex)<{ $top: number }>`
   width: 100%;
   height: 20px;
-  background: #fff;
+  background: ${CONFIG.CSS.NOWINDICATOR_COLORS.SECONDARY};
   border-radius: 10px;
-  color: #e45a74;
-  border: 1px solid #e45a74;
+  color: ${CONFIG.CSS.NOWINDICATOR_COLORS.PRIMARY};
+  border: 1px solid ${CONFIG.CSS.NOWINDICATOR_COLORS.PRIMARY};
   font-size: 12px;
   line-height: 12px;
   font-weight: 600;
@@ -22,7 +23,7 @@ const TimePill = styled(Flex)<{ $top: number }>`
 
 const TimeLine = styled.div<{ $top: number; $timelinePos?: { left: number; width: number } }>`
   width: ${(props) => props.$timelinePos?.width}px;
-  border-bottom: 1px solid #e45a74;
+  border-bottom: 1px solid ${CONFIG.CSS.NOWINDICATOR_COLORS.PRIMARY};
   pointer-events: none;
   position: absolute;
   transform: translateX(${(props) => props.$timelinePos?.left}px) translateY(${(props) => props.$top}px);

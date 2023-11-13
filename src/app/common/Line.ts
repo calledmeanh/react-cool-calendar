@@ -1,19 +1,20 @@
 import styled from 'styled-components';
 import { Flex } from './Flex';
+import { CONFIG } from '../../constant';
 
 export const Line = styled(Flex)`
   min-height: 24px;
   max-height: 36px;
-  color: #101928;
+  color: ${CONFIG.CSS.FONT_DARK_COLOR};
   font-size: 14px;
   line-height: 14px;
   font-weight: 500;
-  border-top: 1px solid #eef0f2;
+  border-top: 1px solid ${CONFIG.CSS.GRAY_SECONDARY_COLOR};
   &.wt {
-    background-color: #fff;
+    background-color: ${CONFIG.CSS.WT_COLORS.PRIMARY};
   }
   &.gt {
-    border-top: 1px solid #dee3e7;
+    border-top: 1px solid ${CONFIG.CSS.GRAY_PRIMARY_COLOR};
   }
   &.ngt {
     border-top: none;

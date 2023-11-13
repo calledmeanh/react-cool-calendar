@@ -6,11 +6,11 @@ import { TimeUtils } from '../util';
 import { CONFIG } from '../constant';
 
 const Wrapper = styled.div`
-  background: #fff;
-  border: 1px solid #a5dff8;
+  background: ${CONFIG.CSS.APPT_BG_COLORS.CLONE};
+  border: 1px solid ${CONFIG.CSS.APPT_BG_COLORS.BOOKED};
   opacity: 0.5;
 
-  color: #101928;
+  color: ${CONFIG.CSS.FONT_DARK_COLOR};
   font-size: 12px;
   line-height: 16px;
   border-radius: 4px;

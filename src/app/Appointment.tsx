@@ -27,7 +27,7 @@ const Appointment: React.FC<TAppointment> = ({ scrollEl, widthTimeline, mousePos
   const dispath = useCalendarDispatch();
   const [apptClone, setApptClone] = useState<TAppointmentForApp | null>(null);
 
-const dateline = DateUtils.getDateline(calendarState.currentDate, calendarState.viewMode);
+  const dateline = DateUtils.getDateline(calendarState.currentDate, calendarState.viewMode);
 
   const render = (apptProp: TAppointmentForUser[]) => {
     // appt origin

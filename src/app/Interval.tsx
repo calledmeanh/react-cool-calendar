@@ -13,7 +13,7 @@ const Wrapper = styled.div`
  */
 const Box = styled.div`
   height: 60px;
-  background: #f7f7f8;
+  background: ${CONFIG.CSS.GRAY_PRIMARY_COLOR};
   position: sticky;
   top: 0;
   z-index: 4;

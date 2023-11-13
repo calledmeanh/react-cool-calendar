@@ -8,7 +8,7 @@ import { CONFIG } from '../constant';
 
 const Wrapper = styled(Flex)`
   height: 60px;
-  background: #f7f7f8;
+  background: ${CONFIG.CSS.GRAY_PRIMARY_COLOR};
   position: sticky;
   top: 0;
   z-index: 4;
@@ -16,13 +16,12 @@ const Wrapper = styled(Flex)`
 
 const DatelineHeader = styled(Flex)<{ $afterPseudoHeight: number }>`
   flex: 1;
-  background: transparent;
+  background: ${CONFIG.CSS.GRAY_PRIMARY_COLOR};
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.15s cubic-bezier(0, 0, 1, 1);
   position: relative;
   &:hover {
-    background: #fff;
+    background: ${CONFIG.CSS.DATELINE_COLORS.HOVER};
     box-shadow: 0 3px 5px 0 rgba(164, 173, 186, 0.25);
   }
   &:active {
@@ -30,7 +29,7 @@ const DatelineHeader = styled(Flex)<{ $afterPseudoHeight: number }>`
   }
   &::after {
     width: 1px;
-    background: #eef0f2;
+    background: ${CONFIG.CSS.GRAY_SECONDARY_COLOR};
     height: ${(props) => props.$afterPseudoHeight}px;
     position: absolute;
     top: 0;
@@ -43,24 +42,24 @@ const DatelineHeader = styled(Flex)<{ $afterPseudoHeight: number }>`
 const DatelineNumber = styled.div`
   font-size: 26px;
   margin-right: 6px;
-  color: #67768c;
+  color: ${CONFIG.CSS.FONT_LIGHT_COLOR};
   &.today {
     width: 40px;
     height: 40px;
     line-height: 40px;
     text-align: center;
     border-radius: 50%;
-    background: #037aff;
-    color: #fff;
+    background: ${CONFIG.CSS.HIGHLIGHT_PRIMARY_COLOR};
+    color: ${CONFIG.CSS.HIGHLIGHT_SECONDARY_COLOR};
   }
 `;
 
 const DatelineText = styled.div`
   font-size: 14px;
-  color: #67768c;
+  color: ${CONFIG.CSS.FONT_LIGHT_COLOR};
   text-transform: capitalize;
   &.today {
-    color: #037aff;
+    color: ${CONFIG.CSS.HIGHLIGHT_PRIMARY_COLOR};
   }
 `;
 

@@ -30,10 +30,11 @@ export type TAppointmentForUser = {
   createdAt: Dayjs;
 };
 
-export type TAppointmentForApp = TAppointmentForUser & TRect & {
+export type TAppointmentForApp = TAppointmentForUser &
+  TRect & {
     endTime: number;
     weekcolumnIndex: number;
-};
+  };
 
 export type TTime = {
   start: number;
@@ -60,7 +61,7 @@ export enum EAction {
   PREV_WEEK = 'PREV_WEEK',
   NEXT_WEEK = 'NEXT_WEEK',
   GET_TODAY = 'GET_TODAY',
-  UPDATE_APPT = "UPDATE_APPT"
+  UPDATE_APPT = 'UPDATE_APPT',
 }
 
 export enum EViewMode {
@@ -69,9 +70,9 @@ export enum EViewMode {
 }
 
 export enum EStatus {
-  BOOKED = 'BOOKED', // #3093e8 - blue
-  CONFIRMED = 'CONFIRMED', // #6950f3 - orange
-  ARRIVED = 'ARRIVED', // #f19101 - purple
-  STARTED = 'STARTED', // #00a36d - green
-  NOSHOW = 'NOWSHOW', // #da2346 - red
+  BOOKED = 'BOOKED',
+  CONFIRMED = 'CONFIRMED',
+  ARRIVED = 'ARRIVED',
+  STARTED = 'STARTED',
+  NOSHOW = 'NOWSHOW',
 }

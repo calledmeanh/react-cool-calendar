@@ -14,12 +14,12 @@ const Wrapper = styled.div`
   background-size: 8px 8px;
   background-image: linear-gradient(
     45deg,
-    transparent 46%,
-    rgba(16, 25, 40, 0.2) 49%,
-    rgba(16, 25, 40, 0.2) 51%,
-    transparent 55%
+    ${CONFIG.CSS.WT_COLORS.STROKE.SECONDARY} 46%,
+    ${CONFIG.CSS.WT_COLORS.STROKE.PRIMARY},
+    ${CONFIG.CSS.WT_COLORS.STROKE.PRIMARY} 51%,
+    ${CONFIG.CSS.WT_COLORS.STROKE.SECONDARY} 55%
   );
-  background-color: #eef0f2;
+  background-color: ${CONFIG.CSS.GRAY_SECONDARY_COLOR};
   box-shadow: -2px 0px 4px 0px rgba(164, 173, 186, 0.5);
 `;
 
@@ -35,10 +35,6 @@ const Grid: React.FC = () => {
 
   const dateline = DateUtils.getDateline(calendarState.currentDate, calendarState.viewMode);
   const widthTimeline = gridWidth / dateline.length;
-
-  const onMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    if (e.button === 2) return; // right click
-  };
 
   /*
     pageX,Y are relative to the top left corner of the whole rendered page (including parts hidden by scrolling)
@@ -91,7 +87,6 @@ const Grid: React.FC = () => {
   return (
     <Wrapper
       data-idtf={CONFIG.DATA_IDTF.GRID}
-      onMouseDown={onMouseDown}
       onMouseMove={onMouseMove}
       onMouseLeave={onMouseLeave}
       onContextMenu={onRightClick}

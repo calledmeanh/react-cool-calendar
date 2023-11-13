@@ -9,10 +9,10 @@ import { CONFIG } from '../constant';
 const Wrapper = styled.div<{ $status: EStatus }>`
   // background: ${(props) => AppointmentUtils.getApptColorByStatus(props.$status)}
 
-  background: #a5dff8;
-  border: 1px solid #a5dff8;
+  background: ${CONFIG.CSS.APPT_BG_COLORS.BOOKED};
+  border: 1px solid ${CONFIG.CSS.APPT_BG_COLORS.BOOKED};
 
-  color: #101928;
+  color: ${CONFIG.CSS.FONT_DARK_COLOR};
   font-size: 12px;
   line-height: 16px;
   border-radius: 4px;

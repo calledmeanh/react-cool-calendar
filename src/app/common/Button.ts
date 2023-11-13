@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { TStyleColor, TStyleBorderRadius, TStylePadding } from '../../model';
+import { CONFIG } from '../../constant';
 
 export const Button = styled.button<{
   $padding: TStylePadding;
@@ -9,9 +10,9 @@ export const Button = styled.button<{
   padding: ${(props) => `${props.$padding[0]}px ${props.$padding[1]}px`};
   border-radius: ${(props) => (props.$isborderradius ? `4px` : 0)};
   outline: none;
-  border: 1px solid #d5d7da;
-  background: #fff;
-  color: ${(props) => props.color || '#101928'};
+  border: 1px solid ${CONFIG.CSS.GRAY_THIRD_COLOR};
+  background: ${CONFIG.CSS.LIGHT_THEME_BG_COLOR};
+  color: ${(props) => props.color || CONFIG.CSS.FONT_DARK_COLOR};
   cursor: pointer;
   font-size: 14px;
   text-transform: capitalize;
@@ -23,7 +24,7 @@ export const Button = styled.button<{
     box-shadow: none;
   }
   &:disabled {
-    background: #dee3e7;
+    background: ${CONFIG.CSS.DISABLED_COLOR};
     box-shadow: none;
     cursor: not-allowed;
   }

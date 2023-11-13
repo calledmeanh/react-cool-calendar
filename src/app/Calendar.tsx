@@ -15,7 +15,7 @@ import { CONFIG } from '../constant';
 
 const Wrapper = styled(Flex)`
   height: 100%;
-  background: #f7f7f8;
+  background: ${CONFIG.CSS.GRAY_PRIMARY_COLOR};
   user-select: none;
 `;
 

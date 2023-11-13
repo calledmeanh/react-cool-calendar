@@ -15,8 +15,8 @@ Work on inside calendar features such as:
 - hover into calendar? - checked
 - now indicator? - checked
 - layout appts algorithm? - checked
-- CRUD appts? 
 - drag/drop appts? - cheked
+- color, font global rules? - working on
 
 # Rules
 
