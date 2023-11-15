@@ -13,7 +13,7 @@ const MAPPING_TIME: any = {
 
 const DATE_FORMAT = 'MM/DD/YYYY';
 
-const SPEED = 15;
+const SPEED = 20;
 const FPS = 1000 / 60;
 
 const DATA_IDTF = {
