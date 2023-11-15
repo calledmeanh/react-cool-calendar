@@ -51,6 +51,7 @@ const CSS = {
 
   LIGHT_THEME_BG_COLOR: '#fff',
 
+  BOX_SHADOW_COLOR: '#a4adba80',
   // wt = working time
   WT_COLORS: {
     PRIMARY: '#fff',
@@ -75,7 +76,7 @@ const CSS = {
     CLONE: '#fff',
   },
   DATELINE_COLORS: {
-    HOVER: '#fff',
+    BG_HOVER: '#fff',
   },
 };
 
