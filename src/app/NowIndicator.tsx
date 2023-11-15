@@ -66,7 +66,7 @@ const NowIndicator: React.FC<TNowIndicator> = ({ type, widthTimeline = 0 }) => {
           timeEachInterval,
           calendarState.dayTime.start,
           calendarState.duration,
-          24
+          CONFIG.CSS.LINE_HEIGHT
         );
 
         const text = TimeUtils.convertSecondsToHourString(timeEachInterval, calendarState.timeType);

@@ -103,14 +103,14 @@ function calcApptPos(
   const startTime = appt.startTime;
   const endTime = startTime + TimeUtils.convertMinuteToSeconds(appt.duration);
 
-  const top: number = TimeUtils.calcDistanceBetweenTimes(startTime, opts.daytimeStart, opts.duration, 24);
+  const top: number = TimeUtils.calcDistanceBetweenTimes(startTime, opts.daytimeStart, opts.duration, CONFIG.CSS.LINE_HEIGHT);
 
   const mapDuration = CONFIG.MAPPING_TIME[opts.duration];
   const height: number = TimeUtils.calcDistanceBetweenTimes(
     endTime,
     startTime,
     mapDuration,
-    (24 * mapDuration) / opts.duration
+    (CONFIG.CSS.LINE_HEIGHT * mapDuration) / opts.duration
   );
 
   return {

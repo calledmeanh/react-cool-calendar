@@ -3,10 +3,9 @@ import { Flex } from './Flex';
 import { CONFIG } from '../../constant';
 
 export const Line = styled(Flex)`
-  min-height: 24px;
-  max-height: 36px;
+  height: ${CONFIG.CSS.LINE_HEIGHT}px;
   color: ${CONFIG.CSS.FONT_DARK_COLOR};
-  font-size: 14px;
+  font-size: ${CONFIG.CSS.FONT_SIZE_MEDIUM}px;
   line-height: 14px;
   font-weight: 500;
   border-top: 1px solid ${CONFIG.CSS.GRAY_SECONDARY_COLOR};

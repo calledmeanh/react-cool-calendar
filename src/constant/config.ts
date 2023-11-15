@@ -78,6 +78,11 @@ const CSS = {
   DATELINE_COLORS: {
     BG_HOVER: '#fff',
   },
+
+  FONT_SIZE_MEDIUM: 14,
+
+  DATELINE_HEIGHT: 60,
+  LINE_HEIGHT: 24,
 };
 
 export const CONFIG = {

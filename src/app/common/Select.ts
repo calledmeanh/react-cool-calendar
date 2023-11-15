@@ -9,7 +9,7 @@ export const Select = styled.select<{ $padding: TStylePadding; $isborderradius?:
   outline: none;
   background: ${CONFIG.CSS.LIGHT_THEME_BG_COLOR};
   cursor: pointer;
-  font-size: 14px;
+  font-size: ${CONFIG.CSS.FONT_SIZE_MEDIUM}px;
   text-transform: capitalize;
   &:hover {
     box-shadow: 0 2px 10px 0 ${CONFIG.CSS.BOX_SHADOW_COLOR};

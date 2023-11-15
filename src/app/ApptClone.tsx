@@ -11,8 +11,7 @@ const Wrapper = styled.div`
   opacity: 0.5;
 
   color: ${CONFIG.CSS.FONT_DARK_COLOR};
-  font-size: 12px;
-  line-height: 16px;
+  font-size: ${CONFIG.CSS.FONT_SIZE_MEDIUM}px;
   border-radius: 4px;
   text-align: left;
 

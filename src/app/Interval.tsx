@@ -12,7 +12,7 @@ const Wrapper = styled.div`
  * sticky to the header with dateline
  */
 const Box = styled.div`
-  height: 60px;
+  height: ${CONFIG.CSS.DATELINE_HEIGHT}px;
   background: ${CONFIG.CSS.GRAY_PRIMARY_COLOR};
   position: sticky;
   top: 0;

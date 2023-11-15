@@ -10,8 +10,7 @@ const Wrapper = styled.div<{ $status: EStatus }>`
   background: ${(props) => AppointmentUtils.getApptColorByStatus(props.$status)};
   border: 1px solid ${(props) => AppointmentUtils.getApptColorByStatus(props.$status)};
   color: ${CONFIG.CSS.FONT_DARK_COLOR};
-  font-size: 12px;
-  line-height: 16px;
+  font-size: ${CONFIG.CSS.FONT_SIZE_MEDIUM}px;
   border-radius: 4px;
   text-align: left;
 
@@ -63,14 +62,14 @@ const ApptBooking: React.FC<TApptBooking> = ({
   const removeAutoScrollInterval = useRef(() => {});
 
   const autoScrollThreshold = useRef(value.height / 5); // threshold to start auto scroll
-  const floorY = Math.floor(mousePosition.pageY / 24) * 24;
+  const floorY = Math.floor(mousePosition.pageY / CONFIG.CSS.LINE_HEIGHT) * CONFIG.CSS.LINE_HEIGHT;
 
   // initial position when calculated by the layout algorithm
   const [position, setPosition] = useState({ top: value.top, left: value.left });
 
-  const lineIdx = position.top / 24;
+  const lineIdx = position.top / CONFIG.CSS.LINE_HEIGHT;
   const startTime = lineIdx * calendarState.duration + calendarState.dayTime.start;
-  const endTime = startTime + ((value.height + 1) * calendarState.duration) / 24;
+  const endTime = startTime + ((value.height + 1) * calendarState.duration) / CONFIG.CSS.LINE_HEIGHT;
   const newStartTime = isTouchRef.current ? startTime : value.startTime;
   const newEndTime = isTouchRef.current ? endTime : value.endTime;
 
@@ -90,7 +89,7 @@ const ApptBooking: React.FC<TApptBooking> = ({
   const distanceDown = mousePosition.top + (value.height - origDeltaY.current);
 
   const steps = TimeUtils.calcTimeStep(calendarState.dayTime.end, calendarState.dayTime.start, calendarState.duration);
-  const maxGridHeight = steps * 24;
+  const maxGridHeight = steps * CONFIG.CSS.LINE_HEIGHT;
 
   const onMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     isTouchRef.current = true;

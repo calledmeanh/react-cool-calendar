@@ -7,7 +7,7 @@ import { useCalendarState } from '../hook';
 import { CONFIG } from '../constant';
 
 const Wrapper = styled(Flex)`
-  height: 60px;
+  height: ${CONFIG.CSS.DATELINE_HEIGHT}px;
   background: ${CONFIG.CSS.GRAY_PRIMARY_COLOR};
   position: sticky;
   top: 0;
@@ -55,7 +55,7 @@ const DatelineNumber = styled.div`
 `;
 
 const DatelineText = styled.div`
-  font-size: 14px;
+  font-size: ${CONFIG.CSS.FONT_SIZE_MEDIUM}px;
   color: ${CONFIG.CSS.FONT_LIGHT_COLOR};
   text-transform: capitalize;
   &.today {
@@ -67,7 +67,7 @@ const Dateline: React.FC = () => {
   const calendarState = useCalendarState();
 
   const steps = TimeUtils.calcTimeStep(calendarState.dayTime.end, calendarState.dayTime.start, calendarState.duration);
-  const maxGridHeight = steps * 24;
+  const maxGridHeight = steps * CONFIG.CSS.LINE_HEIGHT;
 
   const render = useCallback(() => {
     const dateline = DateUtils.getDateline(calendarState.currentDate, calendarState.viewMode);

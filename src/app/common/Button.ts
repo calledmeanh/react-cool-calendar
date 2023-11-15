@@ -14,7 +14,7 @@ export const Button = styled.button<{
   background: ${CONFIG.CSS.LIGHT_THEME_BG_COLOR};
   color: ${(props) => props.color || CONFIG.CSS.FONT_DARK_COLOR};
   cursor: pointer;
-  font-size: 14px;
+  font-size: ${CONFIG.CSS.FONT_SIZE_MEDIUM}px;
   text-transform: capitalize;
   transition: all 0.15s cubic-bezier(0, 0, 1, 1);
   &:hover {
