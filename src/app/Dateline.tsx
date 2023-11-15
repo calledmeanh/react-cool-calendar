@@ -21,8 +21,8 @@ const DatelineHeader = styled(Flex)<{ $afterPseudoHeight: number }>`
   cursor: pointer;
   position: relative;
   &:hover {
-    background: ${CONFIG.CSS.DATELINE_COLORS.HOVER};
-    box-shadow: 0 3px 5px 0 rgba(164, 173, 186, 0.25);
+    background: ${CONFIG.CSS.DATELINE_COLORS.BG_HOVER};
+    box-shadow: 0 3px 5px 0 ${CONFIG.CSS.BOX_SHADOW_COLOR};
   }
   &:active {
     box-shadow: none;

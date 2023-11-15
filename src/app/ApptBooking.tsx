@@ -22,10 +22,10 @@ const Wrapper = styled.div<{ $status: EStatus }>`
   cursor: pointer;
   position: absolute;
   &:hover {
-    box-shadow: 0 3px 5px 0 rgb(0 0 0 / 25%);
+    box-shadow: 0 3px 5px 0 ${CONFIG.CSS.BOX_SHADOW_COLOR};
   }
   &.drag {
-    box-shadow: 0 10px 5px 0 rgb(0 0 0 / 25%);
+    box-shadow: 0 10px 5px 0 ${CONFIG.CSS.BOX_SHADOW_COLOR};
     cursor: move;
     z-index: 50;
   }

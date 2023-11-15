@@ -12,7 +12,7 @@ export const Select = styled.select<{ $padding: TStylePadding; $isborderradius?:
   font-size: 14px;
   text-transform: capitalize;
   &:hover {
-    box-shadow: 0 2px 10px 0 rgba(16, 25, 40, 0.2);
+    box-shadow: 0 2px 10px 0 ${CONFIG.CSS.BOX_SHADOW_COLOR};
   }
   &:active {
     box-shadow: none;

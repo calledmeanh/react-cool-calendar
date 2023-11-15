@@ -20,7 +20,7 @@ const Wrapper = styled.div`
     ${CONFIG.CSS.WT_COLORS.STROKE.SECONDARY} 55%
   );
   background-color: ${CONFIG.CSS.GRAY_SECONDARY_COLOR};
-  box-shadow: -2px 0px 4px 0px rgba(164, 173, 186, 0.5);
+  box-shadow: -2px 0px 4px 0px ${CONFIG.CSS.BOX_SHADOW_COLOR};
 `;
 
 const Grid: React.FC = () => {
