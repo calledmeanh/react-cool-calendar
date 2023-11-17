@@ -6,8 +6,8 @@
 - all app properties or data handling properties are CAPITALIZED
 - import order:
   - systems
-  - constant/hook/model/util (export \*)
   - lib
+  - constant/hook/model/util (export \*)
   - components (export default)
   - css
   - useEffect should near the render of component for checking

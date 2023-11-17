@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { styled } from 'styled-components';
+import { CONFIG } from '../constant';
+import { useCalendarDispatch, useCalendarState } from '../hook';
 import { EAction, TAppointmentForApp, TAppointmentForUser } from '../model';
 import { AppointmentUtils, DateUtils } from '../util';
-import { useCalendarDispatch, useCalendarState } from '../hook';
 import ApptBooking from './ApptBooking';
 import ApptClone from './ApptClone';
-import { CONFIG } from '../constant';
 
 const Wrapper = styled.div`
   position: absolute;

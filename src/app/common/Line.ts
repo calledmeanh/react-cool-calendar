@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { Flex } from './Flex';
 import { CONFIG } from '../../constant';
+import { Flex } from './Flex';
 
 export const Line = styled(Flex)`
   height: ${CONFIG.CSS.LINE_HEIGHT}px;

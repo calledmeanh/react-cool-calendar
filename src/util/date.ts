@@ -1,5 +1,5 @@
-import { CONFIG } from '../constant';
 import dayjs, { Dayjs } from 'dayjs';
+import { CONFIG } from '../constant';
 import { TDateline, TViewMode } from '../model';
 
 export const DateUtils = {

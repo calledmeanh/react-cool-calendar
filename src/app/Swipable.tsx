@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import { CONFIG } from '../constant';
 import Dateline from './Dateline';
 import Grid from './Grid';
-import { CONFIG } from '../constant';
 
 const Wrapper = styled.div`
   flex: 1;

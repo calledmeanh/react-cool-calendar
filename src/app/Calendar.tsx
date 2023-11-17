@@ -1,17 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Flex } from './common';
-import Toolbar from './Toolbar';
+import dayjs from 'dayjs';
+
+import { CONFIG } from '../constant';
 import CalendarProvider from '../hook/useCalendarContext';
 import { TCalendarStateForUser, TCalendarStateForApp } from '../model';
+import { Flex } from './common';
+import Toolbar from './Toolbar';
 import Scrolling from './Scrolling';
 
-import dayjs from 'dayjs';
 /* 
   By default, Day.js comes with English locale only. If you need other locales, you can load them on demand. 
 */
 import 'dayjs/locale/vi';
-import { CONFIG } from '../constant';
 
 const Wrapper = styled(Flex)`
   height: 100%;

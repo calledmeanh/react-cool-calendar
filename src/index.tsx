@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
-import Calendar from './app/Calendar';
-import { CONFIG } from './constant';
-import './index.css';
-import { EStatus } from './model';
 import dayjs from 'dayjs';
+import { CONFIG } from './constant';
+import { EStatus } from './model';
+import Calendar from './app/Calendar';
+import './index.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(

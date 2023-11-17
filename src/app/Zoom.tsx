@@ -1,9 +1,9 @@
 import React from 'react';
-import { Select, Option } from './common';
+import { CONFIG } from '../constant';
 import { useCalendarState, useCalendarDispatch } from '../hook';
 import { EAction, EViewMode } from '../model';
 import { TimeUtils, ElementUtils } from '../util';
-import { CONFIG } from '../constant';
+import { Select, Option } from './common';
 
 type Opts = { value: EViewMode; text: string }[];
 const options: Opts = [

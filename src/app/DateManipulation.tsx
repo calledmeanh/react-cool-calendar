@@ -1,9 +1,9 @@
 import React from 'react';
+import { CONFIG } from '../constant';
 import { useCalendarDispatch, useCalendarState } from '../hook';
 import { EAction } from '../model';
 import { DateUtils } from '../util';
 import { Flex, Button, Text } from './common';
-import { CONFIG } from '../constant';
 
 const DateManipulation: React.FC = () => {
   const calendarState = useCalendarState();

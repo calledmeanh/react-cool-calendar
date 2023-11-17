@@ -1,10 +1,9 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
-import { Line } from './common';
-import { TimeUtils } from '../util';
 import { CONFIG } from '../constant';
-import { clsx } from '../util';
 import { useCalendarState } from '../hook';
+import { TimeUtils, clsx } from '../util';
+import { Line } from './common';
 import NowIndicator from './NowIndicator';
 
 const Wrapper = styled.div`

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
+import { CONFIG } from '../../constant';
 import { TStylePadding, TStyleBorderRadius } from '../../model';
 import { Flex } from './Flex';
-import { CONFIG } from '../../constant';
 
 export const Text = styled(Flex)<{ $padding: TStylePadding; $isborderradius?: TStyleBorderRadius }>`
   padding: ${(props) => `${props.$padding[0]}px ${props.$padding[1]}px`};

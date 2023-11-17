@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
+import { CONFIG } from '../constant';
 import { Flex } from './common';
 import Swipable from './Swipable';
 import Interval from './Interval';
-import { CONFIG } from '../constant';
 
 const Wrapper = styled(Flex)`
   overflow-y: auto;

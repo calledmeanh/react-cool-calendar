@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
+import { CONFIG } from '../constant';
 import { useCalendarState } from '../hook';
 import { TimeUtils, clsx } from '../util';
 import { Line } from './common';
-import { CONFIG } from '../constant';
 
 const Wrapper = styled.div``;
 

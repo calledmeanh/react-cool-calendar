@@ -1,10 +1,10 @@
 import React, { useEffect, useCallback, useRef, useState } from 'react';
 import { styled } from 'styled-components';
-import { EStatus, TAppointmentForApp } from '../model';
-import { Flex } from './common';
-import { AppointmentUtils, ElementUtils, TimeUtils } from '../util';
-import { useCalendarState } from '../hook';
 import { CONFIG } from '../constant';
+import { useCalendarState } from '../hook';
+import { EStatus, TAppointmentForApp } from '../model';
+import { AppointmentUtils, ElementUtils, TimeUtils } from '../util';
+import { Flex } from './common';
 
 const Wrapper = styled.div<{ $status: EStatus }>`
   background: ${(props) => AppointmentUtils.getApptColorByStatus(props.$status)};

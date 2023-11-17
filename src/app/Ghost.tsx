@@ -1,8 +1,8 @@
 import React from 'react';
 import { styled } from 'styled-components';
+import { CONFIG } from '../constant';
 import { TRect } from '../model';
 import { Flex } from './common';
-import { CONFIG } from '../constant';
 
 const Wrapper = styled(Flex)<{ $rect: TRect }>`
   width: ${(props) => props.$rect.width}px;

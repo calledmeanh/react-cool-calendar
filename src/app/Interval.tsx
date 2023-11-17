@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import Time from './Time';
 import { CONFIG } from '../constant';
+import Time from './Time';
 
 const Wrapper = styled.div`
   width: 48px;

@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
+import { CONFIG } from '../constant';
 import { Flex } from './common';
 import ViewMode from './ViewMode';
 import Zoom from './Zoom';
 import DateManipulation from './DateManipulation';
-import { CONFIG } from '../constant';
 
 const Wrapper = styled(Flex)`
   height: 68px;

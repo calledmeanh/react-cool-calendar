@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { TStyleColor, TStyleBorderRadius, TStylePadding } from '../../model';
 import { CONFIG } from '../../constant';
+import { TStyleColor, TStyleBorderRadius, TStylePadding } from '../../model';
 
 export const Button = styled.button<{
   $padding: TStylePadding;

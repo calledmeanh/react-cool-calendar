@@ -1,6 +1,6 @@
+import { CONFIG } from '../constant';
 import { EStatus, TAppointmentForApp, TAppointmentForUser } from '../model';
 import { TimeUtils } from './time';
-import { CONFIG } from '../constant';
 
 export const AppointmentUtils = {
   layoutAlgorithm,

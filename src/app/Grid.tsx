@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import NowIndicator from './NowIndicator';
-import Ghost from './Ghost';
-import Appointment from './Appointment';
-import Row from './Row';
+import { CONFIG } from '../constant';
 import { useCalendarState } from '../hook';
 import { DateUtils, ElementUtils, TimeUtils } from '../util';
-import { CONFIG } from '../constant';
+import NowIndicator from './NowIndicator';
+import Appointment from './Appointment';
+import Ghost from './Ghost';
+import Row from './Row';
 
 const Wrapper = styled.div`
   touch-action: pan-y;
