@@ -2,6 +2,13 @@
   "name": "react-cool-calendar",
   "version": "0.0.1",
   "private": true,
+  "main": "lib/index.js",
+  "description": "Calendar! with events",
+  "author": {
+    "name": "Hoang Anh",
+    "email": "calledmeanh@gmail.com"
+  },
+  "license": "MIT",
   "dependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@testing-library/jest-dom": "^5.17.0",
@@ -44,5 +51,21 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "keywords": [
+    "scheduler",
+    "react-component",
+    "react",
+    "calendar",
+    "events",
+    "full calendar"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/calledmeanh/react-cool-calendar"
+  },
+  "bugs": {
+    "url": "https://github.com/calledmeanh/react-cool-calendar/issues"
+  },
+  "homepage": "https://github.com/calledmeanh/react-cool-calendar"
 }
