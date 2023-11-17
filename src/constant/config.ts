@@ -66,7 +66,6 @@ const CSS = {
     SECONDARY: '#fff',
   },
 
-  // TODO: add spacing, size, transition
   APPT_BG_COLORS: {
     BOOKED: '#a5dff8',
     CONFIRMED: '#a5f8c3',
