@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "main": "lib/index.js",
-  "description": "Calendar! with events",
+  "description": "A simple, flexible calendar with appointments!",
   "author": {
     "name": "Hoang Anh",
     "email": "calledmeanh@gmail.com"
@@ -53,7 +53,7 @@
     ]
   },
   "keywords": [
-    "scheduler",
+    "appointments",
     "react-component",
     "react",
     "calendar",

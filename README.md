@@ -1,6 +1,6 @@
 # react-cool-calendar
 
-An events calendar component built for React and made for modern browsers (read: not IE) and uses flexbox over the classic tables-caption approach.
+A simple, flexible calendar with appointments!
 
 ## Use and Setup
 
@@ -55,5 +55,3 @@ Make sure your calendar's container element has a height, or the calendar won't 
 ### Localization and Date Formatting
 
 `react-cool-calendar` uses [Day.js](https://day.js.org) for handling the date formatting and culture localization.
-
-## Custom Styling
