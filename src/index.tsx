@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import reportWebVitals from './reportWebVitals';
 import dayjs from 'dayjs';
 import { CONFIG } from './constant';
 import { EStatus } from './model';
@@ -10,7 +9,7 @@ import './index.css';
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
-    <div style={{ width: '100vw', height: '100vh', padding: '2.4rem' }}>
+    <div style={{ width: '100vw', height: '100vh', padding: '24px' }}>
       {/* Calendar should take props from user pass in, this value below is just for temporary */}
       <Calendar
         duration={CONFIG.ZOOMMODE_LARGE}
@@ -180,8 +179,3 @@ root.render(
     </div>
   </React.StrictMode>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();

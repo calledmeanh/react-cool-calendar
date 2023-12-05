@@ -1,4 +1,4 @@
-import { Reducer, createContext, useContext, useReducer, ReactNode } from 'react';
+import React, { Reducer, createContext, useContext, useReducer, ReactNode } from 'react';
 import { TCalendarStateForApp, TCalendarAction, EAction } from '../model';
 import { ConfigUtils } from '../util';
 

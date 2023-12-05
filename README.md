@@ -4,7 +4,7 @@ A simple, flexible calendar with appointments!
 
 ## Use and Setup
 
-`yarn add react-coo-calendar` or `npm install --save react-coo-calendar`
+`yarn add react-cool-calendar` or `npm install --save react-cool-calendar`
 
 Make sure your calendar's container element has a height, or the calendar won't be visible
 

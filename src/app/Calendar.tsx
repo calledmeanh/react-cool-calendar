@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import dayjs from 'dayjs';
-
 import { CONFIG } from '../constant';
 import CalendarProvider from '../hook/useCalendarContext';
 import { TCalendarStateForUser, TCalendarStateForApp } from '../model';
