@@ -60,6 +60,7 @@ const ApptBooking: React.FC<TApptBooking> = ({
   const topEdgeRef = useRef(0);
   const calendarRef = useRef<HTMLDivElement | null>(null);
   const removeAutoScrollInterval = useRef(() => {});
+  const preventDragEvent = useRef(() => {});
 
   const autoScrollThreshold = useRef(value.height / 5); // threshold to start auto scroll
   const floorY = Math.floor(mousePosition.pageY / CONFIG.CSS.LINE_HEIGHT) * CONFIG.CSS.LINE_HEIGHT;
@@ -92,14 +93,16 @@ const ApptBooking: React.FC<TApptBooking> = ({
   const maxGridHeight = steps * CONFIG.CSS.LINE_HEIGHT;
 
   const onMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    isTouchRef.current = true;
+    preventDragEvent.current = TimeUtils.wrapperSetTimeout(() => {
+      isTouchRef.current = true;
+
+      (e.target as HTMLDivElement).classList.add('drag');
+    }, 250);
 
     origDeltaX.current = mousePosition.left - position.left;
     origDeltaY.current = mousePosition.top - position.top;
 
-    (e.target as HTMLDivElement).classList.add('drag');
-
-    removeAutoScrollInterval.current && removeAutoScrollInterval.current();
+    // removeAutoScrollInterval.current && removeAutoScrollInterval.current();
 
     // save data for later use
     topEdgeRef.current = ElementUtils.getOffsetToDocument(e.currentTarget, 'top');
@@ -112,13 +115,16 @@ const ApptBooking: React.FC<TApptBooking> = ({
   };
 
   const onMouseUp = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    isTouchRef.current = false;
+    if (isTouchRef.current === false) preventDragEvent.current && preventDragEvent.current();
+    else {
+      isTouchRef.current = false;
 
-    (e.target as HTMLDivElement).classList.remove('drag');
+      (e.target as HTMLDivElement).classList.remove('drag');
 
-    onDragging();
+      onDragging();
 
-    onReleaseAppt(value.id, startTime);
+      onReleaseAppt(value.id, startTime);
+    }
   };
 
   const onDragging = useCallback(() => {

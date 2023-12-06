@@ -98,6 +98,7 @@ const Appointment: React.FC<TAppointment> = ({ scrollEl, widthTimeline, mousePos
 
   const onPressAppt = (value: TAppointmentForApp) => {
     if (value.id) setApptClone(value);
+    calendarState.apptClick && calendarState.apptClick(value);
   };
 
   const onReleaseAppt = (id: string, startTime: number) => {
@@ -123,6 +124,8 @@ const Appointment: React.FC<TAppointment> = ({ scrollEl, widthTimeline, mousePos
       }
     }
     dispath({ type: EAction.UPDATE_APPT, payload: apptCopy });
+
+    calendarState.apptChange && calendarState.apptChange(apptCopy);
   };
 
   return (

@@ -13,6 +13,8 @@ export type TCalendarStateForUser = {
   workingTime: TTime;
   dayTime: TTime;
   appointments: TAppointmentForUser[];
+  apptChange?: (appts: TAppointmentForUser[]) => void;
+  apptClick?: (appt: TAppointmentForUser) => void;
 };
 
 export type TCalendarStateForApp = TCalendarStateForUser & {

@@ -16,7 +16,8 @@ export const TimeUtils = {
   convertMinuteToSeconds,
 
   parseDurationToViewMode,
-  wrapperSetInterval
+  wrapperSetInterval,
+  wrapperSetTimeout
 };
 
 /* calculate top position based-on time */
@@ -139,5 +140,12 @@ function wrapperSetInterval(handler: Function, time: number) {
   const intervalId: number = setInterval(handler, time);
   return () => {
     clearInterval(intervalId);
+  };
+}
+
+function wrapperSetTimeout(handler: Function, time: number) {
+  const intervalId: number = setTimeout(handler, time);
+  return () => {
+    clearTimeout(intervalId);
   };
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import dayjs from 'dayjs';
 import { CONFIG } from './constant';
-import { EStatus } from './model';
+import { EStatus, TAppointmentForUser } from './model';
 import Calendar from './app/Calendar';
 import './index.css';
 
@@ -175,6 +175,12 @@ root.render(
             createdAt: dayjs().subtract(4, 'd'),
           },
         ]}
+        apptChange={(appts: TAppointmentForUser[]) => {
+          console.log(appts)
+        }}
+        apptClick={(appt: TAppointmentForUser) => {
+          console.log(appt)
+        }}
       />
     </div>
   </React.StrictMode>
