@@ -2,6 +2,10 @@
 
 A simple, flexible calendar with appointments!
 
+<p align="center">
+  <img src="./asset/demo-react-cool-calendar.gif" alt="React Cool Calendar Demo Image" />
+</p>
+
 ## Use and Setup
 
 `yarn add react-cool-calendar` or `npm install --save react-cool-calendar`
@@ -48,6 +52,12 @@ Make sure your calendar's container element has a height, or the calendar won't 
         createdAt: dayjs(),
       },
     ]}
+    apptChange={(appts: TAppointmentForUser[]) => {
+      console.log(appts);
+    }}
+    apptClick={(appt: TAppointmentForUser) => {
+      console.log(appt);
+    }}
   />
 </div>
 ```
