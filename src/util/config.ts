@@ -1,7 +1,11 @@
 import dayjs from 'dayjs';
 import { TCalendarStateForApp } from '../model';
 
-const createExampleCalendarState = (): TCalendarStateForApp => {
+export const ConfigUtils = {
+  createExampleCalendarState,
+};
+
+function createExampleCalendarState(): TCalendarStateForApp {
   const state: TCalendarStateForApp = {
     duration: 0,
     timeType: 0,
@@ -22,11 +26,7 @@ const createExampleCalendarState = (): TCalendarStateForApp => {
     },
     todayGlobalIns: dayjs(),
     currentDate: dayjs(),
-    appointments: []
+    appointments: [],
   };
   return Object.create(state);
-};
-
-export const ConfigUtils = {
-  createExampleCalendarState,
-};
+}
