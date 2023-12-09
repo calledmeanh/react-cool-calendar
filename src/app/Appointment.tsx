@@ -20,9 +20,10 @@ type TAppointment = {
   scrollEl: HTMLDivElement | null;
   widthTimeline: number;
   mousePosition: { top: number; left: number; pageY: number; pageX: number };
+  onFireEvent: (value: boolean) => void;
 };
 
-const Appointment: React.FC<TAppointment> = ({ scrollEl, widthTimeline, mousePosition }) => {
+const Appointment: React.FC<TAppointment> = ({ scrollEl, widthTimeline, mousePosition, onFireEvent }) => {
   const calendarState = useCalendarState();
   const dispath = useCalendarDispatch();
   const [apptClone, setApptClone] = useState<TAppointmentForApp | null>(null);
@@ -53,6 +54,7 @@ const Appointment: React.FC<TAppointment> = ({ scrollEl, widthTimeline, mousePos
             mousePosition={mousePosition}
             onPressAppt={onPressAppt}
             onReleaseAppt={onReleaseAppt}
+            onFireEvent={onFireEvent}
           />
         );
       });
@@ -90,6 +92,7 @@ const Appointment: React.FC<TAppointment> = ({ scrollEl, widthTimeline, mousePos
             mousePosition={mousePosition}
             onPressAppt={onPressAppt}
             onReleaseAppt={onReleaseAppt}
+            onFireEvent={onFireEvent}
           />
         );
       });
@@ -101,7 +104,7 @@ const Appointment: React.FC<TAppointment> = ({ scrollEl, widthTimeline, mousePos
     calendarState.apptClick && calendarState.apptClick(value);
   };
 
-  const onReleaseAppt = (id: string, startTime: number) => {
+  const onReleaseAppt = (id: string, startTime: number, duration: number) => {
     if (apptClone && id && apptClone.id === id) {
       setApptClone(null);
     }
@@ -110,6 +113,7 @@ const Appointment: React.FC<TAppointment> = ({ scrollEl, widthTimeline, mousePos
     const dayCustom = dateline[newWeekColIdx];
     const payload = {
       startTime,
+      duration,
       createdAt: dayCustom.origin,
     };
 

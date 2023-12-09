@@ -32,6 +32,7 @@ const Grid: React.FC = () => {
   const [timeEachCell, setTimeEachCell] = useState('');
   const [position, setPosition] = useState({ top: 0, left: 0, pageY: 0, pageX: 0 });
   const [isShowGhost, setShowGhost] = useState(false);
+  const [isFireEvent, setFireEvent] = useState(false);
 
   const dateline = DateUtils.getDateline(calendarState.currentDate, calendarState.viewMode);
   const widthTimeline = gridWidth / dateline.length;
@@ -45,7 +46,7 @@ const Grid: React.FC = () => {
     if (!isShowGhost) setShowGhost(true);
 
     const dataIdtf = (e.target as HTMLDivElement).getAttribute(CONFIG.DATA_IDTF.THIS);
-    if (dataIdtf === CONFIG.DATA_IDTF.APPT_BOOKING) {
+    if (dataIdtf === CONFIG.DATA_IDTF.APPT_BOOKING || dataIdtf === CONFIG.DATA_IDTF.APPT_RESIZE || isFireEvent) {
       setShowGhost(false);
     }
 
@@ -68,14 +69,11 @@ const Grid: React.FC = () => {
     setTimeEachCell(time);
   };
 
-  const onMouseLeave = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    setShowGhost(false);
-  };
-
+  const onMouseLeave = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => setShowGhost(false);
   /* disabled right click on grid */
-  const onRightClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    e.preventDefault();
-  };
+  const onRightClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => e.preventDefault();
+  
+  const onFireEvent = (value: boolean) => setFireEvent(value);
 
   useEffect(() => {
     if (gridRef && gridRef.current && gridRef.current.parentElement) {
@@ -99,7 +97,12 @@ const Grid: React.FC = () => {
           rect={{ top: position.top, left: position.left, width: widthTimeline, height: CONFIG.CSS.LINE_HEIGHT }}
         />
       )}
-      <Appointment scrollEl={scrollEl} widthTimeline={widthTimeline} mousePosition={position} />
+      <Appointment
+        scrollEl={scrollEl}
+        widthTimeline={widthTimeline}
+        mousePosition={position}
+        onFireEvent={onFireEvent}
+      />
       <Row />
     </Wrapper>
   );

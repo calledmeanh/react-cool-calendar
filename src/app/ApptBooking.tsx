@@ -12,7 +12,6 @@ const Wrapper = styled.div<{ $status: EStatus }>`
   color: ${CONFIG.CSS.FONT_DARK_COLOR};
   font-size: ${CONFIG.CSS.FONT_SIZE_MEDIUM}px;
   border-radius: 4px;
-  text-align: left;
 
   overflow: hidden;
   white-space: nowrap;
@@ -28,11 +27,23 @@ const Wrapper = styled.div<{ $status: EStatus }>`
     cursor: move;
     z-index: 50;
   }
+  &.resize {
+    z-index: 50;
+  }
 `;
 
 const Content = styled(Flex)`
   padding: 3px 4px 3px 8px;
   pointer-events: none;
+`;
+
+const Resize = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 20px;
+  bottom: 0;
+  cursor: row-resize;
+  z-index: 11;
 `;
 
 type TApptBooking = {
@@ -41,7 +52,8 @@ type TApptBooking = {
   mousePosition: { top: number; left: number; pageY: number; pageX: number };
   widthTimeline: number;
   onPressAppt: (value: TAppointmentForApp) => void;
-  onReleaseAppt: (id: string, startTime: number) => void;
+  onReleaseAppt: (id: string, startTime: number, duration: number) => void;
+  onFireEvent: (value: boolean) => void;
 };
 
 const ApptBooking: React.FC<TApptBooking> = ({
@@ -51,12 +63,15 @@ const ApptBooking: React.FC<TApptBooking> = ({
   widthTimeline,
   onPressAppt,
   onReleaseAppt,
+  onFireEvent,
 }) => {
   const calendarState = useCalendarState();
 
-  const isTouchRef = useRef(false);
+  const isDragRef = useRef(false);
+  const isResizeRef = useRef(false);
   const origDeltaX = useRef(0);
   const origDeltaY = useRef(0);
+  const lastMouseTopPosition = useRef(0);
   const topEdgeRef = useRef(0);
   const calendarRef = useRef<HTMLDivElement | null>(null);
   const removeAutoScrollInterval = useRef(() => {});
@@ -67,21 +82,28 @@ const ApptBooking: React.FC<TApptBooking> = ({
 
   // initial position when calculated by the layout algorithm
   const [position, setPosition] = useState({ top: value.top, left: value.left });
+  const [size, setSize] = useState({ width: value.width, height: value.height });
 
   const lineIdx = position.top / CONFIG.CSS.LINE_HEIGHT;
   const startTime = lineIdx * calendarState.duration + calendarState.dayTime.start;
-  const endTime = startTime + ((value.height + 1) * calendarState.duration) / CONFIG.CSS.LINE_HEIGHT;
-  const newStartTime = isTouchRef.current ? startTime : value.startTime;
-  const newEndTime = isTouchRef.current ? endTime : value.endTime;
+  const endTimeByDragging = startTime + ((value.height + 1) * calendarState.duration) / CONFIG.CSS.LINE_HEIGHT;
+  const endTimeByResizing = startTime + ((size.height + 1) * calendarState.duration) / CONFIG.CSS.LINE_HEIGHT;
+  const newStartTime = isDragRef.current ? startTime : value.startTime;
+  const newEndTime = isDragRef.current ? endTimeByDragging : isResizeRef.current ? endTimeByResizing : value.endTime;
+  /* let newEndTime = 0;
+  if (isDragRef.current) newEndTime = endTimeByDragging;
+  else if (isResizeRef.current) newEndTime = endTimeByResizing;
+  else newEndTime = value.endTime; */
 
   const updatedStartTime = TimeUtils.convertSecondsToHourString(newStartTime);
   const updatedEndTime = TimeUtils.convertSecondsToHourString(newEndTime);
-  const updatedWidth = isTouchRef.current ? widthTimeline : value.width;
-  const updatedLeft = isTouchRef.current ? mousePosition.left : position.left;
+  const updatedWidth = isDragRef.current ? widthTimeline : size.width;
+  const updatedLeft = isDragRef.current ? mousePosition.left : position.left;
+  const updatedHeight = isResizeRef.current ? size.height : value.height;
 
   const calendarHeight = calendarRef.current?.offsetHeight || 0;
 
-  const offsetScrollY = scrollEl?.offsetHeight || 0;
+  const scrollBarHeight = scrollEl?.offsetHeight || 0;
   const maxScrollY = scrollEl?.scrollHeight || 0;
 
   // distance from mouse to
@@ -92,17 +114,16 @@ const ApptBooking: React.FC<TApptBooking> = ({
   const steps = TimeUtils.calcTimeStep(calendarState.dayTime.end, calendarState.dayTime.start, calendarState.duration);
   const maxGridHeight = steps * CONFIG.CSS.LINE_HEIGHT;
 
-  const onMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  /* handle drag event */
+  const onStartDragging = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     preventDragEvent.current = TimeUtils.wrapperSetTimeout(() => {
-      isTouchRef.current = true;
-
+      isDragRef.current = true;
+      onFireEvent(true);
       (e.target as HTMLDivElement).classList.add('drag');
     }, 250);
 
     origDeltaX.current = mousePosition.left - position.left;
     origDeltaY.current = mousePosition.top - position.top;
-
-    // removeAutoScrollInterval.current && removeAutoScrollInterval.current();
 
     // save data for later use
     topEdgeRef.current = ElementUtils.getOffsetToDocument(e.currentTarget, 'top');
@@ -114,21 +135,19 @@ const ApptBooking: React.FC<TApptBooking> = ({
     onPressAppt({ ...value, top: position.top, left: position.left });
   };
 
-  const onMouseUp = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    if (isTouchRef.current === false) preventDragEvent.current && preventDragEvent.current();
+  const onEndDragging = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    // if still false means the user is not drag at all, just click
+    if (isDragRef.current === false) preventDragEvent.current && preventDragEvent.current();
     else {
-      isTouchRef.current = false;
-
+      isDragRef.current = false;
+      onFireEvent(false);
       (e.target as HTMLDivElement).classList.remove('drag');
-
-      onDragging();
-
-      onReleaseAppt(value.id, startTime);
+      onReleaseAppt(value.id, startTime, value.duration);
     }
   };
 
   const onDragging = useCallback(() => {
-    let currScrollY = scrollEl?.scrollTop || 0;
+    let currScrollBarTop = scrollEl?.scrollTop || 0;
     let curApptTop = position.top;
 
     // touch the edge of top
@@ -151,7 +170,7 @@ const ApptBooking: React.FC<TApptBooking> = ({
         removeAutoScrollInterval.current && removeAutoScrollInterval.current();
 
         removeAutoScrollInterval.current = TimeUtils.wrapperSetInterval(() => {
-          currScrollY -= CONFIG.SPEED;
+          currScrollBarTop -= CONFIG.SPEED;
           curApptTop -= CONFIG.SPEED;
 
           setPosition((prev) => ({
@@ -159,8 +178,8 @@ const ApptBooking: React.FC<TApptBooking> = ({
             top: curApptTop,
           }));
 
-          if (currScrollY <= 0 || position.top <= 0) {
-            currScrollY = 0;
+          if (currScrollBarTop <= 0 || position.top <= 0) {
+            currScrollBarTop = 0;
             setPosition((prev) => ({
               ...prev,
               top: 0,
@@ -169,7 +188,7 @@ const ApptBooking: React.FC<TApptBooking> = ({
             removeAutoScrollInterval.current && removeAutoScrollInterval.current();
           }
 
-          scrollEl.scrollTop = currScrollY;
+          scrollEl.scrollTop = currScrollBarTop;
         }, CONFIG.FPS);
       }
       // ================ BOTTOM ================
@@ -177,15 +196,15 @@ const ApptBooking: React.FC<TApptBooking> = ({
         removeAutoScrollInterval.current && removeAutoScrollInterval.current();
 
         removeAutoScrollInterval.current = TimeUtils.wrapperSetInterval(() => {
-          currScrollY += CONFIG.SPEED;
+          currScrollBarTop += CONFIG.SPEED;
           curApptTop += CONFIG.SPEED;
           setPosition((prev) => ({
             ...prev,
             top: curApptTop,
           }));
 
-          if (currScrollY + offsetScrollY >= maxScrollY || position.top + value.height >= maxGridHeight) {
-            currScrollY = maxScrollY - offsetScrollY;
+          if (currScrollBarTop + scrollBarHeight >= maxScrollY || position.top + value.height >= maxGridHeight) {
+            currScrollBarTop = maxScrollY - scrollBarHeight;
             setPosition((prev) => ({
               ...prev,
               top: maxGridHeight - value.height,
@@ -193,7 +212,7 @@ const ApptBooking: React.FC<TApptBooking> = ({
             removeAutoScrollInterval.current && removeAutoScrollInterval.current();
           }
 
-          scrollEl.scrollTop = currScrollY;
+          scrollEl.scrollTop = currScrollBarTop;
         }, CONFIG.FPS);
       } else {
         removeAutoScrollInterval.current && removeAutoScrollInterval.current();
@@ -215,20 +234,59 @@ const ApptBooking: React.FC<TApptBooking> = ({
     distanceUp,
     maxGridHeight,
     maxScrollY,
-    offsetScrollY,
+    scrollBarHeight,
   ]);
+  /* handle drag event */
+
+  /* handle resize event */
+  const onStartResize = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.stopPropagation(); // prevent to fire a drag event on parent div
+    isResizeRef.current = true;
+    onFireEvent(true);
+    if (e.currentTarget && e.currentTarget.parentElement) {
+      e.currentTarget.parentElement.classList.add('resize');
+    }
+
+    lastMouseTopPosition.current = mousePosition.top;
+  };
+
+  const onResizing = useCallback(() => {
+    const distance = lastMouseTopPosition.current - mousePosition.top;
+    const newHeight = value.height - distance;
+    setSize((s) => ({ ...s, height: newHeight }));
+  }, [mousePosition.top, value.height]);
+
+  const onEndResize = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.stopPropagation(); // prevent to fire a drag event on parent div
+    isResizeRef.current = false;
+    onFireEvent(false);
+    if (e.currentTarget && e.currentTarget.parentElement) {
+      e.currentTarget.parentElement.classList.remove('resize');
+    }
+
+    const newDuration = TimeUtils.convertHeightToDuration(
+      size.height + 1,
+      CONFIG.CSS.LINE_HEIGHT,
+      calendarState.duration
+    );
+    onReleaseAppt(value.id, startTime, newDuration);
+  };
+  /* handle resize event */
 
   // re-render the first position of appt
   useEffect(() => {
+    setSize({ width: value.width, height: value.height });
     setPosition({ top: value.top, left: value.left });
-  }, [value.top, value.left]);
+  }, [value.width, value.height, value.top, value.left]);
 
   // when move mouse around
   useEffect(() => {
-    if (isTouchRef.current) {
+    if (isDragRef.current) {
       onDragging();
+    } else if (isResizeRef.current) {
+      onResizing();
     }
-  }, [onDragging]);
+  }, [onDragging, onResizing]);
 
   return (
     <Wrapper
@@ -237,10 +295,10 @@ const ApptBooking: React.FC<TApptBooking> = ({
       style={{
         transform: `translateX(${updatedLeft}px) translateY(${position.top}px)`,
         width: updatedWidth,
-        height: value.height,
+        height: updatedHeight,
       }}
-      onMouseDown={onMouseDown}
-      onMouseUp={onMouseUp}
+      onMouseDown={onStartDragging}
+      onMouseUp={onEndDragging}
     >
       <Content $dir={'column'}>
         <div>
@@ -249,6 +307,7 @@ const ApptBooking: React.FC<TApptBooking> = ({
         <div>{value.title}</div>
         <div>{value.content}</div>
       </Content>
+      <Resize data-idtf={CONFIG.DATA_IDTF.APPT_RESIZE} onMouseDown={onStartResize} onMouseUp={onEndResize}></Resize>
     </Wrapper>
   );
 };

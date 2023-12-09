@@ -33,6 +33,7 @@ const DATA_IDTF = {
   APPOINTMENT: 'appointment',
   APPT_CLONE: 'appt-clone',
   APPT_BOOKING: 'appt-booking',
+  APPT_RESIZE: 'appt-resize',
   ROW: 'row',
 };
 
@@ -81,7 +82,7 @@ const CSS = {
   FONT_SIZE_MEDIUM: 14,
 
   DATELINE_HEIGHT: 60,
-  LINE_HEIGHT: 24,
+  LINE_HEIGHT: 20,
 };
 
 export const CONFIG = {

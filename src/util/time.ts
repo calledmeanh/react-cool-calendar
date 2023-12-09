@@ -10,6 +10,7 @@ export const TimeUtils = {
   displayTime,
   checkWorkingTime,
 
+  convertHeightToDuration,
   covertHourMinuteToSeconds,
   covertSecondsToHourMinute,
   convertSecondsToHourString,
@@ -72,6 +73,11 @@ function covertSecondsToHourMinute(seconds: number): { hour: number; minute: num
 
 function formatHourOrMinute(data: number): string {
   return ('0' + data).slice(-2);
+}
+
+function convertHeightToDuration(height: number, lineHeight: number, duration: number) {
+  return (height / lineHeight) * (duration / CONFIG.SECONDS_PER_MINUTE)
+
 }
 
 function covertHourMinuteToSeconds(hour: number, minute: number): number {
