@@ -1,16 +1,15 @@
 import dayjs from 'dayjs';
-import { CONFIG } from '../constant';
-import { EStatus } from '../model';
+import { EStatus, TAppointmentForUser } from '../model';
 
 export const ElementMocks = {
   getDataSource,
 };
 
-function getDataSource() {
+function getDataSource(): TAppointmentForUser[] {
   return [
     {
       id: '1',
-      startTime: 7 * CONFIG.SECONDS_PER_HOUR,
+      startTime: 7,
       duration: 120,
       title: '1',
       content: 'You only live once',
@@ -19,7 +18,7 @@ function getDataSource() {
     },
     {
       id: '2',
-      startTime: 8 * CONFIG.SECONDS_PER_HOUR,
+      startTime: 8,
       duration: 200,
       title: '2',
       content: 'You only live once',
@@ -28,7 +27,7 @@ function getDataSource() {
     },
     {
       id: '3',
-      startTime: 9 * CONFIG.SECONDS_PER_HOUR,
+      startTime: 9,
       duration: 150,
       title: '3',
       content: 'You only live once',
@@ -37,7 +36,7 @@ function getDataSource() {
     },
     {
       id: '4',
-      startTime: 7 * CONFIG.SECONDS_PER_HOUR,
+      startTime: 7,
       duration: 120,
       title: '4',
       content: 'You only live once',
@@ -46,7 +45,7 @@ function getDataSource() {
     },
     {
       id: '5',
-      startTime: 6 * CONFIG.SECONDS_PER_HOUR,
+      startTime: 6,
       duration: 120,
       title: '5',
       content: 'You only live once',
@@ -55,7 +54,7 @@ function getDataSource() {
     },
     {
       id: '6',
-      startTime: 9 * CONFIG.SECONDS_PER_HOUR,
+      startTime: 9,
       duration: 90,
       title: '6',
       content: 'You only live once',
@@ -64,7 +63,7 @@ function getDataSource() {
     },
     {
       id: '7',
-      startTime: 9 * CONFIG.SECONDS_PER_HOUR,
+      startTime: 9,
       duration: 90,
       title: '7',
       content: 'You only live once',
@@ -73,7 +72,7 @@ function getDataSource() {
     },
     {
       id: '8',
-      startTime: 7 * CONFIG.SECONDS_PER_HOUR,
+      startTime: 7,
       duration: 90,
       title: '8',
       content: 'You only live once',
@@ -82,7 +81,7 @@ function getDataSource() {
     },
     {
       id: '9',
-      startTime: 7 * CONFIG.SECONDS_PER_HOUR,
+      startTime: 7,
       duration: 90,
       title: '9',
       content: 'You only live once',
@@ -91,7 +90,7 @@ function getDataSource() {
     },
     {
       id: '10',
-      startTime: 7 * CONFIG.SECONDS_PER_HOUR,
+      startTime: 7,
       duration: 90,
       title: '10',
       content: 'You only live once',
@@ -100,7 +99,7 @@ function getDataSource() {
     },
     {
       id: '11',
-      startTime: 8 * CONFIG.SECONDS_PER_HOUR,
+      startTime: 8,
       duration: 180,
       title: '11',
       content: 'You only live once',
@@ -109,7 +108,7 @@ function getDataSource() {
     },
     {
       id: '12',
-      startTime: 8 * CONFIG.SECONDS_PER_HOUR,
+      startTime: 8,
       duration: 180,
       title: '12',
       content: 'You only live once',
@@ -118,7 +117,7 @@ function getDataSource() {
     },
     {
       id: '13',
-      startTime: 8 * CONFIG.SECONDS_PER_HOUR,
+      startTime: 8,
       duration: 60,
       title: '13',
       content: 'You only live once',
@@ -127,7 +126,7 @@ function getDataSource() {
     },
     {
       id: '14',
-      startTime: 6 * CONFIG.SECONDS_PER_HOUR,
+      startTime: 6,
       duration: 135,
       title: '14',
       content: 'You only live once',
@@ -136,7 +135,7 @@ function getDataSource() {
     },
     {
       id: '15',
-      startTime: 6 * CONFIG.SECONDS_PER_HOUR,
+      startTime: 6,
       duration: 300,
       title: '15',
       content: 'You only live once',
@@ -145,7 +144,7 @@ function getDataSource() {
     },
     {
       id: '16',
-      startTime: 6 * CONFIG.SECONDS_PER_HOUR,
+      startTime: 6,
       duration: 300,
       title: '16',
       content: 'You only live once',

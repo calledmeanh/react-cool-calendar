@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import styled from 'styled-components';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { CONFIG } from '../constant';
 import { useCalendarState } from '../hook';
+import { TCalendarStateForApp, TDateline } from '../model';
 import { DateUtils, TimeUtils } from '../util';
 import { Flex } from './common';
 
@@ -36,13 +37,13 @@ type TNowIndicator = {
 };
 
 const NowIndicator: React.FC<TNowIndicator> = ({ type, widthTimeline = 0 }) => {
-  const calendarState = useCalendarState();
+  const calendarState: TCalendarStateForApp = useCalendarState();
   const [now, setNow] = useState({ position: 0, text: '00:00' });
   const [timelinePos, setTimelinePos] = useState({ width: 0, left: 0 });
 
   const getCurrentTime = useCallback(() => {
-    const currentHours = calendarState.todayGlobalIns.hour();
-    const currentMinutes = calendarState.todayGlobalIns.minute();
+    const currentHours: number = calendarState.todayGlobalIns.hour();
+    const currentMinutes: number = calendarState.todayGlobalIns.minute();
     const res: number = TimeUtils.covertHourMinuteToSeconds(currentHours, currentMinutes);
 
     return res;
@@ -56,9 +57,9 @@ const NowIndicator: React.FC<TNowIndicator> = ({ type, widthTimeline = 0 }) => {
   const updateEachInterval = useCallback(
     (currentTime: number, today: boolean) => {
       if (currentTime < calendarState.dayTime.end && currentTime > calendarState.dayTime.start && today) {
-        const dateEachInterval = dayjs();
-        const hourEachInterval = dateEachInterval.hour();
-        const minuteEachInterval = dateEachInterval.minute();
+        const dateEachInterval: Dayjs = dayjs();
+        const hourEachInterval: number = dateEachInterval.hour();
+        const minuteEachInterval: number = dateEachInterval.minute();
 
         const timeEachInterval: number = TimeUtils.covertHourMinuteToSeconds(hourEachInterval, minuteEachInterval);
 
@@ -69,7 +70,7 @@ const NowIndicator: React.FC<TNowIndicator> = ({ type, widthTimeline = 0 }) => {
           CONFIG.CSS.LINE_HEIGHT
         );
 
-        const text = TimeUtils.convertSecondsToHourString(timeEachInterval, calendarState.timeType);
+        const text: string = TimeUtils.convertSecondsToHourString(timeEachInterval, calendarState.timeType);
 
         setNow({ position, text });
       } else {
@@ -81,9 +82,9 @@ const NowIndicator: React.FC<TNowIndicator> = ({ type, widthTimeline = 0 }) => {
 
   /* get position of timeline */
   const getTimelineNowPos = useCallback(() => {
-    const dateline = DateUtils.getDateline(calendarState.currentDate, calendarState.viewMode);
+    const dateline: TDateline = DateUtils.getDateline(calendarState.currentDate, calendarState.viewMode);
 
-    const todayIdx = dateline.findIndex((d) => DateUtils.isEqual(d.origin, calendarState.todayGlobalIns));
+    const todayIdx: number = dateline.findIndex((d) => DateUtils.isEqual(d.origin, calendarState.todayGlobalIns));
 
     if (todayIdx > -1) {
       setTimelinePos({ width: widthTimeline, left: widthTimeline * todayIdx });
@@ -97,16 +98,16 @@ const NowIndicator: React.FC<TNowIndicator> = ({ type, widthTimeline = 0 }) => {
   /* update now-indicator when re-render to fit the position while user is changing duration */
   useEffect(() => {
     const currentTime: number = getCurrentTime();
-    const isToday = checkToday();
+    const isToday: boolean = checkToday();
     updateEachInterval(currentTime, isToday);
   }, [checkToday, getCurrentTime, updateEachInterval]);
 
   /* after the user stop to change duration then update now-indicator with setIntervale */
   useEffect(() => {
     const currentTime: number = getCurrentTime();
-    const isToday = checkToday();
+    const isToday: boolean = checkToday();
 
-    const source = setInterval(() => {
+    const source: NodeJS.Timeout = setInterval(() => {
       updateEachInterval(currentTime, isToday);
     }, 30000);
     return () => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { CONFIG } from '../constant';
 import { useCalendarState, useCalendarDispatch } from '../hook';
-import { EAction, EViewMode } from '../model';
+import { EAction, EViewMode, TCalendarAction, TCalendarStateForApp } from '../model';
 import { TimeUtils, ElementUtils } from '../util';
 import { Select, Option } from './common';
 
@@ -12,11 +12,11 @@ const options: Opts = [
 ];
 
 const Zoom: React.FC = () => {
-  const calendarState = useCalendarState();
-  const dispath = useCalendarDispatch();
+  const calendarState: TCalendarStateForApp = useCalendarState();
+  const dispath: React.Dispatch<TCalendarAction> = useCalendarDispatch();
 
   const onSelectZoom = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = ElementUtils.getValueFromUserInput(e);
+    const value: string = ElementUtils.getValueFromUserInput(e);
     switch (value) {
       case EViewMode.LARGE:
         dispath({ type: EAction.CHANGE_ZOOM, payload: CONFIG.ZOOMMODE_LARGE });

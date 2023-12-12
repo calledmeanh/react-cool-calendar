@@ -32,8 +32,8 @@ type TApptClone = {
 };
 
 const ApptClone: React.FC<TApptClone> = ({ value }) => {
-  const start = TimeUtils.convertSecondsToHourString(value.startTime);
-  const end = TimeUtils.convertSecondsToHourString(value.endTime);
+  const startTime: string = TimeUtils.convertSecondsToHourString(value.startTime);
+  const endTime: string = TimeUtils.convertSecondsToHourString(value.endTime);
 
   return (
     <Wrapper
@@ -46,7 +46,7 @@ const ApptClone: React.FC<TApptClone> = ({ value }) => {
     >
       <Content $dir={'column'}>
         <div>
-          {start}-{end}
+          {startTime}-{endTime}
         </div>
         <div>{value.title}</div>
         <div>{value.content}</div>

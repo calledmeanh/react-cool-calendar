@@ -1,14 +1,12 @@
 import React, { useCallback } from 'react';
-import styled from 'styled-components';
 import { CONFIG } from '../constant';
 import { useCalendarState } from '../hook';
+import { TCalendarStateForApp } from '../model';
 import { TimeUtils, clsx } from '../util';
 import { Line } from './common';
 
-const Wrapper = styled.div``;
-
 const Row: React.FC = () => {
-  const calendarState = useCalendarState();
+  const calendarState: TCalendarStateForApp = useCalendarState();
 
   const renderRow = useCallback(() => {
     return TimeUtils.createTimes(calendarState.dayTime.end, calendarState.dayTime.start, calendarState.duration).map(
@@ -20,7 +18,7 @@ const Row: React.FC = () => {
           currentTime
         );
         const groupTime: boolean = TimeUtils.checkGroupTime(calendarState.groupTime, calendarState.duration, i, 'top');
-        const classname = clsx({
+        const classname: string = clsx({
           wt: workingTime,
           gt: groupTime,
         });
@@ -29,7 +27,7 @@ const Row: React.FC = () => {
     );
   }, [calendarState.duration, calendarState.dayTime, calendarState.workingTime, calendarState.groupTime]);
 
-  return <Wrapper data-idtf={CONFIG.DATA_IDTF.ROW}>{renderRow()}</Wrapper>;
+  return <div data-idtf={CONFIG.DATA_IDTF.ROW}>{renderRow()}</div>;
 };
 
 export default Row;

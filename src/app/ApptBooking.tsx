@@ -2,7 +2,7 @@ import React, { useEffect, useCallback, useRef, useState } from 'react';
 import { styled } from 'styled-components';
 import { CONFIG } from '../constant';
 import { useCalendarState } from '../hook';
-import { EStatus, TAppointmentForApp } from '../model';
+import { EStatus, TAppointmentForApp, TCalendarStateForApp } from '../model';
 import { AppointmentUtils, ElementUtils, TimeUtils } from '../util';
 import { Flex } from './common';
 
@@ -65,65 +65,69 @@ const ApptBooking: React.FC<TApptBooking> = ({
   onReleaseAppt,
   onFireEvent,
 }) => {
-  const calendarState = useCalendarState();
-
-  const isDragRef = useRef(false);
-  const isResizeRef = useRef(false);
-  const origDeltaX = useRef(0);
-  const origDeltaY = useRef(0);
-  const lastMouseTopPosition = useRef(0);
-  const topEdgeRef = useRef(0);
-  const calendarRef = useRef<HTMLDivElement | null>(null);
-  const removeAutoScrollInterval = useRef(() => {});
-  const preventDragEvent = useRef(() => {});
-
-  const autoScrollThreshold = useRef(value.height / 5); // threshold to start auto scroll
-  const floorY = Math.floor(mousePosition.pageY / CONFIG.CSS.LINE_HEIGHT) * CONFIG.CSS.LINE_HEIGHT;
+  const calendarState: TCalendarStateForApp = useCalendarState();
 
   // initial position when calculated by the layout algorithm
   const [position, setPosition] = useState({ top: value.top, left: value.left });
   const [size, setSize] = useState({ width: value.width, height: value.height });
 
-  const lineIdx = position.top / CONFIG.CSS.LINE_HEIGHT;
-  const startTime = lineIdx * calendarState.duration + calendarState.dayTime.start;
-  const endTimeByDragging = startTime + ((value.height + 1) * calendarState.duration) / CONFIG.CSS.LINE_HEIGHT;
-  const endTimeByResizing = startTime + ((size.height + 1) * calendarState.duration) / CONFIG.CSS.LINE_HEIGHT;
-  const newStartTime = isDragRef.current ? startTime : value.startTime;
-  const newEndTime = isDragRef.current ? endTimeByDragging : isResizeRef.current ? endTimeByResizing : value.endTime;
-  /* let newEndTime = 0;
-  if (isDragRef.current) newEndTime = endTimeByDragging;
-  else if (isResizeRef.current) newEndTime = endTimeByResizing;
-  else newEndTime = value.endTime; */
+  const isDragRef: React.MutableRefObject<boolean> = useRef(false);
+  const isResizeRef: React.MutableRefObject<boolean> = useRef(false);
+  const origDeltaXRef: React.MutableRefObject<number> = useRef(0);
+  const origDeltaYRef: React.MutableRefObject<number> = useRef(0);
+  const lastMouseTopPositionRef: React.MutableRefObject<number> = useRef(0);
+  const topEdgeRef: React.MutableRefObject<number> = useRef(0);
+  const calendarRef: React.MutableRefObject<HTMLDivElement | null> = useRef<HTMLDivElement | null>(null);
+  const removeAutoScrollIntervalRef: React.MutableRefObject<Function> = useRef(() => {});
+  const preventDragEventRef: React.MutableRefObject<Function> = useRef(() => {});
+  const autoScrollThresholdRef: React.MutableRefObject<number> = useRef(value.height / 5); // threshold to start auto scroll
 
-  const updatedStartTime = TimeUtils.convertSecondsToHourString(newStartTime);
-  const updatedEndTime = TimeUtils.convertSecondsToHourString(newEndTime);
-  const updatedWidth = isDragRef.current ? widthTimeline : size.width;
-  const updatedLeft = isDragRef.current ? mousePosition.left : position.left;
-  const updatedHeight = isResizeRef.current ? size.height : value.height;
+  const floorY: number = Math.floor(mousePosition.pageY / CONFIG.CSS.LINE_HEIGHT) * CONFIG.CSS.LINE_HEIGHT;
 
-  const calendarHeight = calendarRef.current?.offsetHeight || 0;
+  const lineIdx: number = position.top / CONFIG.CSS.LINE_HEIGHT;
+  const startTime: number = lineIdx * calendarState.duration + calendarState.dayTime.start;
+  const endTimeByDragging: number = startTime + ((value.height + 1) * calendarState.duration) / CONFIG.CSS.LINE_HEIGHT;
+  const endTimeByResizing: number = startTime + ((size.height + 1) * calendarState.duration) / CONFIG.CSS.LINE_HEIGHT;
+  const newStartTime: number = isDragRef.current ? startTime : value.startTime;
+  const newEndTime: number = isDragRef.current
+    ? endTimeByDragging
+    : isResizeRef.current
+    ? endTimeByResizing
+    : value.endTime;
 
-  const scrollBarHeight = scrollEl?.offsetHeight || 0;
-  const maxScrollY = scrollEl?.scrollHeight || 0;
+  const updatedStartTime: string = TimeUtils.convertSecondsToHourString(newStartTime);
+  const updatedEndTime: string = TimeUtils.convertSecondsToHourString(newEndTime);
+  const updatedWidth: number = isDragRef.current ? widthTimeline : size.width;
+  const updatedLeft: number = isDragRef.current ? mousePosition.left : position.left;
+  const updatedHeight: number = isResizeRef.current ? size.height : value.height;
+
+  const calendarHeight: number = calendarRef.current?.offsetHeight || 0;
+
+  const scrollBarHeight: number = scrollEl?.offsetHeight || 0;
+  const maxScrollTop: number = scrollEl?.scrollHeight || 0;
 
   // distance from mouse to
-  const distanceUp = mousePosition.top - origDeltaY.current;
-  const distanceLeft = mousePosition.left - origDeltaX.current;
-  const distanceDown = mousePosition.top + (value.height - origDeltaY.current);
+  const distanceUp: number = mousePosition.top - origDeltaYRef.current;
+  const distanceLeft: number = mousePosition.left - origDeltaXRef.current;
+  const distanceDown: number = mousePosition.top + (value.height - origDeltaYRef.current);
 
-  const steps = TimeUtils.calcTimeStep(calendarState.dayTime.end, calendarState.dayTime.start, calendarState.duration);
-  const maxGridHeight = steps * CONFIG.CSS.LINE_HEIGHT;
+  const steps: number = TimeUtils.calcTimeStep(
+    calendarState.dayTime.end,
+    calendarState.dayTime.start,
+    calendarState.duration
+  );
+  const maxGridHeight: number = steps * CONFIG.CSS.LINE_HEIGHT;
 
   /* handle drag event */
   const onStartDragging = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    preventDragEvent.current = TimeUtils.wrapperSetTimeout(() => {
+    preventDragEventRef.current = TimeUtils.wrapperSetTimeout(() => {
       isDragRef.current = true;
       onFireEvent(true);
       (e.target as HTMLDivElement).classList.add('drag');
     }, 250);
 
-    origDeltaX.current = mousePosition.left - position.left;
-    origDeltaY.current = mousePosition.top - position.top;
+    origDeltaXRef.current = mousePosition.left - position.left;
+    origDeltaYRef.current = mousePosition.top - position.top;
 
     // save data for later use
     topEdgeRef.current = ElementUtils.getOffsetToDocument(e.currentTarget, 'top');
@@ -137,7 +141,7 @@ const ApptBooking: React.FC<TApptBooking> = ({
 
   const onEndDragging = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     // if still false means the user is not drag at all, just click
-    if (isDragRef.current === false) preventDragEvent.current && preventDragEvent.current();
+    if (isDragRef.current === false) preventDragEventRef.current && preventDragEventRef.current();
     else {
       isDragRef.current = false;
       onFireEvent(false);
@@ -166,10 +170,10 @@ const ApptBooking: React.FC<TApptBooking> = ({
     } else {
       /* auto scroll to top while dragging if match condition */
       // ================ TOP ================
-      if (floorY - autoScrollThreshold.current <= topEdgeRef.current && scrollEl) {
-        removeAutoScrollInterval.current && removeAutoScrollInterval.current();
+      if (floorY - autoScrollThresholdRef.current <= topEdgeRef.current && scrollEl) {
+        removeAutoScrollIntervalRef.current && removeAutoScrollIntervalRef.current();
 
-        removeAutoScrollInterval.current = TimeUtils.wrapperSetInterval(() => {
+        removeAutoScrollIntervalRef.current = TimeUtils.wrapperSetInterval(() => {
           currScrollBarTop -= CONFIG.SPEED;
           curApptTop -= CONFIG.SPEED;
 
@@ -185,17 +189,17 @@ const ApptBooking: React.FC<TApptBooking> = ({
               top: 0,
             }));
 
-            removeAutoScrollInterval.current && removeAutoScrollInterval.current();
+            removeAutoScrollIntervalRef.current && removeAutoScrollIntervalRef.current();
           }
 
           scrollEl.scrollTop = currScrollBarTop;
         }, CONFIG.FPS);
       }
       // ================ BOTTOM ================
-      else if (floorY + autoScrollThreshold.current >= calendarHeight && scrollEl) {
-        removeAutoScrollInterval.current && removeAutoScrollInterval.current();
+      else if (floorY + autoScrollThresholdRef.current >= calendarHeight && scrollEl) {
+        removeAutoScrollIntervalRef.current && removeAutoScrollIntervalRef.current();
 
-        removeAutoScrollInterval.current = TimeUtils.wrapperSetInterval(() => {
+        removeAutoScrollIntervalRef.current = TimeUtils.wrapperSetInterval(() => {
           currScrollBarTop += CONFIG.SPEED;
           curApptTop += CONFIG.SPEED;
           setPosition((prev) => ({
@@ -203,19 +207,19 @@ const ApptBooking: React.FC<TApptBooking> = ({
             top: curApptTop,
           }));
 
-          if (currScrollBarTop + scrollBarHeight >= maxScrollY || position.top + value.height >= maxGridHeight) {
-            currScrollBarTop = maxScrollY - scrollBarHeight;
+          if (currScrollBarTop + scrollBarHeight >= maxScrollTop || position.top + value.height >= maxGridHeight) {
+            currScrollBarTop = maxScrollTop - scrollBarHeight;
             setPosition((prev) => ({
               ...prev,
               top: maxGridHeight - value.height,
             }));
-            removeAutoScrollInterval.current && removeAutoScrollInterval.current();
+            removeAutoScrollIntervalRef.current && removeAutoScrollIntervalRef.current();
           }
 
           scrollEl.scrollTop = currScrollBarTop;
         }, CONFIG.FPS);
       } else {
-        removeAutoScrollInterval.current && removeAutoScrollInterval.current();
+        removeAutoScrollIntervalRef.current && removeAutoScrollIntervalRef.current();
         setPosition({
           top: distanceUp,
           left: distanceLeft,
@@ -224,7 +228,7 @@ const ApptBooking: React.FC<TApptBooking> = ({
     }
   }, [
     value.height,
-    autoScrollThreshold,
+    autoScrollThresholdRef,
     floorY,
     position.top,
     scrollEl,
@@ -233,7 +237,7 @@ const ApptBooking: React.FC<TApptBooking> = ({
     distanceLeft,
     distanceUp,
     maxGridHeight,
-    maxScrollY,
+    maxScrollTop,
     scrollBarHeight,
   ]);
   /* handle drag event */
@@ -247,12 +251,12 @@ const ApptBooking: React.FC<TApptBooking> = ({
       e.currentTarget.parentElement.classList.add('resize');
     }
 
-    lastMouseTopPosition.current = mousePosition.top;
+    lastMouseTopPositionRef.current = mousePosition.top;
   };
 
   const onResizing = useCallback(() => {
-    const distance = lastMouseTopPosition.current - mousePosition.top;
-    const newHeight = value.height - distance;
+    const distance: number = lastMouseTopPositionRef.current - mousePosition.top;
+    const newHeight: number = value.height - distance;
     setSize((s) => ({ ...s, height: newHeight }));
   }, [mousePosition.top, value.height]);
 
@@ -264,7 +268,7 @@ const ApptBooking: React.FC<TApptBooking> = ({
       e.currentTarget.parentElement.classList.remove('resize');
     }
 
-    const newDuration = TimeUtils.convertHeightToDuration(
+    const newDuration: number = TimeUtils.convertHeightToDuration(
       size.height + 1,
       CONFIG.CSS.LINE_HEIGHT,
       calendarState.duration

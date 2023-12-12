@@ -1,5 +1,5 @@
 import { CONFIG } from '../constant';
-import { EStatus, TAppointmentForApp, TAppointmentForUser } from '../model';
+import { EStatus, TAppointmentForApp, TAppointmentForUser, TRect } from '../model';
 import { TimeUtils } from './time';
 
 export const AppointmentUtils = {
@@ -19,7 +19,7 @@ function layoutAlgorithm(
     columnWidth: number;
     weekcolumnIndex: number;
   }
-) {
+): TAppointmentForApp[] {
   let columns: TAppointmentForApp[][] = [];
   let lastEventEnding: number | null = null;
 
@@ -75,17 +75,17 @@ function packEvents(
     columnWidth: number;
     weekcolumnIndex: number;
   }
-) {
-  let n = columnAppt.length;
+): void {
+  let n: number = columnAppt.length;
   for (let i = 0; i < n; i++) {
-    let col = columnAppt[i];
+    let col: TAppointmentForApp[] = columnAppt[i];
     for (let j = 0; j < col.length; j++) {
       // cell.l eft = ((i / n) * 100) / datelineLength;
-      const cell = col[j];
-      const cellWidth = otps.columnWidth / n - 1;
+      const cell: TAppointmentForApp = col[j];
+      const cellWidth: number = otps.columnWidth / n - 1;
       // cellWidth * i + i: is the position of child elements inside week column
       // otps.columnWidth * otps.weekcolumnIndex: is the left position of child elements
-      const cellLeft = cellWidth * i + i + otps.columnWidth * otps.weekcolumnIndex;
+      const cellLeft: number = cellWidth * i + i + otps.columnWidth * otps.weekcolumnIndex;
       cell.left = cellLeft;
       cell.width = cellWidth;
     }
@@ -99,16 +99,25 @@ function calcApptPos(
     daytimeStart: number;
     duration: number;
   }
-) {
-  const startTime = appt.startTime;
-  const endTime = startTime + TimeUtils.convertMinuteToSeconds(appt.duration);
+): {
+  top: number;
+  height: number;
+  startTime: number;
+  endTime: number;
+} {
+  const apptEndTime: number = appt.startTime + TimeUtils.convertMinuteToSeconds(appt.duration);
 
-  const top: number = TimeUtils.calcDistanceBetweenTimes(startTime, opts.daytimeStart, opts.duration, CONFIG.CSS.LINE_HEIGHT);
+  const top: number = TimeUtils.calcDistanceBetweenTimes(
+    appt.startTime,
+    opts.daytimeStart,
+    opts.duration,
+    CONFIG.CSS.LINE_HEIGHT
+  );
 
   const mapDuration = CONFIG.MAPPING_TIME[opts.duration];
   const height: number = TimeUtils.calcDistanceBetweenTimes(
-    endTime,
-    startTime,
+    apptEndTime,
+    appt.startTime,
     mapDuration,
     (CONFIG.CSS.LINE_HEIGHT * mapDuration) / opts.duration
   );
@@ -116,16 +125,16 @@ function calcApptPos(
   return {
     top,
     height: height - 1,
-    startTime,
-    endTime,
+    startTime: appt.startTime,
+    endTime: apptEndTime,
   };
 }
 
-function checkOverlapped(a: TAppointmentForApp, b: TAppointmentForApp) {
+function checkOverlapped(a: TAppointmentForApp, b: TAppointmentForApp): boolean {
   const { top: start } = a;
   const { top: otherStart } = b;
-  const end = start + a.height;
-  const otherEnd = otherStart + b.height;
+  const end: number = start + a.height;
+  const otherEnd: number = otherStart + b.height;
 
   if (
     (start < otherStart && otherStart < end) ||
@@ -140,7 +149,7 @@ function checkOverlapped(a: TAppointmentForApp, b: TAppointmentForApp) {
   return false;
 }
 
-function getApptColorByStatus(color: EStatus) {
+function getApptColorByStatus(color: EStatus): string {
   switch (color) {
     case EStatus.BOOKED:
       return CONFIG.CSS.APPT_BG_COLORS.BOOKED;

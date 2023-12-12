@@ -24,7 +24,7 @@ function getOffsetToDocument(elem: any, dir: 'left' | 'top'): number {
   return value;
 }
 
-function getParentNodeFrom(elem: any, targetData: string) {
+function getParentNodeFrom(elem: any, targetData: string): any {
   let target = null;
   do {
     const dataIdtf = elem.getAttribute(CONFIG.DATA_IDTF.THIS);

@@ -3,18 +3,18 @@ const SECONDS_PER_HOUR: number = 3600;
 
 const HAFT_DAY_SECONDS: number = 12 * SECONDS_PER_HOUR - 1; // 11h59m59s
 
-const ZOOMMODE_LARGE = 15 * SECONDS_PER_MINUTE;
-const ZOOMMODE_SMALL = 30 * SECONDS_PER_MINUTE;
+const ZOOMMODE_LARGE: number = 15 * SECONDS_PER_MINUTE;
+const ZOOMMODE_SMALL: number = 30 * SECONDS_PER_MINUTE;
 
 const MAPPING_TIME: any = {
   900: 4,
   1800: 2,
 };
 
-const DATE_FORMAT = 'MM/DD/YYYY';
+const DATE_FORMAT: string = 'MM/DD/YYYY';
 
-const SPEED = 20;
-const FPS = 1000 / 60;
+const SPEED: number = 20;
+const FPS: number = 1000 / 60;
 
 const DATA_IDTF = {
   THIS: 'data-idtf',

@@ -1,34 +1,35 @@
 import React from 'react';
+import { Dayjs } from 'dayjs';
 import { CONFIG } from '../constant';
 import { useCalendarDispatch, useCalendarState } from '../hook';
-import { EAction } from '../model';
+import { EAction, TCalendarAction, TCalendarStateForApp } from '../model';
 import { DateUtils } from '../util';
 import { Flex, Button, Text } from './common';
 
 const DateManipulation: React.FC = () => {
-  const calendarState = useCalendarState();
-  const dispath = useCalendarDispatch();
+  const calendarState: TCalendarStateForApp = useCalendarState();
+  const dispath: React.Dispatch<TCalendarAction> = useCalendarDispatch();
 
-  const curDate = calendarState.currentDate.format(calendarState.dateFormat);
-  const today = calendarState.todayGlobalIns.format(calendarState.dateFormat);
+  const curDate: string = calendarState.currentDate.format(calendarState.dateFormat);
+  const today: string = calendarState.todayGlobalIns.format(calendarState.dateFormat);
 
   const onPrevDay = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    const prevDay = DateUtils.getPrevDay(curDate);
+    const prevDay: Dayjs = DateUtils.getPrevDay(curDate);
     dispath({ type: EAction.PREV_DAY, payload: prevDay });
   };
 
   const onNextDay = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    const nextDay = DateUtils.getNextDay(curDate);
+    const nextDay: Dayjs = DateUtils.getNextDay(curDate);
     dispath({ type: EAction.NEXT_DAY, payload: nextDay });
   };
 
   const onPrevWeek = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    const prevWeek = DateUtils.getPrevWeek(curDate);
+    const prevWeek: Dayjs = DateUtils.getPrevWeek(curDate);
     dispath({ type: EAction.PREV_WEEK, payload: prevWeek });
   };
 
   const onNextWeek = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    const nextWeek = DateUtils.getNextWeek(curDate);
+    const nextWeek: Dayjs = DateUtils.getNextWeek(curDate);
     dispath({ type: EAction.NEXT_WEEK, payload: nextWeek });
   };
 

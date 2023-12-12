@@ -18,24 +18,24 @@ export const TimeUtils = {
 
   parseDurationToViewMode,
   wrapperSetInterval,
-  wrapperSetTimeout
+  wrapperSetTimeout,
 };
 
 /* calculate top position based-on time */
 function calcDistanceBetweenTimes(end: number, start: number, duration: number, lineHeight: number): number {
-  const jumps = calcTimeStep(end, start, duration);
+  const jumps: number = calcTimeStep(end, start, duration);
   let height: number = jumps * lineHeight;
 
-  const rest = end - (duration * jumps + start);
-  const restHeight = (rest * lineHeight) / duration;
+  const rest: number = end - (duration * jumps + start);
+  const restHeight: number = (rest * lineHeight) / duration;
 
   return height + restHeight;
 }
 
 /* calculate total steps based-on start and end time */
 function calcTimeStep(end: number, start: number, duration: number): number {
-  const S = end - start;
-  const step = S / duration;
+  const S: number = end - start;
+  const step: number = S / duration;
   return Math.floor(step);
 }
 
@@ -47,13 +47,13 @@ function createTimes(end: number, start: number, duration: number): number[] {
 
 /* get something like that --> 00:00 AM */
 function convertSecondsToHourString(seconds: number, timeType = 24): string {
-  let tempSeconds = seconds;
+  let tempSeconds: number = seconds;
   if (timeType === 12 && seconds >= 13 * CONFIG.SECONDS_PER_HOUR) {
     tempSeconds = seconds - 12 * CONFIG.SECONDS_PER_HOUR;
   }
-  let time = covertSecondsToHourMinute(Math.abs(tempSeconds));
+  let time: { hour: number; minute: number } = covertSecondsToHourMinute(Math.abs(tempSeconds));
 
-  let timeString = `${formatHourOrMinute(time.hour)}:${formatHourOrMinute(time.minute)}`;
+  let timeString: string = `${formatHourOrMinute(time.hour)}:${formatHourOrMinute(time.minute)}`;
 
   if (timeType === 12) {
     timeString = `${timeString} ${seconds <= CONFIG.HAFT_DAY_SECONDS ? 'AM' : 'PM'}`;
@@ -63,8 +63,8 @@ function convertSecondsToHourString(seconds: number, timeType = 24): string {
 }
 
 function covertSecondsToHourMinute(seconds: number): { hour: number; minute: number } {
-  const hour = Math.floor(seconds / CONFIG.SECONDS_PER_HOUR);
-  const minute = (seconds - hour * CONFIG.SECONDS_PER_HOUR) / CONFIG.SECONDS_PER_MINUTE;
+  const hour: number = Math.floor(seconds / CONFIG.SECONDS_PER_HOUR);
+  const minute: number = (seconds - hour * CONFIG.SECONDS_PER_HOUR) / CONFIG.SECONDS_PER_MINUTE;
   return {
     hour,
     minute: Math.floor(minute),
@@ -75,20 +75,19 @@ function formatHourOrMinute(data: number): string {
   return ('0' + data).slice(-2);
 }
 
-function convertHeightToDuration(height: number, lineHeight: number, duration: number) {
-  return (height / lineHeight) * (duration / CONFIG.SECONDS_PER_MINUTE)
-
+function convertHeightToDuration(height: number, lineHeight: number, duration: number): number {
+  return (height / lineHeight) * (duration / CONFIG.SECONDS_PER_MINUTE);
 }
 
 function covertHourMinuteToSeconds(hour: number, minute: number): number {
   return convertHourToSeconds(hour) + convertMinuteToSeconds(minute);
 }
 
-function convertHourToSeconds(hour: number) {
+function convertHourToSeconds(hour: number): number {
   return hour * CONFIG.SECONDS_PER_HOUR;
 }
 
-function convertMinuteToSeconds(minute: number) {
+function convertMinuteToSeconds(minute: number): number {
   return minute * CONFIG.SECONDS_PER_MINUTE;
 }
 
@@ -115,8 +114,8 @@ function checkGroupTime(
   timeJumpIndex: number,
   groupBy: 'bottom' | 'top' = 'bottom'
 ): boolean {
-  const groupStep = groupTimeDuration / duration;
-  let index = timeJumpIndex + 1;
+  const groupStep: number = groupTimeDuration / duration;
+  let index: number = timeJumpIndex + 1;
   if (groupBy === 'top') {
     index = timeJumpIndex;
   }
@@ -127,7 +126,7 @@ function checkGroupTime(
 }
 
 function parseDurationToViewMode(duration: number): string {
-  let res = '';
+  let res: string = '';
   switch (duration) {
     case CONFIG.ZOOMMODE_LARGE:
       res = EViewMode.LARGE;
@@ -142,14 +141,14 @@ function parseDurationToViewMode(duration: number): string {
   return res;
 }
 
-function wrapperSetInterval(handler: Function, time: number) {
+function wrapperSetInterval(handler: Function, time: number): Function {
   const intervalId: number = setInterval(handler, time);
   return () => {
     clearInterval(intervalId);
   };
 }
 
-function wrapperSetTimeout(handler: Function, time: number) {
+function wrapperSetTimeout(handler: Function, time: number): Function {
   const intervalId: number = setTimeout(handler, time);
   return () => {
     clearTimeout(intervalId);

@@ -3,7 +3,7 @@ import { TCalendarStateForApp, TCalendarAction, EAction } from '../model';
 import { ConfigUtils } from '../util';
 
 const CalendarContext = createContext<TCalendarStateForApp>(ConfigUtils.createExampleCalendarState());
-const CalendarDispatchContext = createContext<React.Dispatch<TCalendarAction>>(function (value: TCalendarAction) {});
+const CalendarDispatchContext = createContext<React.Dispatch<TCalendarAction>>((value: TCalendarAction) => {});
 
 export const useCalendarState = () => useContext(CalendarContext);
 export const useCalendarDispatch = () => useContext(CalendarDispatchContext);
@@ -43,7 +43,7 @@ function calendarReducer(state: TCalendarStateForApp, action: TCalendarAction): 
       return { ...state, currentDate: action.payload };
     case EAction.GET_TODAY:
       return { ...state, currentDate: action.payload };
-      case EAction.UPDATE_APPT:
+    case EAction.UPDATE_APPT:
       return { ...state, appointments: action.payload };
     default: {
       throw Error('Unknown action: ' + action.type);

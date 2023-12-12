@@ -2,7 +2,15 @@ import React, { useState } from 'react';
 import { styled } from 'styled-components';
 import { CONFIG } from '../constant';
 import { useCalendarDispatch, useCalendarState } from '../hook';
-import { EAction, TAppointmentForApp, TAppointmentForUser } from '../model';
+import {
+  EAction,
+  TAppointmentForApp,
+  TAppointmentForUser,
+  TCalendarAction,
+  TCalendarStateForApp,
+  TDateline,
+  TDay,
+} from '../model';
 import { AppointmentUtils, DateUtils } from '../util';
 import ApptBooking from './ApptBooking';
 import ApptClone from './ApptClone';
@@ -24,22 +32,22 @@ type TAppointment = {
 };
 
 const Appointment: React.FC<TAppointment> = ({ scrollEl, widthTimeline, mousePosition, onFireEvent }) => {
-  const calendarState = useCalendarState();
-  const dispath = useCalendarDispatch();
+  const calendarState: TCalendarStateForApp = useCalendarState();
+  const dispath: React.Dispatch<TCalendarAction> = useCalendarDispatch();
   const [apptClone, setApptClone] = useState<TAppointmentForApp | null>(null);
 
-  const dateline = DateUtils.getDateline(calendarState.currentDate, calendarState.viewMode);
+  const dateline: TDateline = DateUtils.getDateline(calendarState.currentDate, calendarState.viewMode);
 
   const render = (apptProp: TAppointmentForUser[]) => {
     // appt origin
-    let appts = apptProp.slice();
+    let apptCopy: TAppointmentForUser[] = apptProp.slice();
 
     if (calendarState.viewMode === 'DAY') {
-      const showAppt = appts.filter((a) => {
+      const apptByDate: TAppointmentForUser[] = apptCopy.filter((a) => {
         return DateUtils.isEqual(a.createdAt, calendarState.currentDate);
       });
 
-      return AppointmentUtils.layoutAlgorithm(showAppt, {
+      return AppointmentUtils.layoutAlgorithm(apptByDate, {
         daytimeStart: calendarState.dayTime.start,
         duration: calendarState.duration,
         columnWidth: widthTimeline,
@@ -60,29 +68,29 @@ const Appointment: React.FC<TAppointment> = ({ scrollEl, widthTimeline, mousePos
       });
     } else if (calendarState.viewMode === 'WEEK') {
       // iterate over the array to sort the appointment's "createdAt" attribute relative to the column
-      const columnAppt: TAppointmentForUser[][] = [];
+      const apptByGrid: TAppointmentForUser[][] = [];
       dateline.forEach((d) => {
-        const apptBox: TAppointmentForUser[] = [];
-        appts.forEach((a) => {
-          const res = DateUtils.isEqual(d.origin, a.createdAt);
-          if (res) apptBox.push(a);
+        const apptCell: TAppointmentForUser[] = [];
+        apptCopy.forEach((a) => {
+          const res: boolean = DateUtils.isEqual(d.origin, a.createdAt);
+          if (res) apptCell.push(a);
         });
-        columnAppt.push(apptBox);
+        apptByGrid.push(apptCell);
       });
 
       // iterate over the 2D-array and convert it to 1D-array with applied "layout algorithm"
-      const showAppt: TAppointmentForApp[] = [];
-      columnAppt.forEach((ca, i) => {
-        const apptReodered = AppointmentUtils.layoutAlgorithm(ca, {
+      const apptByWeek: TAppointmentForApp[] = [];
+      apptByGrid.forEach((ca, i) => {
+        const apptReodered: TAppointmentForApp[] = AppointmentUtils.layoutAlgorithm(ca, {
           daytimeStart: calendarState.dayTime.start,
           duration: calendarState.duration,
           columnWidth: widthTimeline,
           weekcolumnIndex: i,
         });
-        showAppt.push(...apptReodered);
+        apptByWeek.push(...apptReodered);
       });
 
-      return showAppt.map((appt: TAppointmentForApp) => {
+      return apptByWeek.map((appt: TAppointmentForApp) => {
         return (
           <ApptBooking
             key={appt.id}
@@ -109,15 +117,15 @@ const Appointment: React.FC<TAppointment> = ({ scrollEl, widthTimeline, mousePos
       setApptClone(null);
     }
 
-    const newWeekColIdx = Math.round(mousePosition.left / widthTimeline);
-    const dayCustom = dateline[newWeekColIdx];
-    const payload = {
+    const weekColIdx: number = Math.round(mousePosition.left / widthTimeline);
+    const dayCustom: TDay = dateline[weekColIdx];
+    const payload: any = {
       startTime,
       duration,
       createdAt: dayCustom.origin,
     };
 
-    let apptCopy = calendarState.appointments.slice();
+    let apptCopy: TAppointmentForUser[] = calendarState.appointments.slice();
     for (let i = 0; i < apptCopy.length; i++) {
       if (id === apptCopy[i].id) {
         apptCopy[i] = {

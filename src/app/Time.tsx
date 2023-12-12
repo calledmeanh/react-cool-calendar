@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import { CONFIG } from '../constant';
 import { useCalendarState } from '../hook';
+import { TCalendarStateForApp } from '../model';
 import { TimeUtils, clsx } from '../util';
 import { Line } from './common';
 import NowIndicator from './NowIndicator';
@@ -11,7 +12,7 @@ const Wrapper = styled.div`
 `;
 
 const Time: React.FC = () => {
-  const calendarState = useCalendarState();
+  const calendarState: TCalendarStateForApp = useCalendarState();
 
   const renderTime = useCallback(() => {
     return TimeUtils.createTimes(calendarState.dayTime.end, calendarState.dayTime.start, calendarState.duration).map(
@@ -23,7 +24,7 @@ const Time: React.FC = () => {
           calendarState.dayTime.start,
           calendarState.duration * CONFIG.MAPPING_TIME[calendarState.duration]
         );
-        const classname = clsx({
+        const classname: string = clsx({
           ngt: true,
         });
         return (

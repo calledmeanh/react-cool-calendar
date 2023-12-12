@@ -1,6 +1,6 @@
 import dayjs, { Dayjs } from 'dayjs';
 import { CONFIG } from '../constant';
-import { TDateline, TViewMode } from '../model';
+import { TDateline, TDay, TViewMode } from '../model';
 
 export const DateUtils = {
   getPrevDay,
@@ -30,13 +30,13 @@ function getNextWeek(currentDate: string): Dayjs {
 }
 
 function getDateline(currentDate: Dayjs, viewMode: TViewMode): TDateline {
-  let startOfWeek = currentDate.startOf('weeks'); // monday
-  let endOfWeek = currentDate.endOf('weeks'); // sunday
+  let startOfWeek: Dayjs = currentDate.startOf('weeks'); // monday
+  let endOfWeek: Dayjs = currentDate.endOf('weeks'); // sunday
 
   const dateline: TDateline = [];
 
   if (viewMode === 'DAY') {
-    const today = {
+    const today: TDay = {
       number: currentDate.format('DD'),
       text: currentDate.format('dddd'),
       origin: currentDate,
@@ -56,21 +56,24 @@ function getDateline(currentDate: Dayjs, viewMode: TViewMode): TDateline {
   return dateline;
 }
 
+type TStartOrigCustom = { date: string; month: string };
+type TEndOrigCustom = { date: string; month: string; year: string };
+
 function getCustomDateToDate(currentDate: Dayjs): string {
-  const startOrigin = currentDate.startOf('weeks'); // monday
-  const start = {
+  const startOrigin: Dayjs = currentDate.startOf('weeks'); // monday
+  const start: TStartOrigCustom = {
     date: startOrigin.format('D'),
     month: startOrigin.format('MMM'),
   };
 
-  const endOrigin = currentDate.endOf('weeks'); // sunday
-  const end = {
+  const endOrigin: Dayjs = currentDate.endOf('weeks'); // sunday
+  const end: TEndOrigCustom = {
     date: endOrigin.format('D'),
     month: endOrigin.format('MMM'),
     year: endOrigin.format('YYYY'),
   };
 
-  let res = '';
+  let res: string = '';
   if (start.month === end.month) {
     res = `${start.date} - ${end.date} ${end.month}, ${end.year} `;
   } else {
@@ -81,19 +84,18 @@ function getCustomDateToDate(currentDate: Dayjs): string {
 }
 
 function getCustomDay(currentDate: Dayjs): string {
-  const number = currentDate.format('D');
-  const text = currentDate.format('dddd');
-  const month = currentDate.format('MMM');
-  const year = currentDate.format('YYYY');
+  const number: string = currentDate.format('D');
+  const text: string = currentDate.format('dddd');
+  const month: string = currentDate.format('MMM');
+  const year: string = currentDate.format('YYYY');
 
-  const res = `${text} ${number} ${month}, ${year}`;
+  const res: string = `${text} ${number} ${month}, ${year}`;
   return res;
 }
 
-
-function isEqual(dayA: Dayjs, dayB: Dayjs) {
-  const dayAStr = dayA.format(CONFIG.DATE_FORMAT);
-  const dayBStr = dayB.format(CONFIG.DATE_FORMAT);
-  const res = dayAStr === dayBStr;
+function isEqual(dayA: Dayjs, dayB: Dayjs): boolean {
+  const dayAStr: string = dayA.format(CONFIG.DATE_FORMAT);
+  const dayBStr: string = dayB.format(CONFIG.DATE_FORMAT);
+  const res: boolean = dayAStr === dayBStr;
   return res;
 }

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { CONFIG } from '../constant';
 import { useCalendarState } from '../hook';
+import { TCalendarStateForApp, TDateline } from '../model';
 import { DateUtils, ElementUtils, TimeUtils } from '../util';
 import NowIndicator from './NowIndicator';
 import Appointment from './Appointment';
@@ -24,18 +25,18 @@ const Wrapper = styled.div`
 `;
 
 const Grid: React.FC = () => {
-  const calendarState = useCalendarState();
+  const calendarState: TCalendarStateForApp = useCalendarState();
 
-  const gridRef = useRef<HTMLDivElement | null>(null);
+  const gridRef: React.MutableRefObject<HTMLDivElement | null> = useRef<HTMLDivElement | null>(null);
   const [gridWidth, setGridWidth] = useState(0);
   const [scrollEl, setScrollEl] = useState<HTMLDivElement | null>(null);
   const [timeEachCell, setTimeEachCell] = useState('');
   const [position, setPosition] = useState({ top: 0, left: 0, pageY: 0, pageX: 0 });
   const [isShowGhost, setShowGhost] = useState(false);
-  const [isFireEvent, setFireEvent] = useState(false);
+  const [isFireEvent, setFireEvent] = useState(false); // TODO: put it in context
 
-  const dateline = DateUtils.getDateline(calendarState.currentDate, calendarState.viewMode);
-  const widthTimeline = gridWidth / dateline.length;
+  const dateline: TDateline = DateUtils.getDateline(calendarState.currentDate, calendarState.viewMode);
+  const widthTimeline: number = gridWidth / dateline.length;
 
   /*
     pageX,Y are relative to the top left corner of the whole rendered page (including parts hidden by scrolling)
@@ -62,8 +63,8 @@ const Grid: React.FC = () => {
     const top: number = lineIdx * CONFIG.CSS.LINE_HEIGHT;
     const left: number = colIdx * widthTimeline;
 
-    const seconds = lineIdx * calendarState.duration + calendarState.dayTime.start;
-    const time = TimeUtils.convertSecondsToHourString(seconds, calendarState.timeType);
+    const seconds: number = lineIdx * calendarState.duration + calendarState.dayTime.start;
+    const time: string = TimeUtils.convertSecondsToHourString(seconds, calendarState.timeType);
 
     setPosition({ top, left, pageY: e.pageY, pageX: e.pageX });
     setTimeEachCell(time);
@@ -72,7 +73,7 @@ const Grid: React.FC = () => {
   const onMouseLeave = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => setShowGhost(false);
   /* disabled right click on grid */
   const onRightClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => e.preventDefault();
-  
+
   const onFireEvent = (value: boolean) => setFireEvent(value);
 
   useEffect(() => {

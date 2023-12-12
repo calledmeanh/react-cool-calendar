@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import { CONFIG } from '../constant';
 import { useCalendarState } from '../hook';
+import { TCalendarStateForApp, TDateline } from '../model';
 import { TimeUtils, clsx, DateUtils } from '../util';
 import { Flex } from './common';
 
@@ -63,17 +64,21 @@ const DatelineText = styled.div`
 `;
 
 const Dateline: React.FC = () => {
-  const calendarState = useCalendarState();
+  const calendarState: TCalendarStateForApp = useCalendarState();
 
-  const steps = TimeUtils.calcTimeStep(calendarState.dayTime.end, calendarState.dayTime.start, calendarState.duration);
-  const maxGridHeight = steps * CONFIG.CSS.LINE_HEIGHT;
+  const steps: number = TimeUtils.calcTimeStep(
+    calendarState.dayTime.end,
+    calendarState.dayTime.start,
+    calendarState.duration
+  );
+  const maxGridHeight: number = steps * CONFIG.CSS.LINE_HEIGHT;
 
   const render = useCallback(() => {
-    const dateline = DateUtils.getDateline(calendarState.currentDate, calendarState.viewMode);
+    const dateline: TDateline = DateUtils.getDateline(calendarState.currentDate, calendarState.viewMode);
 
     return dateline.map((d, i) => {
       const isToday: boolean = DateUtils.isEqual(d.origin, calendarState.todayGlobalIns);
-      const classname = clsx({
+      const classname: string = clsx({
         today: isToday,
       });
       return (

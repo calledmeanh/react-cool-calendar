@@ -1,7 +1,7 @@
 import React from 'react';
 import { CONFIG } from '../constant';
 import { useCalendarDispatch, useCalendarState } from '../hook';
-import { EAction, TViewMode } from '../model';
+import { EAction, TCalendarAction, TCalendarStateForApp, TViewMode } from '../model';
 import { ElementUtils } from '../util';
 import { Select, Option } from './common';
 
@@ -13,11 +13,11 @@ const options: Opts = [
 ];
 
 const ViewMode: React.FC = () => {
-  const calendarState = useCalendarState();
-  const dispath = useCalendarDispatch();
+  const calendarState: TCalendarStateForApp = useCalendarState();
+  const dispath: React.Dispatch<TCalendarAction> = useCalendarDispatch();
 
   const onSelectMode = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = ElementUtils.getValueFromUserInput(e);
+    const value: string = ElementUtils.getValueFromUserInput(e);
     dispath({ type: EAction.CHANGE_MODE, payload: value });
   };
 
