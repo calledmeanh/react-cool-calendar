@@ -80,7 +80,9 @@ const Grid: React.FC = () => {
   useEffect(() => {
     if (gridRef && gridRef.current && gridRef.current.parentElement) {
       setGridWidth(gridRef.current.offsetWidth);
-      setScrollEl(gridRef.current.parentElement.parentElement as HTMLDivElement);
+
+      const scrollEl = ElementUtils.getParentNodeFrom(gridRef.current, CONFIG.DATA_IDTF.SCROLLING);
+      setScrollEl(scrollEl);
     }
   }, []);
 
