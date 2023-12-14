@@ -38,81 +38,63 @@ const Appointment: React.FC<TAppointment> = ({ scrollEl, widthTimeline, mousePos
 
   const dateline: TDateline = DateUtils.getDateline(calendarState.currentDate, calendarState.viewMode);
 
-  const render = (apptProp: TAppointmentForUser[]) => {
-    // appt origin
-    let apptCopy: TAppointmentForUser[] = apptProp.slice();
+  const renderByDayMode = (apptProp: TAppointmentForUser[]) => {
+    const apptByDate: TAppointmentForUser[] = apptProp.filter((a) =>
+      DateUtils.isEqual(calendarState.currentDate, a.createdAt)
+    );
 
-    if (calendarState.viewMode === 'DAY') {
-      const apptByDate: TAppointmentForUser[] = apptCopy.filter((a) => {
-        return DateUtils.isEqual(a.createdAt, calendarState.currentDate);
+    const apptReordered: TAppointmentForApp[] = AppointmentUtils.layoutAlgorithm(apptByDate, {
+      daytimeStart: calendarState.dayTime.start,
+      duration: calendarState.duration,
+      columnWidth: widthTimeline,
+      weekcolumnIndex: 0,
+    });
+
+    return apptReordered;
+  };
+
+  const renderByWeekMode = (apptProp: TAppointmentForUser[]) => {
+    const apptReordered: TAppointmentForApp[] = [];
+
+    // iterate over the array to sort the appointment's "createdAt" attribute relative to the column
+    const apptByWeek: TAppointmentForUser[][] = [];
+    dateline.forEach((d) => {
+      const apptCell: TAppointmentForUser[] = [];
+      apptProp.forEach((a) => {
+        const res: boolean = DateUtils.isEqual(d.origin, a.createdAt);
+        if (res) apptCell.push(a);
       });
+      apptByWeek.push(apptCell);
+    });
 
-      return AppointmentUtils.layoutAlgorithm(apptByDate, {
+    // iterate over the 2D-array and convert it to 1D-array with applied "layout algorithm"
+    apptByWeek.forEach((ca, i) => {
+      const apptReodered: TAppointmentForApp[] = AppointmentUtils.layoutAlgorithm(ca, {
         daytimeStart: calendarState.dayTime.start,
         duration: calendarState.duration,
         columnWidth: widthTimeline,
-        weekcolumnIndex: 0,
-      }).map((appt: TAppointmentForApp) => {
-        return (
-          <ApptBooking
-            key={appt.id}
-            value={appt}
-            scrollEl={scrollEl}
-            widthTimeline={widthTimeline}
-            mousePosition={mousePosition}
-            onPressAppt={onPressAppt}
-            onReleaseAppt={onReleaseAppt}
-            onFireEvent={onFireEvent}
-          />
-        );
+        weekcolumnIndex: i,
       });
-    } else if (calendarState.viewMode === 'WEEK') {
-      // iterate over the array to sort the appointment's "createdAt" attribute relative to the column
-      const apptByGrid: TAppointmentForUser[][] = [];
-      dateline.forEach((d) => {
-        const apptCell: TAppointmentForUser[] = [];
-        apptCopy.forEach((a) => {
-          const res: boolean = DateUtils.isEqual(d.origin, a.createdAt);
-          if (res) apptCell.push(a);
-        });
-        apptByGrid.push(apptCell);
-      });
+      apptReordered.push(...apptReodered);
+    });
 
-      // iterate over the 2D-array and convert it to 1D-array with applied "layout algorithm"
-      const apptByWeek: TAppointmentForApp[] = [];
-      apptByGrid.forEach((ca, i) => {
-        const apptReodered: TAppointmentForApp[] = AppointmentUtils.layoutAlgorithm(ca, {
-          daytimeStart: calendarState.dayTime.start,
-          duration: calendarState.duration,
-          columnWidth: widthTimeline,
-          weekcolumnIndex: i,
-        });
-        apptByWeek.push(...apptReodered);
-      });
-
-      return apptByWeek.map((appt: TAppointmentForApp) => {
-        return (
-          <ApptBooking
-            key={appt.id}
-            value={appt}
-            scrollEl={scrollEl}
-            widthTimeline={widthTimeline}
-            mousePosition={mousePosition}
-            onPressAppt={onPressAppt}
-            onReleaseAppt={onReleaseAppt}
-            onFireEvent={onFireEvent}
-          />
-        );
-      });
-    }
+    return apptReordered;
   };
 
-  const onPressAppt = (value: TAppointmentForApp) => {
+  const render = (apptProp: TAppointmentForUser[]) => {
+    let apptRender: TAppointmentForApp[] = [];
+    if (calendarState.viewMode === 'DAY') apptRender = renderByDayMode(apptProp);
+    else if (calendarState.viewMode === 'WEEK') apptRender = renderByWeekMode(apptProp);
+
+    return apptRender;
+  };
+
+  const onPressApptBooking = (value: TAppointmentForApp) => {
     if (value.id) setApptClone(value);
     calendarState.apptClick && calendarState.apptClick(value);
   };
 
-  const onReleaseAppt = (id: string, startTime: number, duration: number) => {
+  const onReleaseApptBooking = (id: string, startTime: number, duration: number) => {
     if (apptClone && id && apptClone.id === id) {
       setApptClone(null);
     }
@@ -136,14 +118,26 @@ const Appointment: React.FC<TAppointment> = ({ scrollEl, widthTimeline, mousePos
       }
     }
     dispath({ type: EAction.UPDATE_APPT, payload: apptCopy });
-
     calendarState.apptChange && calendarState.apptChange(apptCopy);
   };
 
+  const onReleaseAppt = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {};
+
   return (
-    <Wrapper data-idtf={CONFIG.DATA_IDTF.APPOINTMENT}>
+    <Wrapper data-idtf={CONFIG.DATA_IDTF.APPOINTMENT} onMouseUp={onReleaseAppt}>
       {apptClone && <ApptClone value={apptClone} />}
-      {render(calendarState.appointments)}
+      {render(calendarState.appointments).map((appt: TAppointmentForApp) => (
+        <ApptBooking
+          key={appt.id}
+          value={appt}
+          scrollEl={scrollEl}
+          widthTimeline={widthTimeline}
+          mousePosition={mousePosition}
+          onPressAppt={onPressApptBooking}
+          onReleaseAppt={onReleaseApptBooking}
+          onFireEvent={onFireEvent}
+        />
+      ))}
     </Wrapper>
   );
 };
