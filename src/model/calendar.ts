@@ -20,6 +20,8 @@ export type TCalendarStateForUser = {
 export type TCalendarStateForApp = TCalendarStateForUser & {
   todayGlobalIns: Dayjs;
   currentDate: Dayjs;
+
+  isFireEvent: boolean;
 };
 
 export type TAppointmentForUser = {
@@ -64,6 +66,7 @@ export enum EAction {
   NEXT_WEEK = 'NEXT_WEEK',
   GET_TODAY = 'GET_TODAY',
   UPDATE_APPT = 'UPDATE_APPT',
+  UPDATE_FIRE_EVENT = 'UPDATE_FIRE_EVENT',
 }
 
 export enum EViewMode {

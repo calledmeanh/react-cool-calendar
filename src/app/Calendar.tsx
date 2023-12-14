@@ -49,6 +49,8 @@ const Calendar: React.FC<TCalendarStateForUser> = (userProps) => {
     appointments: [...modifiedAppt],
     todayGlobalIns: dayjs(),
     currentDate: dayjs(),
+
+    isFireEvent: false
   };
   return (
     <CalendarProvider initialState={appProps}>

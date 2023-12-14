@@ -28,10 +28,9 @@ type TAppointment = {
   scrollEl: HTMLDivElement | null;
   widthTimeline: number;
   mousePosition: { top: number; left: number; pageY: number; pageX: number };
-  onFireEvent: (value: boolean) => void;
 };
 
-const Appointment: React.FC<TAppointment> = ({ scrollEl, widthTimeline, mousePosition, onFireEvent }) => {
+const Appointment: React.FC<TAppointment> = ({ scrollEl, widthTimeline, mousePosition }) => {
   const calendarState: TCalendarStateForApp = useCalendarState();
   const dispath: React.Dispatch<TCalendarAction> = useCalendarDispatch();
   const [apptClone, setApptClone] = useState<TAppointmentForApp | null>(null);
@@ -135,7 +134,6 @@ const Appointment: React.FC<TAppointment> = ({ scrollEl, widthTimeline, mousePos
           mousePosition={mousePosition}
           onPressAppt={onPressApptBooking}
           onReleaseAppt={onReleaseApptBooking}
-          onFireEvent={onFireEvent}
         />
       ))}
     </Wrapper>

@@ -1,8 +1,8 @@
 import React, { useEffect, useCallback, useRef, useState } from 'react';
 import { styled } from 'styled-components';
 import { CONFIG } from '../constant';
-import { useCalendarState } from '../hook';
-import { EStatus, TAppointmentForApp, TCalendarStateForApp } from '../model';
+import { useCalendarDispatch, useCalendarState } from '../hook';
+import { EAction, EStatus, TAppointmentForApp, TCalendarAction, TCalendarStateForApp } from '../model';
 import { AppointmentUtils, ElementUtils, TimeUtils } from '../util';
 import { Flex } from './common';
 
@@ -53,7 +53,6 @@ type TApptBooking = {
   widthTimeline: number;
   onPressAppt: (value: TAppointmentForApp) => void;
   onReleaseAppt: (id: string, startTime: number, duration: number) => void;
-  onFireEvent: (value: boolean) => void;
 };
 
 const ApptBooking: React.FC<TApptBooking> = ({
@@ -63,9 +62,9 @@ const ApptBooking: React.FC<TApptBooking> = ({
   widthTimeline,
   onPressAppt,
   onReleaseAppt,
-  onFireEvent,
 }) => {
   const calendarState: TCalendarStateForApp = useCalendarState();
+  const dispath: React.Dispatch<TCalendarAction> = useCalendarDispatch();
 
   // initial position when calculated by the layout algorithm
   const [position, setPosition] = useState({ top: value.top, left: value.left });
@@ -122,7 +121,7 @@ const ApptBooking: React.FC<TApptBooking> = ({
   const onStartDragging = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     preventDragEventRef.current = TimeUtils.wrapperSetTimeout(() => {
       isDragRef.current = true;
-      onFireEvent(true);
+      dispath({ type: EAction.UPDATE_FIRE_EVENT, payload: true });
       (e.target as HTMLDivElement).classList.add('drag');
     }, 250);
 
@@ -144,7 +143,7 @@ const ApptBooking: React.FC<TApptBooking> = ({
     if (isDragRef.current === false) preventDragEventRef.current && preventDragEventRef.current();
     else {
       isDragRef.current = false;
-      onFireEvent(false);
+      dispath({ type: EAction.UPDATE_FIRE_EVENT, payload: false });
       (e.target as HTMLDivElement).classList.remove('drag');
       onReleaseAppt(value.id, startTime, value.duration);
     }
@@ -246,7 +245,7 @@ const ApptBooking: React.FC<TApptBooking> = ({
   const onStartResize = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation(); // prevent to fire a drag event on parent div
     isResizeRef.current = true;
-    onFireEvent(true);
+    dispath({ type: EAction.UPDATE_FIRE_EVENT, payload: true });
     if (e.currentTarget && e.currentTarget.parentElement) {
       e.currentTarget.parentElement.classList.add('resize');
     }
@@ -263,7 +262,7 @@ const ApptBooking: React.FC<TApptBooking> = ({
   const onEndResize = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation(); // prevent to fire a drag event on parent div
     isResizeRef.current = false;
-    onFireEvent(false);
+    dispath({ type: EAction.UPDATE_FIRE_EVENT, payload: false });
     if (e.currentTarget && e.currentTarget.parentElement) {
       e.currentTarget.parentElement.classList.remove('resize');
     }
