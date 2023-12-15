@@ -11,8 +11,9 @@ export const Select = styled.select<{ $padding: TStylePadding; $isborderradius?:
   cursor: pointer;
   font-size: ${CONFIG.CSS.FONT_SIZE_MEDIUM}px;
   text-transform: capitalize;
+  transition: all 0.15s cubic-bezier(0, 0, 1, 1);
   &:hover {
-    box-shadow: 0 2px 10px 0 ${CONFIG.CSS.BOX_SHADOW_COLOR};
+    box-shadow: 0 3px 5px 0 ${CONFIG.CSS.BOX_SHADOW_COLOR};
   }
   &:active {
     box-shadow: none;
