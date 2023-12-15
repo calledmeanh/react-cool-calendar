@@ -3,7 +3,7 @@ import { styled } from "styled-components";
 import { CONFIG } from "../constant";
 import { useCalendarDispatch, useCalendarState } from "../hook";
 import { EAction, EStatus, TAppointmentForApp, TCalendarAction, TCalendarStateForApp } from "../model";
-import { AppointmentUtils, ElementUtils, TimeUtils } from "../util";
+import { AppointmentUtils, ElementUtils, TimeUtils, clsx } from "../util";
 import { Flex } from "./common";
 
 const Wrapper = styled.div<{ $status: EStatus }>`
@@ -22,13 +22,16 @@ const Wrapper = styled.div<{ $status: EStatus }>`
   &:hover {
     box-shadow: 0 3px 5px 0 ${CONFIG.CSS.BOX_SHADOW_COLOR};
   }
-  &.drag {
-    box-shadow: 0 10px 5px 0 ${CONFIG.CSS.BOX_SHADOW_COLOR};
-    cursor: move;
+  &.drag,
+  &.resize {
+    box-shadow: 0 5px 8px 3px ${CONFIG.CSS.BOX_SHADOW_COLOR};
     z-index: 50;
   }
+  &.drag {
+    cursor: move;
+  }
   &.resize {
-    z-index: 50;
+    cursor: row-resize;
   }
 `;
 
@@ -68,6 +71,7 @@ const ApptBooking: React.FC<TApptBooking> = ({ value, scrollEl, mousePosition, w
   const origDeltaXRef: React.MutableRefObject<number> = useRef(0);
   const origDeltaYRef: React.MutableRefObject<number> = useRef(0);
   const lastMouseTopPositionRef: React.MutableRefObject<number> = useRef(0);
+  const sizeBackerRef: React.MutableRefObject<number> = useRef(0);
   const topEdgeRef: React.MutableRefObject<number> = useRef(0);
   const calendarRef: React.MutableRefObject<HTMLDivElement | null> = useRef<HTMLDivElement | null>(null);
   const removeAutoScrollIntervalRef: React.MutableRefObject<Function> = useRef(() => {});
@@ -103,11 +107,29 @@ const ApptBooking: React.FC<TApptBooking> = ({ value, scrollEl, mousePosition, w
   const maxGridHeight: number = steps * CONFIG.CSS.LINE_HEIGHT;
 
   /* handle drag event */
-  const onStartDragging = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    preventDragEventRef.current = TimeUtils.wrapperSetTimeout(() => {
+  const updateDraggingState = (value: boolean) => {
+    if (value) {
       isDragRef.current = true;
       dispath({ type: EAction.UPDATE_FIRE_EVENT, payload: true });
-      (e.target as HTMLDivElement).classList.add("drag");
+    } else {
+      isDragRef.current = false;
+      dispath({ type: EAction.UPDATE_FIRE_EVENT, payload: false });
+    }
+  };
+
+  const handleMouseOutsideWhileDragging = (e: MouseEvent) => {
+    e.stopPropagation();
+
+    if (isDragRef.current) {
+      onReleaseAppt(value.id, startTime, value.duration);
+
+      updateDraggingState(false);
+    }
+  };
+
+  const onStartDragging = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    preventDragEventRef.current = TimeUtils.wrapperSetTimeout(() => {
+      updateDraggingState(true);
     }, 250);
 
     origDeltaXRef.current = mousePosition.left - position.left;
@@ -118,126 +140,153 @@ const ApptBooking: React.FC<TApptBooking> = ({ value, scrollEl, mousePosition, w
     calendarRef.current = ElementUtils.getParentNodeFrom(e.currentTarget, CONFIG.DATA_IDTF.CALENDAR) as HTMLDivElement | null;
 
     onPressAppt({ ...value, top: position.top, left: position.left });
-  };
 
-  const onEndDragging = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    // if still false means the user is not drag at all, just click
-    if (isDragRef.current === false) preventDragEventRef.current && preventDragEventRef.current();
-    else {
-      isDragRef.current = false;
-      dispath({ type: EAction.UPDATE_FIRE_EVENT, payload: false });
-      (e.target as HTMLDivElement).classList.remove("drag");
-      onReleaseAppt(value.id, startTime, value.duration);
-    }
+    // handle when mouse is outside a component while mouse-down is still happening and suddenly mouse-up comes in
+    document.addEventListener("mouseup", handleMouseOutsideWhileDragging, { once: true });
   };
 
   const onDragging = useCallback(() => {
-    let currScrollBarTop = scrollEl?.scrollTop || 0;
-    let curApptTop = position.top;
+    if (isDragRef.current) {
+      let currScrollBarTop = scrollEl?.scrollTop || 0;
+      let curApptTop = position.top;
 
-    // touch the edge of top
-    if (distanceUp <= 0) {
-      setPosition({
-        top: 0,
-        left: distanceLeft,
-      });
-    }
-    // touch the edge of botoom
-    else if (distanceDown >= maxGridHeight) {
-      setPosition({
-        top: maxGridHeight - value.height,
-        left: distanceLeft,
-      });
-    } else {
-      /* auto scroll to top while dragging if match condition */
-      // ================ TOP ================
-      if (floorY - autoScrollThresholdRef.current <= topEdgeRef.current && scrollEl) {
-        removeAutoScrollIntervalRef.current && removeAutoScrollIntervalRef.current();
-
-        removeAutoScrollIntervalRef.current = TimeUtils.wrapperSetInterval(() => {
-          currScrollBarTop -= CONFIG.SPEED;
-          curApptTop -= CONFIG.SPEED;
-
-          setPosition((prev) => ({
-            ...prev,
-            top: curApptTop,
-          }));
-
-          if (currScrollBarTop <= 0 || position.top <= 0) {
-            currScrollBarTop = 0;
-            setPosition((prev) => ({
-              ...prev,
-              top: 0,
-            }));
-
-            removeAutoScrollIntervalRef.current && removeAutoScrollIntervalRef.current();
-          }
-
-          scrollEl.scrollTop = currScrollBarTop;
-        }, CONFIG.FPS);
-      }
-      // ================ BOTTOM ================
-      else if (floorY + autoScrollThresholdRef.current >= calendarHeight && scrollEl) {
-        removeAutoScrollIntervalRef.current && removeAutoScrollIntervalRef.current();
-
-        removeAutoScrollIntervalRef.current = TimeUtils.wrapperSetInterval(() => {
-          currScrollBarTop += CONFIG.SPEED;
-          curApptTop += CONFIG.SPEED;
-          setPosition((prev) => ({
-            ...prev,
-            top: curApptTop,
-          }));
-
-          if (currScrollBarTop + scrollBarHeight >= maxScrollTop || position.top + value.height >= maxGridHeight) {
-            currScrollBarTop = maxScrollTop - scrollBarHeight;
-            setPosition((prev) => ({
-              ...prev,
-              top: maxGridHeight - value.height,
-            }));
-            removeAutoScrollIntervalRef.current && removeAutoScrollIntervalRef.current();
-          }
-
-          scrollEl.scrollTop = currScrollBarTop;
-        }, CONFIG.FPS);
-      } else {
-        removeAutoScrollIntervalRef.current && removeAutoScrollIntervalRef.current();
+      // touch the edge of top
+      if (distanceUp <= 0) {
         setPosition({
-          top: distanceUp,
+          top: 0,
           left: distanceLeft,
         });
       }
+      // touch the edge of botoom
+      else if (distanceDown >= maxGridHeight) {
+        setPosition({
+          top: maxGridHeight - value.height,
+          left: distanceLeft,
+        });
+      } else {
+        /* auto scroll to top while dragging if match condition */
+        // ================ TOP ================
+        if (floorY - autoScrollThresholdRef.current <= topEdgeRef.current && scrollEl) {
+          removeAutoScrollIntervalRef.current && removeAutoScrollIntervalRef.current();
+
+          removeAutoScrollIntervalRef.current = TimeUtils.wrapperSetInterval(() => {
+            currScrollBarTop -= CONFIG.SPEED;
+            curApptTop -= CONFIG.SPEED;
+
+            setPosition((prev) => ({
+              ...prev,
+              top: curApptTop,
+            }));
+
+            if (currScrollBarTop <= 0 || position.top <= 0) {
+              currScrollBarTop = 0;
+              setPosition((prev) => ({
+                ...prev,
+                top: 0,
+              }));
+
+              removeAutoScrollIntervalRef.current && removeAutoScrollIntervalRef.current();
+            }
+
+            scrollEl.scrollTop = currScrollBarTop;
+          }, CONFIG.FPS);
+        }
+        // ================ BOTTOM ================
+        else if (floorY + autoScrollThresholdRef.current >= calendarHeight && scrollEl) {
+          removeAutoScrollIntervalRef.current && removeAutoScrollIntervalRef.current();
+
+          removeAutoScrollIntervalRef.current = TimeUtils.wrapperSetInterval(() => {
+            currScrollBarTop += CONFIG.SPEED;
+            curApptTop += CONFIG.SPEED;
+            setPosition((prev) => ({
+              ...prev,
+              top: curApptTop,
+            }));
+
+            if (currScrollBarTop + scrollBarHeight >= maxScrollTop || position.top + value.height >= maxGridHeight) {
+              currScrollBarTop = maxScrollTop - scrollBarHeight;
+              setPosition((prev) => ({
+                ...prev,
+                top: maxGridHeight - value.height,
+              }));
+              removeAutoScrollIntervalRef.current && removeAutoScrollIntervalRef.current();
+            }
+
+            scrollEl.scrollTop = currScrollBarTop;
+          }, CONFIG.FPS);
+        } else {
+          removeAutoScrollIntervalRef.current && removeAutoScrollIntervalRef.current();
+          setPosition({
+            top: distanceUp,
+            left: distanceLeft,
+          });
+        }
+      }
     }
   }, [value.height, autoScrollThresholdRef, floorY, position.top, scrollEl, calendarHeight, distanceDown, distanceLeft, distanceUp, maxGridHeight, maxScrollTop, scrollBarHeight]);
+
+  const onEndDragging = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    // if still false means the user is not drag at all, just click
+    if (!isDragRef.current) preventDragEventRef.current && preventDragEventRef.current();
+    else {
+      onReleaseAppt(value.id, startTime, value.duration);
+
+      updateDraggingState(false);
+    }
+  };
   /* handle drag event */
 
   /* handle resize event */
+  const updateResizeState = (value: boolean) => {
+    if (value) {
+      isResizeRef.current = true;
+      dispath({ type: EAction.UPDATE_FIRE_EVENT, payload: true });
+    } else {
+      isResizeRef.current = false;
+      dispath({ type: EAction.UPDATE_FIRE_EVENT, payload: false });
+    }
+  };
+
+  const handleMouseOutsideWhileResizing = (e: MouseEvent) => {
+    e.stopPropagation();
+
+    if (isResizeRef.current) {
+      const newDuration: number = TimeUtils.convertHeightToDuration(sizeBackerRef.current + 1, CONFIG.CSS.LINE_HEIGHT, calendarState.duration);
+      onReleaseAppt(value.id, startTime, newDuration);
+
+      updateResizeState(false);
+    }
+  };
+
   const onStartResize = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation(); // prevent to fire a drag event on parent div
-    isResizeRef.current = true;
-    dispath({ type: EAction.UPDATE_FIRE_EVENT, payload: true });
-    if (e.currentTarget && e.currentTarget.parentElement) {
-      e.currentTarget.parentElement.classList.add("resize");
-    }
 
     lastMouseTopPositionRef.current = mousePosition.top;
+
+    updateResizeState(true);
+
+    // handle when mouse is outside a component while mouse-down is still happening and suddenly mouse-up comes in
+    document.addEventListener("mouseup", handleMouseOutsideWhileResizing, { once: true });
   };
 
   const onResizing = useCallback(() => {
-    const distance: number = lastMouseTopPositionRef.current - mousePosition.top;
-    const newHeight: number = value.height - distance;
-    setSize((s) => ({ ...s, height: newHeight }));
+    if (isResizeRef.current) {
+      const distance: number = lastMouseTopPositionRef.current - mousePosition.top;
+      const newHeight: number = value.height - distance;
+      sizeBackerRef.current = newHeight;
+      setSize((s) => ({ ...s, height: newHeight }));
+    }
   }, [mousePosition.top, value.height]);
 
   const onEndResize = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation(); // prevent to fire a drag event on parent div
-    isResizeRef.current = false;
-    dispath({ type: EAction.UPDATE_FIRE_EVENT, payload: false });
-    if (e.currentTarget && e.currentTarget.parentElement) {
-      e.currentTarget.parentElement.classList.remove("resize");
-    }
 
-    const newDuration: number = TimeUtils.convertHeightToDuration(size.height + 1, CONFIG.CSS.LINE_HEIGHT, calendarState.duration);
-    onReleaseAppt(value.id, startTime, newDuration);
+    if (isResizeRef.current) {
+      const newDuration: number = TimeUtils.convertHeightToDuration(size.height + 1, CONFIG.CSS.LINE_HEIGHT, calendarState.duration);
+      onReleaseAppt(value.id, startTime, newDuration);
+
+      updateResizeState(false);
+    }
   };
   /* handle resize event */
 
@@ -249,12 +298,14 @@ const ApptBooking: React.FC<TApptBooking> = ({ value, scrollEl, mousePosition, w
 
   // when move mouse around
   useEffect(() => {
-    if (isDragRef.current) {
-      onDragging();
-    } else if (isResizeRef.current) {
-      onResizing();
-    }
+    onDragging();
+    onResizing();
   }, [onDragging, onResizing]);
+
+  const classname: string = clsx({
+    drag: isDragRef.current,
+    resize: isResizeRef.current,
+  });
 
   return (
     <Wrapper
@@ -265,6 +316,7 @@ const ApptBooking: React.FC<TApptBooking> = ({ value, scrollEl, mousePosition, w
         width: updatedWidth,
         height: updatedHeight,
       }}
+      className={classname}
       onMouseDown={onStartDragging}
       onMouseUp={onEndDragging}
     >

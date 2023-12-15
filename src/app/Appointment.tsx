@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { styled } from "styled-components";
 import { CONFIG } from "../constant";
 import { useCalendarDispatch, useCalendarState } from "../hook";
@@ -25,7 +25,10 @@ type TAppointment = {
 const Appointment: React.FC<TAppointment> = ({ scrollEl, widthTimeline, mousePosition }) => {
   const calendarState: TCalendarStateForApp = useCalendarState();
   const dispath: React.Dispatch<TCalendarAction> = useCalendarDispatch();
+
   const [apptClone, setApptClone] = useState<TAppointmentForApp | null>(null);
+  const cloneBackerRef: React.MutableRefObject<TAppointmentForApp> = useRef({} as TAppointmentForApp);
+  const isPressRef: React.MutableRefObject<boolean> = useRef(false);
 
   const dateline: TDateline = DateUtils.getDateline(calendarState.currentDate, calendarState.viewMode);
 
@@ -79,7 +82,11 @@ const Appointment: React.FC<TAppointment> = ({ scrollEl, widthTimeline, mousePos
   };
 
   const onPressApptBooking = (value: TAppointmentForApp) => {
-    if (value.id) setApptClone(value);
+    if (value.id) {
+      setApptClone(value);
+      cloneBackerRef.current = value;
+      isPressRef.current = true;
+    }
     calendarState.apptClick && calendarState.apptClick(value);
   };
 
@@ -108,12 +115,16 @@ const Appointment: React.FC<TAppointment> = ({ scrollEl, widthTimeline, mousePos
     }
     dispath({ type: EAction.UPDATE_APPT, payload: apptCopy });
     calendarState.apptChange && calendarState.apptChange(apptCopy);
+    isPressRef.current = false;
   };
 
-  const onReleaseAppt = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {};
+  const onMouseEnter = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (isPressRef.current) setApptClone(cloneBackerRef.current);
+  };
+  const onMouseLeave = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => setApptClone(null);
 
   return (
-    <Wrapper data-idtf={CONFIG.DATA_IDTF.APPOINTMENT} onMouseUp={onReleaseAppt}>
+    <Wrapper data-idtf={CONFIG.DATA_IDTF.APPOINTMENT} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
       {apptClone && <ApptClone value={apptClone} />}
       {render(calendarState.appointments).map((appt: TAppointmentForApp) => (
         <ApptBooking key={appt.id} value={appt} scrollEl={scrollEl} widthTimeline={widthTimeline} mousePosition={mousePosition} onPressAppt={onPressApptBooking} onReleaseAppt={onReleaseApptBooking} />
