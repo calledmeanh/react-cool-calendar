@@ -1,6 +1,6 @@
-import React, { Reducer, createContext, useContext, useReducer, ReactNode } from 'react';
-import { TCalendarStateForApp, TCalendarAction, EAction } from '../model';
-import { ConfigUtils } from '../util';
+import React, { Reducer, createContext, useContext, useReducer, ReactNode } from "react";
+import { TCalendarStateForApp, TCalendarAction, EAction } from "../model";
+import { ConfigUtils } from "../util";
 
 const CalendarContext = createContext<TCalendarStateForApp>(ConfigUtils.createExampleCalendarState());
 const CalendarDispatchContext = createContext<React.Dispatch<TCalendarAction>>((value: TCalendarAction) => {});
@@ -48,7 +48,7 @@ function calendarReducer(state: TCalendarStateForApp, action: TCalendarAction): 
     case EAction.UPDATE_FIRE_EVENT:
       return { ...state, isFireEvent: action.payload };
     default: {
-      throw Error('Unknown action: ' + action.type);
+      throw Error("Unknown action: " + action.type);
     }
   }
 }

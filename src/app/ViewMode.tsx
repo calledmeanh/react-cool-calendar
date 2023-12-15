@@ -1,14 +1,14 @@
-import React from 'react';
-import { CONFIG } from '../constant';
-import { useCalendarDispatch, useCalendarState } from '../hook';
-import { EAction, TCalendarAction, TCalendarStateForApp, TViewMode } from '../model';
-import { ElementUtils } from '../util';
-import { Select, Option } from './common';
+import React from "react";
+import { CONFIG } from "../constant";
+import { useCalendarDispatch, useCalendarState } from "../hook";
+import { EAction, TCalendarAction, TCalendarStateForApp, TViewMode } from "../model";
+import { ElementUtils } from "../util";
+import { Select, Option } from "./common";
 
 type Opts = { value: TViewMode; text: string }[];
 const options: Opts = [
-  { value: 'DAY', text: 'day' },
-  { value: 'WEEK', text: 'week' },
+  { value: "DAY", text: "day" },
+  { value: "WEEK", text: "week" },
   // { value: 'MONTH', text: 'month' },
 ];
 
@@ -22,13 +22,7 @@ const ViewMode: React.FC = () => {
   };
 
   return (
-    <Select
-      data-idtf={CONFIG.DATA_IDTF.VIEWMODE}
-      $padding={[8, 12]}
-      $isborderradius
-      value={calendarState.viewMode}
-      onChange={onSelectMode}
-    >
+    <Select data-idtf={CONFIG.DATA_IDTF.VIEWMODE} $padding={[8, 12]} $isborderradius value={calendarState.viewMode} onChange={onSelectMode}>
       {options.map((o, i) => {
         return (
           <Option key={i} value={o.value}>

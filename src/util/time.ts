@@ -1,5 +1,5 @@
-import { CONFIG } from '../constant';
-import { EViewMode, TTime } from '../model';
+import { CONFIG } from "../constant";
+import { EViewMode, TTime } from "../model";
 
 export const TimeUtils = {
   calcDistanceBetweenTimes,
@@ -56,7 +56,7 @@ function convertSecondsToHourString(seconds: number, timeType = 24): string {
   let timeString: string = `${formatHourOrMinute(time.hour)}:${formatHourOrMinute(time.minute)}`;
 
   if (timeType === 12) {
-    timeString = `${timeString} ${seconds <= CONFIG.HAFT_DAY_SECONDS ? 'AM' : 'PM'}`;
+    timeString = `${timeString} ${seconds <= CONFIG.HAFT_DAY_SECONDS ? "AM" : "PM"}`;
   }
 
   return timeString;
@@ -72,7 +72,7 @@ function covertSecondsToHourMinute(seconds: number): { hour: number; minute: num
 }
 
 function formatHourOrMinute(data: number): string {
-  return ('0' + data).slice(-2);
+  return ("0" + data).slice(-2);
 }
 
 function convertHeightToDuration(height: number, lineHeight: number, duration: number): number {
@@ -108,15 +108,10 @@ function checkWorkingTime(dayTime: TTime, workingTime: TTime, current: number): 
   return false;
 }
 
-function checkGroupTime(
-  groupTimeDuration: number,
-  duration: number,
-  timeJumpIndex: number,
-  groupBy: 'bottom' | 'top' = 'bottom'
-): boolean {
+function checkGroupTime(groupTimeDuration: number, duration: number, timeJumpIndex: number, groupBy: "bottom" | "top" = "bottom"): boolean {
   const groupStep: number = groupTimeDuration / duration;
   let index: number = timeJumpIndex + 1;
-  if (groupBy === 'top') {
+  if (groupBy === "top") {
     index = timeJumpIndex;
   }
   if (index % groupStep === 0) {
@@ -126,7 +121,7 @@ function checkGroupTime(
 }
 
 function parseDurationToViewMode(duration: number): string {
-  let res: string = '';
+  let res: string = "";
   switch (duration) {
     case CONFIG.ZOOMMODE_LARGE:
       res = EViewMode.LARGE;

@@ -1,6 +1,6 @@
-import styled from 'styled-components';
-import { CONFIG } from '../../constant';
-import { TStyleBorderRadius, TStylePadding } from '../../model';
+import styled from "styled-components";
+import { CONFIG } from "../../constant";
+import { TStyleBorderRadius, TStylePadding } from "../../model";
 
 export const Select = styled.select<{ $padding: TStylePadding; $isborderradius?: TStyleBorderRadius }>`
   border-radius: ${(props) => (props.$isborderradius ? `4px` : 0)};

@@ -1,4 +1,4 @@
-import { Dayjs } from 'dayjs';
+import { Dayjs } from "dayjs";
 
 export type TCalendarStateForUser = {
   duration: number;
@@ -45,7 +45,7 @@ export type TTime = {
   end: number;
 };
 
-export type TViewMode = 'DAY' | 'WEEK' | 'MONTH';
+export type TViewMode = "DAY" | "WEEK" | "MONTH";
 
 export type TDay = { number: string; text: string; origin: Dayjs };
 export type TDateline = TDay[];
@@ -58,26 +58,26 @@ export type TCalendarAction = {
 };
 
 export enum EAction {
-  CHANGE_MODE = 'CHANGE_MODE',
-  CHANGE_ZOOM = 'CHANGE_ZOOM',
-  PREV_DAY = 'PREV_DAY',
-  NEXT_DAY = 'NEXT_DAY',
-  PREV_WEEK = 'PREV_WEEK',
-  NEXT_WEEK = 'NEXT_WEEK',
-  GET_TODAY = 'GET_TODAY',
-  UPDATE_APPT = 'UPDATE_APPT',
-  UPDATE_FIRE_EVENT = 'UPDATE_FIRE_EVENT',
+  CHANGE_MODE = "CHANGE_MODE",
+  CHANGE_ZOOM = "CHANGE_ZOOM",
+  PREV_DAY = "PREV_DAY",
+  NEXT_DAY = "NEXT_DAY",
+  PREV_WEEK = "PREV_WEEK",
+  NEXT_WEEK = "NEXT_WEEK",
+  GET_TODAY = "GET_TODAY",
+  UPDATE_APPT = "UPDATE_APPT",
+  UPDATE_FIRE_EVENT = "UPDATE_FIRE_EVENT",
 }
 
 export enum EViewMode {
-  LARGE = 'LARGE',
-  SMALL = 'SMALL',
+  LARGE = "LARGE",
+  SMALL = "SMALL",
 }
 
 export enum EStatus {
-  BOOKED = 'BOOKED',
-  CONFIRMED = 'CONFIRMED',
-  ARRIVED = 'ARRIVED',
-  STARTED = 'STARTED',
-  NOSHOW = 'NOWSHOW',
+  BOOKED = "BOOKED",
+  CONFIRMED = "CONFIRMED",
+  ARRIVED = "ARRIVED",
+  STARTED = "STARTED",
+  NOSHOW = "NOWSHOW",
 }

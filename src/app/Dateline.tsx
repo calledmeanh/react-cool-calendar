@@ -1,10 +1,10 @@
-import React, { useCallback } from 'react';
-import styled from 'styled-components';
-import { CONFIG } from '../constant';
-import { useCalendarState } from '../hook';
-import { TCalendarStateForApp, TDateline } from '../model';
-import { TimeUtils, clsx, DateUtils } from '../util';
-import { Flex } from './common';
+import React, { useCallback } from "react";
+import styled from "styled-components";
+import { CONFIG } from "../constant";
+import { useCalendarState } from "../hook";
+import { TCalendarStateForApp, TDateline } from "../model";
+import { TimeUtils, clsx, DateUtils } from "../util";
+import { Flex } from "./common";
 
 const Wrapper = styled(Flex)`
   height: ${CONFIG.CSS.DATELINE_HEIGHT}px;
@@ -34,7 +34,7 @@ const DatelineHeader = styled(Flex)<{ $afterPseudoHeight: number }>`
     position: absolute;
     top: 0;
     right: 0;
-    content: '';
+    content: "";
     pointer-events: none;
   }
 `;
@@ -66,11 +66,7 @@ const DatelineText = styled.div`
 const Dateline: React.FC = () => {
   const calendarState: TCalendarStateForApp = useCalendarState();
 
-  const steps: number = TimeUtils.calcTimeStep(
-    calendarState.dayTime.end,
-    calendarState.dayTime.start,
-    calendarState.duration
-  );
+  const steps: number = TimeUtils.calcTimeStep(calendarState.dayTime.end, calendarState.dayTime.start, calendarState.duration);
   const maxGridHeight: number = steps * CONFIG.CSS.LINE_HEIGHT;
 
   const render = useCallback(() => {
@@ -82,7 +78,7 @@ const Dateline: React.FC = () => {
         today: isToday,
       });
       return (
-        <DatelineHeader key={i} $justify={'center'} $align={'center'} $afterPseudoHeight={maxGridHeight}>
+        <DatelineHeader key={i} $justify={"center"} $align={"center"} $afterPseudoHeight={maxGridHeight}>
           <DatelineNumber className={classname}>{d.number}</DatelineNumber>
           <DatelineText className={classname}>{d.text}</DatelineText>
         </DatelineHeader>

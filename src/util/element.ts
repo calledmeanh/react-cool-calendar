@@ -1,4 +1,4 @@
-import { CONFIG } from '../constant';
+import { CONFIG } from "../constant";
 
 export const ElementUtils = {
   getValueFromUserInput,
@@ -10,11 +10,11 @@ export const ElementUtils = {
  * get value from input or select element
  */
 function getValueFromUserInput(e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>): string {
-  return e && e.target ? e.target.value : '';
+  return e && e.target ? e.target.value : "";
 }
 
-function getOffsetToDocument(elem: any, dir: 'left' | 'top'): number {
-  const offset = dir === 'left' ? 'offsetLeft' : 'offsetTop';
+function getOffsetToDocument(elem: any, dir: "left" | "top"): number {
+  const offset = dir === "left" ? "offsetLeft" : "offsetTop";
   let value = 0;
   do {
     if (!isNaN(elem[offset])) {

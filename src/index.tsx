@@ -1,21 +1,21 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { TAppointmentForUser } from './model';
-import { ElementMocks } from './mock';
-import Calendar from './app/Calendar';
-import './index.css';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { TAppointmentForUser } from "./model";
+import { ElementMocks } from "./mock";
+import Calendar from "./app/Calendar";
+import "./index.css";
 
-const root: ReactDOM.Root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+const root: ReactDOM.Root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(
   <React.StrictMode>
-    <div style={{ width: '100vw', height: '100vh', padding: '24px' }}>
+    <div style={{ width: "100vw", height: "100vh", padding: "24px" }}>
       {/* Calendar should take props from user pass in, this value below is just for temporary */}
       <Calendar
         duration={30}
         timeType={24}
         groupTime={60}
         nowIndicator={true}
-        viewMode={'WEEK'}
+        viewMode={"WEEK"}
         dateFormat="MM/DD/YYYY"
         datetimeFormat="MM DD YYYY hh:mm:ss"
         timeFormat="hh:mm:ss"
@@ -31,5 +31,5 @@ root.render(
         }}
       />
     </div>
-  </React.StrictMode>
+  </React.StrictMode>,
 );

@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import { TStyleFlexDir, TStyleFlexJustify, TStyleFlexAlign } from '../../model';
+import styled from "styled-components";
+import { TStyleFlexDir, TStyleFlexJustify, TStyleFlexAlign } from "../../model";
 
 export const Flex = styled.div<{ $dir?: TStyleFlexDir; $justify?: TStyleFlexJustify; $align?: TStyleFlexAlign }>`
   display: flex;

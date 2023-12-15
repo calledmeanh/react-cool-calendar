@@ -1,10 +1,10 @@
-import React, { useEffect, useCallback, useRef, useState } from 'react';
-import { styled } from 'styled-components';
-import { CONFIG } from '../constant';
-import { useCalendarDispatch, useCalendarState } from '../hook';
-import { EAction, EStatus, TAppointmentForApp, TCalendarAction, TCalendarStateForApp } from '../model';
-import { AppointmentUtils, ElementUtils, TimeUtils } from '../util';
-import { Flex } from './common';
+import React, { useEffect, useCallback, useRef, useState } from "react";
+import { styled } from "styled-components";
+import { CONFIG } from "../constant";
+import { useCalendarDispatch, useCalendarState } from "../hook";
+import { EAction, EStatus, TAppointmentForApp, TCalendarAction, TCalendarStateForApp } from "../model";
+import { AppointmentUtils, ElementUtils, TimeUtils } from "../util";
+import { Flex } from "./common";
 
 const Wrapper = styled.div<{ $status: EStatus }>`
   background: ${(props) => AppointmentUtils.getApptColorByStatus(props.$status)};
@@ -55,14 +55,7 @@ type TApptBooking = {
   onReleaseAppt: (id: string, startTime: number, duration: number) => void;
 };
 
-const ApptBooking: React.FC<TApptBooking> = ({
-  value,
-  scrollEl,
-  mousePosition,
-  widthTimeline,
-  onPressAppt,
-  onReleaseAppt,
-}) => {
+const ApptBooking: React.FC<TApptBooking> = ({ value, scrollEl, mousePosition, widthTimeline, onPressAppt, onReleaseAppt }) => {
   const calendarState: TCalendarStateForApp = useCalendarState();
   const dispath: React.Dispatch<TCalendarAction> = useCalendarDispatch();
 
@@ -88,11 +81,7 @@ const ApptBooking: React.FC<TApptBooking> = ({
   const endTimeByDragging: number = startTime + ((value.height + 1) * calendarState.duration) / CONFIG.CSS.LINE_HEIGHT;
   const endTimeByResizing: number = startTime + ((size.height + 1) * calendarState.duration) / CONFIG.CSS.LINE_HEIGHT;
   const newStartTime: number = isDragRef.current ? startTime : value.startTime;
-  const newEndTime: number = isDragRef.current
-    ? endTimeByDragging
-    : isResizeRef.current
-    ? endTimeByResizing
-    : value.endTime;
+  const newEndTime: number = isDragRef.current ? endTimeByDragging : isResizeRef.current ? endTimeByResizing : value.endTime;
 
   const updatedStartTime: string = TimeUtils.convertSecondsToHourString(newStartTime);
   const updatedEndTime: string = TimeUtils.convertSecondsToHourString(newEndTime);
@@ -110,11 +99,7 @@ const ApptBooking: React.FC<TApptBooking> = ({
   const distanceLeft: number = mousePosition.left - origDeltaXRef.current;
   const distanceDown: number = mousePosition.top + (value.height - origDeltaYRef.current);
 
-  const steps: number = TimeUtils.calcTimeStep(
-    calendarState.dayTime.end,
-    calendarState.dayTime.start,
-    calendarState.duration
-  );
+  const steps: number = TimeUtils.calcTimeStep(calendarState.dayTime.end, calendarState.dayTime.start, calendarState.duration);
   const maxGridHeight: number = steps * CONFIG.CSS.LINE_HEIGHT;
 
   /* handle drag event */
@@ -122,18 +107,15 @@ const ApptBooking: React.FC<TApptBooking> = ({
     preventDragEventRef.current = TimeUtils.wrapperSetTimeout(() => {
       isDragRef.current = true;
       dispath({ type: EAction.UPDATE_FIRE_EVENT, payload: true });
-      (e.target as HTMLDivElement).classList.add('drag');
+      (e.target as HTMLDivElement).classList.add("drag");
     }, 250);
 
     origDeltaXRef.current = mousePosition.left - position.left;
     origDeltaYRef.current = mousePosition.top - position.top;
 
     // save data for later use
-    topEdgeRef.current = ElementUtils.getOffsetToDocument(e.currentTarget, 'top');
-    calendarRef.current = ElementUtils.getParentNodeFrom(
-      e.currentTarget,
-      CONFIG.DATA_IDTF.CALENDAR
-    ) as HTMLDivElement | null;
+    topEdgeRef.current = ElementUtils.getOffsetToDocument(e.currentTarget, "top");
+    calendarRef.current = ElementUtils.getParentNodeFrom(e.currentTarget, CONFIG.DATA_IDTF.CALENDAR) as HTMLDivElement | null;
 
     onPressAppt({ ...value, top: position.top, left: position.left });
   };
@@ -144,7 +126,7 @@ const ApptBooking: React.FC<TApptBooking> = ({
     else {
       isDragRef.current = false;
       dispath({ type: EAction.UPDATE_FIRE_EVENT, payload: false });
-      (e.target as HTMLDivElement).classList.remove('drag');
+      (e.target as HTMLDivElement).classList.remove("drag");
       onReleaseAppt(value.id, startTime, value.duration);
     }
   };
@@ -225,20 +207,7 @@ const ApptBooking: React.FC<TApptBooking> = ({
         });
       }
     }
-  }, [
-    value.height,
-    autoScrollThresholdRef,
-    floorY,
-    position.top,
-    scrollEl,
-    calendarHeight,
-    distanceDown,
-    distanceLeft,
-    distanceUp,
-    maxGridHeight,
-    maxScrollTop,
-    scrollBarHeight,
-  ]);
+  }, [value.height, autoScrollThresholdRef, floorY, position.top, scrollEl, calendarHeight, distanceDown, distanceLeft, distanceUp, maxGridHeight, maxScrollTop, scrollBarHeight]);
   /* handle drag event */
 
   /* handle resize event */
@@ -247,7 +216,7 @@ const ApptBooking: React.FC<TApptBooking> = ({
     isResizeRef.current = true;
     dispath({ type: EAction.UPDATE_FIRE_EVENT, payload: true });
     if (e.currentTarget && e.currentTarget.parentElement) {
-      e.currentTarget.parentElement.classList.add('resize');
+      e.currentTarget.parentElement.classList.add("resize");
     }
 
     lastMouseTopPositionRef.current = mousePosition.top;
@@ -264,14 +233,10 @@ const ApptBooking: React.FC<TApptBooking> = ({
     isResizeRef.current = false;
     dispath({ type: EAction.UPDATE_FIRE_EVENT, payload: false });
     if (e.currentTarget && e.currentTarget.parentElement) {
-      e.currentTarget.parentElement.classList.remove('resize');
+      e.currentTarget.parentElement.classList.remove("resize");
     }
 
-    const newDuration: number = TimeUtils.convertHeightToDuration(
-      size.height + 1,
-      CONFIG.CSS.LINE_HEIGHT,
-      calendarState.duration
-    );
+    const newDuration: number = TimeUtils.convertHeightToDuration(size.height + 1, CONFIG.CSS.LINE_HEIGHT, calendarState.duration);
     onReleaseAppt(value.id, startTime, newDuration);
   };
   /* handle resize event */
@@ -303,7 +268,7 @@ const ApptBooking: React.FC<TApptBooking> = ({
       onMouseDown={onStartDragging}
       onMouseUp={onEndDragging}
     >
-      <Content $dir={'column'}>
+      <Content $dir={"column"}>
         <div>
           {updatedStartTime}-{updatedEndTime}
         </div>

@@ -1,13 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
-import styled from 'styled-components';
-import { CONFIG } from '../constant';
-import { useCalendarState } from '../hook';
-import { TCalendarStateForApp, TDateline } from '../model';
-import { DateUtils, ElementUtils, TimeUtils } from '../util';
-import NowIndicator from './NowIndicator';
-import Appointment from './Appointment';
-import Ghost from './Ghost';
-import Row from './Row';
+import React, { useEffect, useRef, useState } from "react";
+import styled from "styled-components";
+import { CONFIG } from "../constant";
+import { useCalendarState } from "../hook";
+import { TCalendarStateForApp, TDateline } from "../model";
+import { DateUtils, ElementUtils, TimeUtils } from "../util";
+import NowIndicator from "./NowIndicator";
+import Appointment from "./Appointment";
+import Ghost from "./Ghost";
+import Row from "./Row";
 
 const Wrapper = styled.div`
   touch-action: pan-y;
@@ -30,7 +30,7 @@ const Grid: React.FC = () => {
   const gridRef: React.MutableRefObject<HTMLDivElement | null> = useRef<HTMLDivElement | null>(null);
   const [gridWidth, setGridWidth] = useState(0);
   const [scrollEl, setScrollEl] = useState<HTMLDivElement | null>(null);
-  const [timeEachCell, setTimeEachCell] = useState('');
+  const [timeEachCell, setTimeEachCell] = useState("");
   const [position, setPosition] = useState({ top: 0, left: 0, pageY: 0, pageX: 0 });
   const [isShowGhost, setShowGhost] = useState(false);
 
@@ -46,16 +46,12 @@ const Grid: React.FC = () => {
     if (!isShowGhost) setShowGhost(true);
 
     const dataIdtf = (e.target as HTMLDivElement).getAttribute(CONFIG.DATA_IDTF.THIS);
-    if (
-      dataIdtf === CONFIG.DATA_IDTF.APPT_BOOKING ||
-      dataIdtf === CONFIG.DATA_IDTF.APPT_RESIZE ||
-      calendarState.isFireEvent
-    ) {
+    if (dataIdtf === CONFIG.DATA_IDTF.APPT_BOOKING || dataIdtf === CONFIG.DATA_IDTF.APPT_RESIZE || calendarState.isFireEvent) {
       setShowGhost(false);
     }
 
-    const topOutside: number = ElementUtils.getOffsetToDocument(gridRef.current, 'top');
-    const leftOutside: number = ElementUtils.getOffsetToDocument(gridRef.current, 'left');
+    const topOutside: number = ElementUtils.getOffsetToDocument(gridRef.current, "top");
+    const leftOutside: number = ElementUtils.getOffsetToDocument(gridRef.current, "left");
 
     const offsetY: number = e.pageY - topOutside + (scrollEl?.scrollTop || 0);
     const offsetX: number = e.pageX - leftOutside + (scrollEl?.scrollLeft || 0);
@@ -87,20 +83,9 @@ const Grid: React.FC = () => {
   }, []);
 
   return (
-    <Wrapper
-      data-idtf={CONFIG.DATA_IDTF.GRID}
-      onMouseMove={onMouseMove}
-      onMouseLeave={onMouseLeave}
-      onContextMenu={onRightClick}
-      ref={gridRef}
-    >
-      <NowIndicator type={'LINE'} widthTimeline={widthTimeline} />
-      {isShowGhost && (
-        <Ghost
-          timeEachCell={timeEachCell}
-          rect={{ top: position.top, left: position.left, width: widthTimeline, height: CONFIG.CSS.LINE_HEIGHT }}
-        />
-      )}
+    <Wrapper data-idtf={CONFIG.DATA_IDTF.GRID} onMouseMove={onMouseMove} onMouseLeave={onMouseLeave} onContextMenu={onRightClick} ref={gridRef}>
+      <NowIndicator type={"LINE"} widthTimeline={widthTimeline} />
+      {isShowGhost && <Ghost timeEachCell={timeEachCell} rect={{ top: position.top, left: position.left, width: widthTimeline, height: CONFIG.CSS.LINE_HEIGHT }} />}
       <Appointment scrollEl={scrollEl} widthTimeline={widthTimeline} mousePosition={position} />
       <Row />
     </Wrapper>

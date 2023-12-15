@@ -1,5 +1,5 @@
-import dayjs from 'dayjs';
-import { TCalendarStateForApp } from '../model';
+import dayjs from "dayjs";
+import { TCalendarStateForApp } from "../model";
 
 export const ConfigUtils = {
   createExampleCalendarState,
@@ -11,11 +11,11 @@ function createExampleCalendarState(): TCalendarStateForApp {
     timeType: 0,
     groupTime: 0,
     nowIndicator: true,
-    viewMode: 'WEEK',
-    dateFormat: '',
-    datetimeFormat: '',
-    timeFormat: '',
-    locale: '',
+    viewMode: "WEEK",
+    dateFormat: "",
+    datetimeFormat: "",
+    timeFormat: "",
+    locale: "",
     workingTime: {
       start: 0,
       end: 0,

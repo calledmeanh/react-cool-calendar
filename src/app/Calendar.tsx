@@ -1,17 +1,17 @@
-import React from 'react';
-import styled from 'styled-components';
-import dayjs from 'dayjs';
-import { CONFIG } from '../constant';
-import CalendarProvider from '../hook/useCalendarContext';
-import { TCalendarStateForUser, TCalendarStateForApp, TAppointmentForUser } from '../model';
-import { Flex } from './common';
-import Toolbar from './Toolbar';
-import Scrolling from './Scrolling';
+import React from "react";
+import styled from "styled-components";
+import dayjs from "dayjs";
+import { CONFIG } from "../constant";
+import CalendarProvider from "../hook/useCalendarContext";
+import { TCalendarStateForUser, TCalendarStateForApp, TAppointmentForUser } from "../model";
+import { Flex } from "./common";
+import Toolbar from "./Toolbar";
+import Scrolling from "./Scrolling";
 
 /* 
   By default, Day.js comes with English locale only. If you need other locales, you can load them on demand. 
 */
-import 'dayjs/locale/vi';
+import "dayjs/locale/vi";
 
 const Wrapper = styled(Flex)`
   height: 100%;
@@ -50,11 +50,11 @@ const Calendar: React.FC<TCalendarStateForUser> = (userProps) => {
     todayGlobalIns: dayjs(),
     currentDate: dayjs(),
 
-    isFireEvent: false
+    isFireEvent: false,
   };
   return (
     <CalendarProvider initialState={appProps}>
-      <Wrapper data-idtf={CONFIG.DATA_IDTF.CALENDAR} $dir={'column'}>
+      <Wrapper data-idtf={CONFIG.DATA_IDTF.CALENDAR} $dir={"column"}>
         <Toolbar />
         <Scrolling />
       </Wrapper>

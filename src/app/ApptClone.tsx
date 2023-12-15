@@ -1,9 +1,9 @@
-import React from 'react';
-import { styled } from 'styled-components';
-import { CONFIG } from '../constant';
-import { TAppointmentForApp } from '../model';
-import { TimeUtils } from '../util';
-import { Flex } from './common';
+import React from "react";
+import { styled } from "styled-components";
+import { CONFIG } from "../constant";
+import { TAppointmentForApp } from "../model";
+import { TimeUtils } from "../util";
+import { Flex } from "./common";
 
 const Wrapper = styled.div`
   background: ${CONFIG.CSS.APPT_BG_COLORS.CLONE};
@@ -44,7 +44,7 @@ const ApptClone: React.FC<TApptClone> = ({ value }) => {
         height: value.height,
       }}
     >
-      <Content $dir={'column'}>
+      <Content $dir={"column"}>
         <div>
           {startTime}-{endTime}
         </div>

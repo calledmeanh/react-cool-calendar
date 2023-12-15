@@ -1,11 +1,11 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import styled from 'styled-components';
-import dayjs, { Dayjs } from 'dayjs';
-import { CONFIG } from '../constant';
-import { useCalendarState } from '../hook';
-import { TCalendarStateForApp, TDateline } from '../model';
-import { DateUtils, TimeUtils } from '../util';
-import { Flex } from './common';
+import React, { useEffect, useState, useCallback } from "react";
+import styled from "styled-components";
+import dayjs, { Dayjs } from "dayjs";
+import { CONFIG } from "../constant";
+import { useCalendarState } from "../hook";
+import { TCalendarStateForApp, TDateline } from "../model";
+import { DateUtils, TimeUtils } from "../util";
+import { Flex } from "./common";
 
 const TimePill = styled(Flex)<{ $top: number }>`
   width: 100%;
@@ -32,13 +32,13 @@ const TimeLine = styled.div<{ $top: number; $timelinePos?: { left: number; width
 `;
 
 type TNowIndicator = {
-  type: 'PILL' | 'LINE';
+  type: "PILL" | "LINE";
   widthTimeline?: number;
 };
 
 const NowIndicator: React.FC<TNowIndicator> = ({ type, widthTimeline = 0 }) => {
   const calendarState: TCalendarStateForApp = useCalendarState();
-  const [now, setNow] = useState({ position: 0, text: '00:00' });
+  const [now, setNow] = useState({ position: 0, text: "00:00" });
   const [timelinePos, setTimelinePos] = useState({ width: 0, left: 0 });
 
   const getCurrentTime = useCallback(() => {
@@ -63,21 +63,16 @@ const NowIndicator: React.FC<TNowIndicator> = ({ type, widthTimeline = 0 }) => {
 
         const timeEachInterval: number = TimeUtils.covertHourMinuteToSeconds(hourEachInterval, minuteEachInterval);
 
-        const position: number = TimeUtils.calcDistanceBetweenTimes(
-          timeEachInterval,
-          calendarState.dayTime.start,
-          calendarState.duration,
-          CONFIG.CSS.LINE_HEIGHT
-        );
+        const position: number = TimeUtils.calcDistanceBetweenTimes(timeEachInterval, calendarState.dayTime.start, calendarState.duration, CONFIG.CSS.LINE_HEIGHT);
 
         const text: string = TimeUtils.convertSecondsToHourString(timeEachInterval, calendarState.timeType);
 
         setNow({ position, text });
       } else {
-        setNow({ position: 0, text: '00:00' });
+        setNow({ position: 0, text: "00:00" });
       }
     },
-    [calendarState.dayTime, calendarState.duration, calendarState.timeType]
+    [calendarState.dayTime, calendarState.duration, calendarState.timeType],
   );
 
   /* get position of timeline */
@@ -117,14 +112,12 @@ const NowIndicator: React.FC<TNowIndicator> = ({ type, widthTimeline = 0 }) => {
 
   return (
     <React.Fragment>
-      {type === 'PILL' && calendarState.viewMode === 'DAY' && Boolean(now.position) && calendarState.nowIndicator && (
-        <TimePill $align={'center'} $justify={'center'} $top={now.position}>
+      {type === "PILL" && calendarState.viewMode === "DAY" && Boolean(now.position) && calendarState.nowIndicator && (
+        <TimePill $align={"center"} $justify={"center"} $top={now.position}>
           {now.text}
         </TimePill>
       )}
-      {type === 'LINE' && Boolean(now.position) && calendarState.nowIndicator && (
-        <TimeLine $top={now.position + 9.5} $timelinePos={timelinePos}></TimeLine>
-      )}
+      {type === "LINE" && Boolean(now.position) && calendarState.nowIndicator && <TimeLine $top={now.position + 9.5} $timelinePos={timelinePos}></TimeLine>}
     </React.Fragment>
   );
 };

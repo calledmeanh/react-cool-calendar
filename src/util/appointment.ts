@@ -1,6 +1,6 @@
-import { CONFIG } from '../constant';
-import { EStatus, TAppointmentForApp, TAppointmentForUser, TRect } from '../model';
-import { TimeUtils } from './time';
+import { CONFIG } from "../constant";
+import { EStatus, TAppointmentForApp, TAppointmentForUser, TRect } from "../model";
+import { TimeUtils } from "./time";
 
 export const AppointmentUtils = {
   layoutAlgorithm,
@@ -18,7 +18,7 @@ function layoutAlgorithm(
     duration: number;
     columnWidth: number;
     weekcolumnIndex: number;
-  }
+  },
 ): TAppointmentForApp[] {
   let columns: TAppointmentForApp[][] = [];
   let lastEventEnding: number | null = null;
@@ -74,7 +74,7 @@ function packEvents(
   otps: {
     columnWidth: number;
     weekcolumnIndex: number;
-  }
+  },
 ): void {
   let n: number = columnAppt.length;
   for (let i = 0; i < n; i++) {
@@ -98,7 +98,7 @@ function calcApptPos(
   opts: {
     daytimeStart: number;
     duration: number;
-  }
+  },
 ): {
   top: number;
   height: number;
@@ -107,20 +107,10 @@ function calcApptPos(
 } {
   const apptEndTime: number = appt.startTime + TimeUtils.convertMinuteToSeconds(appt.duration);
 
-  const top: number = TimeUtils.calcDistanceBetweenTimes(
-    appt.startTime,
-    opts.daytimeStart,
-    opts.duration,
-    CONFIG.CSS.LINE_HEIGHT
-  );
+  const top: number = TimeUtils.calcDistanceBetweenTimes(appt.startTime, opts.daytimeStart, opts.duration, CONFIG.CSS.LINE_HEIGHT);
 
   const mapDuration = CONFIG.MAPPING_TIME[opts.duration];
-  const height: number = TimeUtils.calcDistanceBetweenTimes(
-    apptEndTime,
-    appt.startTime,
-    mapDuration,
-    (CONFIG.CSS.LINE_HEIGHT * mapDuration) / opts.duration
-  );
+  const height: number = TimeUtils.calcDistanceBetweenTimes(apptEndTime, appt.startTime, mapDuration, (CONFIG.CSS.LINE_HEIGHT * mapDuration) / opts.duration);
 
   return {
     top,

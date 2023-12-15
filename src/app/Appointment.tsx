@@ -1,19 +1,11 @@
-import React, { useState } from 'react';
-import { styled } from 'styled-components';
-import { CONFIG } from '../constant';
-import { useCalendarDispatch, useCalendarState } from '../hook';
-import {
-  EAction,
-  TAppointmentForApp,
-  TAppointmentForUser,
-  TCalendarAction,
-  TCalendarStateForApp,
-  TDateline,
-  TDay,
-} from '../model';
-import { AppointmentUtils, DateUtils } from '../util';
-import ApptBooking from './ApptBooking';
-import ApptClone from './ApptClone';
+import React, { useState } from "react";
+import { styled } from "styled-components";
+import { CONFIG } from "../constant";
+import { useCalendarDispatch, useCalendarState } from "../hook";
+import { EAction, TAppointmentForApp, TAppointmentForUser, TCalendarAction, TCalendarStateForApp, TDateline, TDay } from "../model";
+import { AppointmentUtils, DateUtils } from "../util";
+import ApptBooking from "./ApptBooking";
+import ApptClone from "./ApptClone";
 
 const Wrapper = styled.div`
   position: absolute;
@@ -38,9 +30,7 @@ const Appointment: React.FC<TAppointment> = ({ scrollEl, widthTimeline, mousePos
   const dateline: TDateline = DateUtils.getDateline(calendarState.currentDate, calendarState.viewMode);
 
   const renderByDayMode = (apptProp: TAppointmentForUser[]) => {
-    const apptByDate: TAppointmentForUser[] = apptProp.filter((a) =>
-      DateUtils.isEqual(calendarState.currentDate, a.createdAt)
-    );
+    const apptByDate: TAppointmentForUser[] = apptProp.filter((a) => DateUtils.isEqual(calendarState.currentDate, a.createdAt));
 
     const apptReordered: TAppointmentForApp[] = AppointmentUtils.layoutAlgorithm(apptByDate, {
       daytimeStart: calendarState.dayTime.start,
@@ -82,8 +72,8 @@ const Appointment: React.FC<TAppointment> = ({ scrollEl, widthTimeline, mousePos
 
   const render = (apptProp: TAppointmentForUser[]) => {
     let apptRender: TAppointmentForApp[] = [];
-    if (calendarState.viewMode === 'DAY') apptRender = renderByDayMode(apptProp);
-    else if (calendarState.viewMode === 'WEEK') apptRender = renderByWeekMode(apptProp);
+    if (calendarState.viewMode === "DAY") apptRender = renderByDayMode(apptProp);
+    else if (calendarState.viewMode === "WEEK") apptRender = renderByWeekMode(apptProp);
 
     return apptRender;
   };
@@ -126,15 +116,7 @@ const Appointment: React.FC<TAppointment> = ({ scrollEl, widthTimeline, mousePos
     <Wrapper data-idtf={CONFIG.DATA_IDTF.APPOINTMENT} onMouseUp={onReleaseAppt}>
       {apptClone && <ApptClone value={apptClone} />}
       {render(calendarState.appointments).map((appt: TAppointmentForApp) => (
-        <ApptBooking
-          key={appt.id}
-          value={appt}
-          scrollEl={scrollEl}
-          widthTimeline={widthTimeline}
-          mousePosition={mousePosition}
-          onPressAppt={onPressApptBooking}
-          onReleaseAppt={onReleaseApptBooking}
-        />
+        <ApptBooking key={appt.id} value={appt} scrollEl={scrollEl} widthTimeline={widthTimeline} mousePosition={mousePosition} onPressAppt={onPressApptBooking} onReleaseAppt={onReleaseApptBooking} />
       ))}
     </Wrapper>
   );

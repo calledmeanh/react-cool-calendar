@@ -1,10 +1,10 @@
-import React from 'react';
-import { Dayjs } from 'dayjs';
-import { CONFIG } from '../constant';
-import { useCalendarDispatch, useCalendarState } from '../hook';
-import { EAction, TCalendarAction, TCalendarStateForApp } from '../model';
-import { DateUtils } from '../util';
-import { Flex, Button, Text } from './common';
+import React from "react";
+import { Dayjs } from "dayjs";
+import { CONFIG } from "../constant";
+import { useCalendarDispatch, useCalendarState } from "../hook";
+import { EAction, TCalendarAction, TCalendarStateForApp } from "../model";
+import { DateUtils } from "../util";
+import { Flex, Button, Text } from "./common";
 
 const DateManipulation: React.FC = () => {
   const calendarState: TCalendarStateForApp = useCalendarState();
@@ -39,26 +39,17 @@ const DateManipulation: React.FC = () => {
 
   return (
     <Flex data-idtf={CONFIG.DATA_IDTF.DAYTIME}>
-      <Button $padding={[8, 12]} onClick={calendarState.viewMode === 'DAY' ? onPrevDay : onPrevWeek}>
+      <Button $padding={[8, 12]} onClick={calendarState.viewMode === "DAY" ? onPrevDay : onPrevWeek}>
         &#x2039;
       </Button>
-      <Button
-        disabled={curDate === today}
-        style={{ borderRight: 'none', borderLeft: 'none' }}
-        $padding={[8, 12]}
-        onClick={onToday}
-      >
+      <Button disabled={curDate === today} style={{ borderRight: "none", borderLeft: "none" }} $padding={[8, 12]} onClick={onToday}>
         today
       </Button>
-      <Text style={{ minWidth: 200, fontSize: 14 }} $padding={[7, 12]} $align={'center'} $justify={'center'}>
-        {calendarState.viewMode === 'DAY' && DateUtils.getCustomDay(calendarState.currentDate)}
-        {calendarState.viewMode === 'WEEK' && DateUtils.getCustomDateToDate(calendarState.currentDate)}
+      <Text style={{ minWidth: 200, fontSize: 14 }} $padding={[7, 12]} $align={"center"} $justify={"center"}>
+        {calendarState.viewMode === "DAY" && DateUtils.getCustomDay(calendarState.currentDate)}
+        {calendarState.viewMode === "WEEK" && DateUtils.getCustomDateToDate(calendarState.currentDate)}
       </Text>
-      <Button
-        $padding={[8, 12]}
-        style={{ borderLeft: 'none' }}
-        onClick={calendarState.viewMode === 'DAY' ? onNextDay : onNextWeek}
-      >
+      <Button $padding={[8, 12]} style={{ borderLeft: "none" }} onClick={calendarState.viewMode === "DAY" ? onNextDay : onNextWeek}>
         &#x203A;
       </Button>
     </Flex>

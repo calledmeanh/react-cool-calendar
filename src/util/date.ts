@@ -1,6 +1,6 @@
-import dayjs, { Dayjs } from 'dayjs';
-import { CONFIG } from '../constant';
-import { TDateline, TDay, TViewMode } from '../model';
+import dayjs, { Dayjs } from "dayjs";
+import { CONFIG } from "../constant";
+import { TDateline, TDay, TViewMode } from "../model";
 
 export const DateUtils = {
   getPrevDay,
@@ -14,42 +14,42 @@ export const DateUtils = {
 };
 
 function getPrevDay(currentDate: string): Dayjs {
-  return dayjs(currentDate).subtract(1, 'd');
+  return dayjs(currentDate).subtract(1, "d");
 }
 
 function getNextDay(currentDate: string): Dayjs {
-  return dayjs(currentDate).add(1, 'd');
+  return dayjs(currentDate).add(1, "d");
 }
 
 function getPrevWeek(currentDate: string): Dayjs {
-  return dayjs(currentDate).subtract(7, 'd');
+  return dayjs(currentDate).subtract(7, "d");
 }
 
 function getNextWeek(currentDate: string): Dayjs {
-  return dayjs(currentDate).add(7, 'd');
+  return dayjs(currentDate).add(7, "d");
 }
 
 function getDateline(currentDate: Dayjs, viewMode: TViewMode): TDateline {
-  let startOfWeek: Dayjs = currentDate.startOf('weeks'); // monday
-  let endOfWeek: Dayjs = currentDate.endOf('weeks'); // sunday
+  let startOfWeek: Dayjs = currentDate.startOf("weeks"); // monday
+  let endOfWeek: Dayjs = currentDate.endOf("weeks"); // sunday
 
   const dateline: TDateline = [];
 
-  if (viewMode === 'DAY') {
+  if (viewMode === "DAY") {
     const today: TDay = {
-      number: currentDate.format('DD'),
-      text: currentDate.format('dddd'),
+      number: currentDate.format("DD"),
+      text: currentDate.format("dddd"),
       origin: currentDate,
     };
     dateline.push(today);
-  } else if (viewMode === 'WEEK') {
+  } else if (viewMode === "WEEK") {
     while (startOfWeek <= endOfWeek) {
       dateline.push({
-        number: startOfWeek.format('DD'),
-        text: startOfWeek.format('dddd'),
+        number: startOfWeek.format("DD"),
+        text: startOfWeek.format("dddd"),
         origin: startOfWeek,
       });
-      startOfWeek = startOfWeek.clone().add(1, 'd');
+      startOfWeek = startOfWeek.clone().add(1, "d");
     }
   }
 
@@ -60,20 +60,20 @@ type TStartOrigCustom = { date: string; month: string };
 type TEndOrigCustom = { date: string; month: string; year: string };
 
 function getCustomDateToDate(currentDate: Dayjs): string {
-  const startOrigin: Dayjs = currentDate.startOf('weeks'); // monday
+  const startOrigin: Dayjs = currentDate.startOf("weeks"); // monday
   const start: TStartOrigCustom = {
-    date: startOrigin.format('D'),
-    month: startOrigin.format('MMM'),
+    date: startOrigin.format("D"),
+    month: startOrigin.format("MMM"),
   };
 
-  const endOrigin: Dayjs = currentDate.endOf('weeks'); // sunday
+  const endOrigin: Dayjs = currentDate.endOf("weeks"); // sunday
   const end: TEndOrigCustom = {
-    date: endOrigin.format('D'),
-    month: endOrigin.format('MMM'),
-    year: endOrigin.format('YYYY'),
+    date: endOrigin.format("D"),
+    month: endOrigin.format("MMM"),
+    year: endOrigin.format("YYYY"),
   };
 
-  let res: string = '';
+  let res: string = "";
   if (start.month === end.month) {
     res = `${start.date} - ${end.date} ${end.month}, ${end.year} `;
   } else {
@@ -84,10 +84,10 @@ function getCustomDateToDate(currentDate: Dayjs): string {
 }
 
 function getCustomDay(currentDate: Dayjs): string {
-  const number: string = currentDate.format('D');
-  const text: string = currentDate.format('dddd');
-  const month: string = currentDate.format('MMM');
-  const year: string = currentDate.format('YYYY');
+  const number: string = currentDate.format("D");
+  const text: string = currentDate.format("dddd");
+  const month: string = currentDate.format("MMM");
+  const year: string = currentDate.format("YYYY");
 
   const res: string = `${text} ${number} ${month}, ${year}`;
   return res;
