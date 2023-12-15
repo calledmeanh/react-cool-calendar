@@ -6,7 +6,8 @@
   "scripts": {
     "start": "webpack serve --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
-    "format": "prettier --write ./src"
+    "format": "prettier --write ./src",
+    "prepare": "husky install"
   },
   "author": "Hoang Anh",
   "license": "MIT",
@@ -35,6 +36,7 @@
     "css-minimizer-webpack-plugin": "^5.0.1",
     "dayjs": "^1.11.10",
     "html-webpack-plugin": "^5.5.3",
+    "husky": "^8.0.3",
     "mini-css-extract-plugin": "^2.7.6",
     "prettier": "3.1.1",
     "styled-components": "^6.1.1",
