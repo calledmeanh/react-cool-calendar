@@ -53,11 +53,11 @@ const Grid: React.FC = () => {
     const topOutside: number = ElementUtils.getOffsetToDocument(gridRef.current, "top");
     const leftOutside: number = ElementUtils.getOffsetToDocument(gridRef.current, "left");
 
-    const offsetY: number = e.pageY - topOutside + (scrollEl?.scrollTop || 0);
-    const offsetX: number = e.pageX - leftOutside + (scrollEl?.scrollLeft || 0);
+    const offsetTop: number = e.pageY - topOutside + (scrollEl?.scrollTop || 0);
+    const offsetLeft: number = e.pageX - leftOutside + (scrollEl?.scrollLeft || 0);
 
-    const lineIdx = Math.floor(offsetY / CONFIG.CSS.LINE_HEIGHT);
-    const colIdx: number = Math.floor(offsetX / widthTimeline);
+    const lineIdx = Math.floor(offsetTop / CONFIG.CSS.LINE_HEIGHT);
+    const colIdx: number = Math.floor(offsetLeft / widthTimeline);
 
     const top: number = lineIdx * CONFIG.CSS.LINE_HEIGHT;
     const left: number = colIdx * widthTimeline;

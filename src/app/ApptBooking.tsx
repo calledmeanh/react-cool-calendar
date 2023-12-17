@@ -78,7 +78,7 @@ const ApptBooking: React.FC<TApptBooking> = ({ value, scrollEl, mousePosition, w
   const preventDragEventRef: React.MutableRefObject<Function> = useRef(() => {});
   const autoScrollThresholdRef: React.MutableRefObject<number> = useRef(value.height / 5); // threshold to start auto scroll
 
-  const floorY: number = Math.floor(mousePosition.pageY / CONFIG.CSS.LINE_HEIGHT) * CONFIG.CSS.LINE_HEIGHT;
+  const floorTop: number = Math.floor(mousePosition.pageY / CONFIG.CSS.LINE_HEIGHT) * CONFIG.CSS.LINE_HEIGHT;
 
   const lineIdx: number = position.top / CONFIG.CSS.LINE_HEIGHT;
   const startTime: number = lineIdx * calendarState.duration + calendarState.dayTime.start;
@@ -109,11 +109,11 @@ const ApptBooking: React.FC<TApptBooking> = ({ value, scrollEl, mousePosition, w
   /* handle drag event */
   const updateDraggingState = (value: boolean) => {
     if (value) {
-      isDragRef.current = true;
-      dispath({ type: EAction.UPDATE_FIRE_EVENT, payload: true });
+      isDragRef.current = value;
+      dispath({ type: EAction.UPDATE_FIRE_EVENT, payload: value });
     } else {
-      isDragRef.current = false;
-      dispath({ type: EAction.UPDATE_FIRE_EVENT, payload: false });
+      isDragRef.current = value;
+      dispath({ type: EAction.UPDATE_FIRE_EVENT, payload: value });
     }
   };
 
@@ -166,7 +166,7 @@ const ApptBooking: React.FC<TApptBooking> = ({ value, scrollEl, mousePosition, w
       } else {
         /* auto scroll to top while dragging if match condition */
         // ================ TOP ================
-        if (floorY - autoScrollThresholdRef.current <= topEdgeRef.current && scrollEl) {
+        if (floorTop - autoScrollThresholdRef.current <= topEdgeRef.current && scrollEl) {
           removeAutoScrollIntervalRef.current && removeAutoScrollIntervalRef.current();
 
           removeAutoScrollIntervalRef.current = TimeUtils.wrapperSetInterval(() => {
@@ -192,7 +192,7 @@ const ApptBooking: React.FC<TApptBooking> = ({ value, scrollEl, mousePosition, w
           }, CONFIG.FPS);
         }
         // ================ BOTTOM ================
-        else if (floorY + autoScrollThresholdRef.current >= calendarHeight && scrollEl) {
+        else if (floorTop + autoScrollThresholdRef.current >= calendarHeight && scrollEl) {
           removeAutoScrollIntervalRef.current && removeAutoScrollIntervalRef.current();
 
           removeAutoScrollIntervalRef.current = TimeUtils.wrapperSetInterval(() => {
@@ -223,7 +223,7 @@ const ApptBooking: React.FC<TApptBooking> = ({ value, scrollEl, mousePosition, w
         }
       }
     }
-  }, [value.height, autoScrollThresholdRef, floorY, position.top, scrollEl, calendarHeight, distanceDown, distanceLeft, distanceUp, maxGridHeight, maxScrollTop, scrollBarHeight]);
+  }, [value.height, autoScrollThresholdRef, floorTop, position.top, scrollEl, calendarHeight, distanceDown, distanceLeft, distanceUp, maxGridHeight, maxScrollTop, scrollBarHeight]);
 
   const onEndDragging = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     // if still false means the user is not drag at all, just click
@@ -239,11 +239,11 @@ const ApptBooking: React.FC<TApptBooking> = ({ value, scrollEl, mousePosition, w
   /* handle resize event */
   const updateResizeState = (value: boolean) => {
     if (value) {
-      isResizeRef.current = true;
-      dispath({ type: EAction.UPDATE_FIRE_EVENT, payload: true });
+      isResizeRef.current = value;
+      dispath({ type: EAction.UPDATE_FIRE_EVENT, payload: value });
     } else {
-      isResizeRef.current = false;
-      dispath({ type: EAction.UPDATE_FIRE_EVENT, payload: false });
+      isResizeRef.current = value;
+      dispath({ type: EAction.UPDATE_FIRE_EVENT, payload: value });
     }
   };
 
