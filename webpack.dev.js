@@ -5,7 +5,7 @@ module.exports = merge(common, {
   mode: 'development',
   devtool: 'inline-source-map',
   devServer: {
-    static: './dist',
+    static: './docs',
     // Open html file
     open: true,
     // Enable gzip compression for everything served

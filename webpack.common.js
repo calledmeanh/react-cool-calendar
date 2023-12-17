@@ -8,7 +8,7 @@ module.exports = {
   entry: path.join(__dirname, 'src', 'index.tsx'),
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'docs'),
     clean: true,
   },
   module: {
@@ -27,7 +27,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, 'dist', 'index.html'),
+      template: path.join(__dirname, 'docs', 'index.html'),
     }),
     new MiniCssExtractPlugin(),
     new webpack.HotModuleReplacementPlugin(),

@@ -1,7 +1,7 @@
 {
   "name": "react-cool-calendar",
   "version": "0.1.0",
-  "main": "dist/bundle.js",
+  "main": "docs/bundle.js",
   "description": "A simple, flexible calendar with appointments!",
   "scripts": {
     "start": "webpack serve --config webpack.dev.js",
