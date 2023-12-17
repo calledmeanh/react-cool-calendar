@@ -31,7 +31,13 @@ const Zoom: React.FC = () => {
   };
 
   return (
-    <Select data-idtf={CONFIG.DATA_IDTF.ZOOM} $padding={[8, 12]} $isborderradius value={TimeUtils.parseDurationToViewMode(calendarState.duration)} onChange={onSelectZoom}>
+    <Select
+      data-idtf={CONFIG.DATA_IDTF.ZOOM}
+      $padding={[8, 12]}
+      $isborderradius
+      value={TimeUtils.parseDurationToViewMode(calendarState.duration)}
+      onChange={onSelectZoom}
+    >
       {options.map((o, i) => {
         return (
           <Option key={i} value={o.value}>

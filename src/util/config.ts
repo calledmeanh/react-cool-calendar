@@ -16,6 +16,7 @@ function createExampleCalendarState(): TCalendarStateForApp {
     datetimeFormat: "",
     timeFormat: "",
     locale: "",
+    appointments: [],
     workingTime: {
       start: 0,
       end: 0,
@@ -26,7 +27,7 @@ function createExampleCalendarState(): TCalendarStateForApp {
     },
     todayGlobalIns: dayjs(),
     currentDate: dayjs(),
-    appointments: [],
+    isFireEvent: false,
   };
   return Object.create(state);
 }

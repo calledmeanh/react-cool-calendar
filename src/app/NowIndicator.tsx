@@ -63,7 +63,12 @@ const NowIndicator: React.FC<TNowIndicator> = ({ type, widthTimeline = 0 }) => {
 
         const timeEachInterval: number = TimeUtils.covertHourMinuteToSeconds(hourEachInterval, minuteEachInterval);
 
-        const position: number = TimeUtils.calcDistanceBetweenTimes(timeEachInterval, calendarState.dayTime.start, calendarState.duration, CONFIG.CSS.LINE_HEIGHT);
+        const position: number = TimeUtils.calcDistanceBetweenTimes(
+          timeEachInterval,
+          calendarState.dayTime.start,
+          calendarState.duration,
+          CONFIG.CSS.LINE_HEIGHT,
+        );
 
         const text: string = TimeUtils.convertSecondsToHourString(timeEachInterval, calendarState.timeType);
 

@@ -127,7 +127,15 @@ const Appointment: React.FC<TAppointment> = ({ scrollEl, widthTimeline, mousePos
     <Wrapper data-idtf={CONFIG.DATA_IDTF.APPOINTMENT} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
       {apptClone && <ApptClone value={apptClone} />}
       {render(calendarState.appointments).map((appt: TAppointmentForApp) => (
-        <ApptBooking key={appt.id} value={appt} scrollEl={scrollEl} widthTimeline={widthTimeline} mousePosition={mousePosition} onPressAppt={onPressApptBooking} onReleaseAppt={onReleaseApptBooking} />
+        <ApptBooking
+          key={appt.id}
+          value={appt}
+          scrollEl={scrollEl}
+          widthTimeline={widthTimeline}
+          mousePosition={mousePosition}
+          onPressAppt={onPressApptBooking}
+          onReleaseAppt={onReleaseApptBooking}
+        />
       ))}
     </Wrapper>
   );

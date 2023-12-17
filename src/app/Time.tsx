@@ -18,7 +18,11 @@ const Time: React.FC = () => {
     return TimeUtils.createTimes(calendarState.dayTime.end, calendarState.dayTime.start, calendarState.duration).map((t, i) => {
       const currentTime: number = calendarState.dayTime.start + i * calendarState.duration;
       const time: string = TimeUtils.convertSecondsToHourString(currentTime);
-      const showTime: boolean = TimeUtils.displayTime(currentTime, calendarState.dayTime.start, calendarState.duration * CONFIG.MAPPING_TIME[calendarState.duration]);
+      const showTime: boolean = TimeUtils.displayTime(
+        currentTime,
+        calendarState.dayTime.start,
+        calendarState.duration * CONFIG.MAPPING_TIME[calendarState.duration],
+      );
       const classname: string = clsx({
         ngt: true,
       });

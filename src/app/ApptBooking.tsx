@@ -223,7 +223,20 @@ const ApptBooking: React.FC<TApptBooking> = ({ value, scrollEl, mousePosition, w
         }
       }
     }
-  }, [value.height, autoScrollThresholdRef, floorTop, position.top, scrollEl, calendarHeight, distanceDown, distanceLeft, distanceUp, maxGridHeight, maxScrollTop, scrollBarHeight]);
+  }, [
+    value.height,
+    autoScrollThresholdRef,
+    floorTop,
+    position.top,
+    scrollEl,
+    calendarHeight,
+    distanceDown,
+    distanceLeft,
+    distanceUp,
+    maxGridHeight,
+    maxScrollTop,
+    scrollBarHeight,
+  ]);
 
   const onEndDragging = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     // if still false means the user is not drag at all, just click

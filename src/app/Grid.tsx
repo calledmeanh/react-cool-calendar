@@ -85,7 +85,9 @@ const Grid: React.FC = () => {
   return (
     <Wrapper data-idtf={CONFIG.DATA_IDTF.GRID} onMouseMove={onMouseMove} onMouseLeave={onMouseLeave} onContextMenu={onRightClick} ref={gridRef}>
       <NowIndicator type={"LINE"} widthTimeline={widthTimeline} />
-      {isShowGhost && <Ghost timeEachCell={timeEachCell} rect={{ top: position.top, left: position.left, width: widthTimeline, height: CONFIG.CSS.LINE_HEIGHT }} />}
+      {isShowGhost && (
+        <Ghost timeEachCell={timeEachCell} rect={{ top: position.top, left: position.left, width: widthTimeline, height: CONFIG.CSS.LINE_HEIGHT }} />
+      )}
       <Appointment scrollEl={scrollEl} widthTimeline={widthTimeline} mousePosition={position} />
       <Row />
     </Wrapper>
