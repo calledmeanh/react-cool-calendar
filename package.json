@@ -6,7 +6,8 @@
   "scripts": {
     "start": "webpack serve --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
-    "format": "prettier --write ./src",
+    "format:src": "prettier --write ./src",
+    "format:all": "prettier --write .",
     "prepare": "husky install"
   },
   "author": "Hoang Anh",
