@@ -15,9 +15,9 @@ Make sure your calendar's container element has a height, or the calendar won't 
 ```js
 <div style={{ width: '100vw', height: '100vh', padding: '24px' }}>
   <Calendar
-    duration={15 * 3600}
+    duration={15}
     timeType={24}
-    groupTime={60 * 3600}
+    groupTime={60}
     nowIndicator={true}
     viewMode={'WEEK'}
     dateFormat="MM/DD/YYYY"
@@ -25,17 +25,17 @@ Make sure your calendar's container element has a height, or the calendar won't 
     timeFormat="hh:mm:ss"
     locale="en"
     workingTime={{
-      start: 7 * 3600,
-      end: 20 * 3600,
+      start: 7,
+      end: 20,
     }}
     dayTime={{
-      start: 0 * 3600,
-      end: 24 * 3600,
+      start: 0,
+      end: 24,
     }}
     appointments={[
       {
         id: '1',
-        startTime: 7 * 3600,
+        startTime: 7,
         duration: 120,
         title: '1',
         content: 'You only live once',
@@ -44,7 +44,7 @@ Make sure your calendar's container element has a height, or the calendar won't 
       },
       {
         id: '2',
-        startTime: 8 * 3600,
+        startTime: 8,
         duration: 200,
         title: '2',
         content: 'You only live once',
