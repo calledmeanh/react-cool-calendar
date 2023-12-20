@@ -1,33 +1,33 @@
-const path = require('path');
-const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const path = require("path");
+const webpack = require("webpack");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 
 module.exports = {
-  entry: path.join(__dirname, 'src', 'index.tsx'),
+  entry: path.join(__dirname, "src", "index.tsx"),
   output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, 'docs'),
+    filename: "bundle.js",
+    path: path.resolve(__dirname, "docs"),
     clean: true,
   },
   module: {
     rules: [
-      { test: /\.(ts|tsx)$/, exclude: /node_modules/, include: path.join(__dirname, 'src'), use: ['babel-loader'] },
-      { test: /\.css$/i, use: [MiniCssExtractPlugin.loader, 'css-loader'] },
-      { test: /\.(png|svg|jpg|jpeg|gif)$/i, type: 'asset/resource' },
+      { test: /\.(ts|tsx)$/, exclude: /node_modules/, include: path.join(__dirname, "src"), use: ["babel-loader"] },
+      { test: /\.css$/i, use: [MiniCssExtractPlugin.loader, "css-loader"] },
+      { test: /\.(png|svg|jpg|jpeg|gif)$/i, type: "asset/resource" },
     ],
   },
   // allow to import component from different files
   resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
+    extensions: [".tsx", ".ts", ".js"],
   },
   optimization: {
     minimizer: [new CssMinimizerPlugin()],
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, 'docs', 'index.html'),
+      template: path.join(__dirname, "docs", "index.html"),
     }),
     new MiniCssExtractPlugin(),
     new webpack.HotModuleReplacementPlugin(),
