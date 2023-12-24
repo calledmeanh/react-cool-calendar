@@ -24,6 +24,7 @@ const DATA_IDTF = {
   DAYTIME: "daytime",
   VIEWMODE: "viewmode",
   SCROLLING: "scrolling",
+  MONTH: "month",
   INTERVAL: "interval",
   TIME: "time",
   SWIPABLE: "swipable",

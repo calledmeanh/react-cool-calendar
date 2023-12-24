@@ -9,7 +9,7 @@ type Opts = { value: TViewMode; text: string }[];
 const options: Opts = [
   { value: "DAY", text: "day" },
   { value: "WEEK", text: "week" },
-  // { value: 'MONTH', text: 'month' },
+  { value: "MONTH", text: "month" },
 ];
 
 const ViewMode: React.FC = () => {

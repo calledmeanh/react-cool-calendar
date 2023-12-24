@@ -42,12 +42,15 @@ const DateManipulation: React.FC = () => {
       <Button $padding={[8, 12]} onClick={calendarState.viewMode === "DAY" ? onPrevDay : onPrevWeek}>
         &#x2039;
       </Button>
-      <Button disabled={curDate === today} style={{ borderRight: "none", borderLeft: "none" }} $padding={[8, 12]} onClick={onToday}>
-        today
-      </Button>
+      {(calendarState.viewMode === "DAY" || calendarState.viewMode === "WEEK") && (
+        <Button disabled={curDate === today} style={{ borderRight: "none", borderLeft: "none" }} $padding={[8, 12]} onClick={onToday}>
+          today
+        </Button>
+      )}
       <Text style={{ minWidth: 200, fontSize: 14 }} $padding={[7, 12]} $align={"center"} $justify={"center"}>
         {calendarState.viewMode === "DAY" && DateUtils.getCustomDay(calendarState.currentDate)}
         {calendarState.viewMode === "WEEK" && DateUtils.getCustomDateToDate(calendarState.currentDate)}
+        {calendarState.viewMode === "MONTH" && "December"}
       </Text>
       <Button $padding={[8, 12]} style={{ borderLeft: "none" }} onClick={calendarState.viewMode === "DAY" ? onNextDay : onNextWeek}>
         &#x203A;
