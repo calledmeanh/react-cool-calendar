@@ -9,7 +9,7 @@ const Presentation: React.FC = () => {
 
   return (
     <React.Fragment>
-      {(calendarState.viewMode === "DAY" || calendarState.viewMode === "WEEK") && <Scrolling />}
+      {(calendarState.viewMode !== "MONTH") && <Scrolling />}
       {calendarState.viewMode === "MONTH" && <Month />}
     </React.Fragment>
   );
