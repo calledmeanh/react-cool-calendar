@@ -67,7 +67,7 @@ const Dateline: React.FC = () => {
   const calendarState: TCalendarStateForApp = useCalendarState();
 
   const steps: number = TimeUtils.calcTimeStep(calendarState.dayTime.end, calendarState.dayTime.start, calendarState.duration);
-  const maxGridHeight: number = steps * CONFIG.CSS.LINE_HEIGHT;
+  const maxGridHeight: number = calendarState.viewMode === "MONTH" ? CONFIG.CSS.DATELINE_HEIGHT : steps * CONFIG.CSS.LINE_HEIGHT;
 
   const render = useCallback(() => {
     const dateline: TDateline = DateUtils.getDateline(calendarState.currentDate, calendarState.viewMode);
@@ -79,7 +79,7 @@ const Dateline: React.FC = () => {
       });
       return (
         <DatelineHeader key={i} $justify={"center"} $align={"center"} $afterPseudoHeight={maxGridHeight}>
-          <DatelineNumber className={classname}>{d.number}</DatelineNumber>
+          {calendarState.viewMode !== "MONTH" && <DatelineNumber className={classname}>{d.number}</DatelineNumber>}
           <DatelineText className={classname}>{d.text}</DatelineText>
         </DatelineHeader>
       );

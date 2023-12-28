@@ -41,6 +41,10 @@ function calendarReducer(state: TCalendarStateForApp, action: TCalendarAction): 
       return { ...state, currentDate: action.payload };
     case EAction.NEXT_WEEK:
       return { ...state, currentDate: action.payload };
+    case EAction.PREV_MONTH:
+      return { ...state, currentDate: action.payload };
+    case EAction.NEXT_MONTH:
+      return { ...state, currentDate: action.payload };
     case EAction.GET_TODAY:
       return { ...state, currentDate: action.payload };
     case EAction.UPDATE_APPT:

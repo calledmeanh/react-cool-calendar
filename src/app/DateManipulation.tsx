@@ -13,24 +13,66 @@ const DateManipulation: React.FC = () => {
   const curDate: string = calendarState.currentDate.format(calendarState.dateFormat);
   const today: string = calendarState.todayGlobalIns.format(calendarState.dateFormat);
 
-  const onPrevDay = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const onPrevDay = () => {
     const prevDay: Dayjs = DateUtils.getPrevDay(curDate);
     dispath({ type: EAction.PREV_DAY, payload: prevDay });
   };
 
-  const onNextDay = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const onNextDay = () => {
     const nextDay: Dayjs = DateUtils.getNextDay(curDate);
     dispath({ type: EAction.NEXT_DAY, payload: nextDay });
   };
 
-  const onPrevWeek = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const onPrevWeek = () => {
     const prevWeek: Dayjs = DateUtils.getPrevWeek(curDate);
     dispath({ type: EAction.PREV_WEEK, payload: prevWeek });
   };
 
-  const onNextWeek = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const onNextWeek = () => {
     const nextWeek: Dayjs = DateUtils.getNextWeek(curDate);
     dispath({ type: EAction.NEXT_WEEK, payload: nextWeek });
+  };
+
+  const onPrevMonth = () => {
+    const prevMonth: Dayjs = DateUtils.getPrevMonth(curDate);
+    dispath({ type: EAction.PREV_MONTH, payload: prevMonth });
+  };
+
+  const onNextMonth = () => {
+    const nextMonth: Dayjs = DateUtils.getNextMonth(curDate);
+    dispath({ type: EAction.NEXT_MONTH, payload: nextMonth });
+  };
+
+  const prevBtnFactory = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    switch (calendarState.viewMode) {
+      case "DAY":
+        onPrevDay();
+        break;
+      case "WEEK":
+        onPrevWeek();
+        break;
+      case "MONTH":
+        onPrevMonth();
+        break;
+      default:
+        break;
+    }
+  };
+
+  const nextBtnFactory = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    switch (calendarState.viewMode) {
+      case "DAY":
+        onNextDay();
+        break;
+      case "WEEK":
+        onNextWeek();
+        break;
+      case "MONTH":
+        onNextMonth();
+        break;
+      default:
+        break;
+    }
   };
 
   const onToday = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -39,7 +81,7 @@ const DateManipulation: React.FC = () => {
 
   return (
     <Flex data-idtf={CONFIG.DATA_IDTF.DAYTIME}>
-      <Button $padding={[8, 12]} onClick={calendarState.viewMode === "DAY" ? onPrevDay : onPrevWeek}>
+      <Button $padding={[8, 12]} onClick={prevBtnFactory}>
         &#x2039;
       </Button>
       {(calendarState.viewMode === "DAY" || calendarState.viewMode === "WEEK") && (
@@ -50,9 +92,9 @@ const DateManipulation: React.FC = () => {
       <Text style={{ minWidth: 200, fontSize: 14 }} $padding={[7, 12]} $align={"center"} $justify={"center"}>
         {calendarState.viewMode === "DAY" && DateUtils.getCustomDay(calendarState.currentDate)}
         {calendarState.viewMode === "WEEK" && DateUtils.getCustomDateToDate(calendarState.currentDate)}
-        {calendarState.viewMode === "MONTH" && "December"}
+        {calendarState.viewMode === "MONTH" && DateUtils.getCustomMonth(calendarState.currentDate)}
       </Text>
-      <Button $padding={[8, 12]} style={{ borderLeft: "none" }} onClick={calendarState.viewMode === "DAY" ? onNextDay : onNextWeek}>
+      <Button $padding={[8, 12]} style={{ borderLeft: "none" }} onClick={nextBtnFactory}>
         &#x203A;
       </Button>
     </Flex>
