@@ -84,11 +84,9 @@ const DateManipulation: React.FC = () => {
       <Button $padding={[8, 12]} onClick={prevBtnFactory}>
         &#x2039;
       </Button>
-      {(calendarState.viewMode === "DAY" || calendarState.viewMode === "WEEK") && (
-        <Button disabled={curDate === today} style={{ borderRight: "none", borderLeft: "none" }} $padding={[8, 12]} onClick={onToday}>
-          today
-        </Button>
-      )}
+      <Button disabled={curDate === today} style={{ borderRight: "none", borderLeft: "none" }} $padding={[8, 12]} onClick={onToday}>
+        today
+      </Button>
       <Text style={{ minWidth: 200, fontSize: 14 }} $padding={[7, 12]} $align={"center"} $justify={"center"}>
         {calendarState.viewMode === "DAY" && DateUtils.getCustomDay(calendarState.currentDate)}
         {calendarState.viewMode === "WEEK" && DateUtils.getCustomDateToDate(calendarState.currentDate)}
