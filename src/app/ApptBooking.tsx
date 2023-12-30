@@ -7,18 +7,15 @@ import { AppointmentUtils, ElementUtils, TimeUtils, clsx } from "../util";
 import { Flex } from "./common";
 
 const Wrapper = styled.div<{ $status: EStatus }>`
-  background: ${(props) => AppointmentUtils.getApptColorByStatus(props.$status)};
-  border: 1px solid ${(props) => AppointmentUtils.getApptColorByStatus(props.$status)};
-  color: ${CONFIG.CSS.FONT_DARK_COLOR};
-  font-size: ${CONFIG.CSS.FONT_SIZE_MEDIUM}px;
   border-radius: 4px;
-
   overflow: hidden;
   white-space: nowrap;
-  text-overflow: ellipsis;
-
   cursor: pointer;
   position: absolute;
+  color: ${CONFIG.CSS.FONT_DARK_COLOR};
+  font-size: ${CONFIG.CSS.FONT_SIZE_MEDIUM}px;
+  background: ${(props) => AppointmentUtils.getApptColorByStatus(props.$status)};
+  border: 1px solid ${(props) => AppointmentUtils.getApptColorByStatus(props.$status)};
   &:hover {
     box-shadow: 0 3px 5px 0 ${CONFIG.CSS.BOX_SHADOW_COLOR};
   }
@@ -35,10 +32,20 @@ const Wrapper = styled.div<{ $status: EStatus }>`
   }
 `;
 
-const Content = styled(Flex)`
-  padding: 3px 4px 3px 8px;
+const Info = styled(Flex)`
+  padding: 4px;
   pointer-events: none;
 `;
+
+const ShareStyle = styled.span`
+  width: calc(100% - 5px);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`;
+
+const Title = styled(ShareStyle)``;
+const Content = styled(ShareStyle)``;
 
 const Resize = styled.div`
   position: absolute;
@@ -333,13 +340,13 @@ const ApptBooking: React.FC<TApptBooking> = ({ value, scrollEl, mousePosition, w
       onMouseDown={onStartDragging}
       onMouseUp={onEndDragging}
     >
-      <Content $dir={"column"}>
+      <Info $dir={"column"}>
         <div>
           {updatedStartTime}-{updatedEndTime}
         </div>
-        <div>{value.title}</div>
-        <div>{value.content}</div>
-      </Content>
+        <Title title={value.title}>{value.title}</Title>
+        <Content title={value.content}>{value.content}</Content>
+      </Info>
       <Resize data-idtf={CONFIG.DATA_IDTF.APPT_RESIZE} onMouseDown={onStartResize} onMouseUp={onEndResize}></Resize>
     </Wrapper>
   );
