@@ -7,9 +7,12 @@ export const DateUtils = {
   getNextDay,
   getPrevWeek,
   getNextWeek,
+  getPrevMonth,
+  getNextMonth,
   getDateline,
   getCustomDateToDate,
   getCustomDay,
+  getCustomMonth,
   isEqual,
 };
 
@@ -29,6 +32,14 @@ function getNextWeek(currentDate: string): Dayjs {
   return dayjs(currentDate).add(7, "d");
 }
 
+function getPrevMonth(currentDate: string): Dayjs {
+  return dayjs(currentDate).subtract(1, "month");
+}
+
+function getNextMonth(currentDate: string): Dayjs {
+  return dayjs(currentDate).add(1, "month");
+}
+
 function getDateline(currentDate: Dayjs, viewMode: TViewMode): TDateline {
   let startOfWeek: Dayjs = currentDate.startOf("weeks"); // monday
   let endOfWeek: Dayjs = currentDate.endOf("weeks"); // sunday
@@ -42,7 +53,7 @@ function getDateline(currentDate: Dayjs, viewMode: TViewMode): TDateline {
       origin: currentDate,
     };
     dateline.push(today);
-  } else if (viewMode === "WEEK") {
+  } else if (viewMode === "WEEK" || viewMode === "MONTH") {
     while (startOfWeek <= endOfWeek) {
       dateline.push({
         number: startOfWeek.format("DD"),
@@ -98,4 +109,8 @@ function isEqual(dayA: Dayjs, dayB: Dayjs): boolean {
   const dayBStr: string = dayB.format(CONFIG.DATE_FORMAT);
   const res: boolean = dayAStr === dayBStr;
   return res;
+}
+
+function getCustomMonth(currentDate: Dayjs) {
+  return currentDate.format("MMMM YYYY");
 }

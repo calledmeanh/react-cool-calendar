@@ -6,7 +6,7 @@ import CalendarProvider from "../hook/useCalendarContext";
 import { TCalendarStateForUser, TCalendarStateForApp, TAppointmentForUser } from "../model";
 import { Flex } from "./common";
 import Toolbar from "./Toolbar";
-import Scrolling from "./Scrolling";
+import Presentation from "./Presentation";
 
 /* 
   By default, Day.js comes with English locale only. If you need other locales, you can load them on demand. 
@@ -56,7 +56,7 @@ const Calendar: React.FC<TCalendarStateForUser> = (userProps) => {
     <CalendarProvider initialState={appProps}>
       <Wrapper data-idtf={CONFIG.DATA_IDTF.CALENDAR} $dir={"column"}>
         <Toolbar />
-        <Scrolling />
+        <Presentation />
       </Wrapper>
     </CalendarProvider>
   );
