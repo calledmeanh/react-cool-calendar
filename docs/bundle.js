@@ -1,7 +1,7 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 368:
+/***/ 467:
 /***/ ((__unused_webpack_module, __unused_webpack___webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -21,6 +21,8 @@ var EAction = /*#__PURE__*/function (EAction) {
   EAction["NEXT_DAY"] = "NEXT_DAY";
   EAction["PREV_WEEK"] = "PREV_WEEK";
   EAction["NEXT_WEEK"] = "NEXT_WEEK";
+  EAction["PREV_MONTH"] = "PREV_MONTH";
+  EAction["NEXT_MONTH"] = "NEXT_MONTH";
   EAction["GET_TODAY"] = "GET_TODAY";
   EAction["UPDATE_APPT"] = "UPDATE_APPT";
   EAction["UPDATE_FIRE_EVENT"] = "UPDATE_FIRE_EVENT";
@@ -53,7 +55,7 @@ function getDataSource() {
     id: "1",
     startTime: 7,
     duration: 120,
-    title: "1",
+    title: "This is a long long long long long long long for tile",
     content: "You only live once",
     status: EStatus.BOOKED,
     createdAt: dayjs_min_default()()
@@ -61,7 +63,7 @@ function getDataSource() {
     id: "2",
     startTime: 8,
     duration: 200,
-    title: "2",
+    title: "This is a long long long long long long long for tile",
     content: "You only live once",
     status: EStatus.CONFIRMED,
     createdAt: dayjs_min_default()()
@@ -69,7 +71,7 @@ function getDataSource() {
     id: "3",
     startTime: 9,
     duration: 150,
-    title: "3",
+    title: "This is a long long long long long long long for tile",
     content: "You only live once",
     status: EStatus.ARRIVED,
     createdAt: dayjs_min_default()()
@@ -77,31 +79,31 @@ function getDataSource() {
     id: "4",
     startTime: 7,
     duration: 120,
-    title: "4",
+    title: "This is a long long long long long long long for tile",
     content: "You only live once",
     status: EStatus.NOSHOW,
-    createdAt: dayjs_min_default()()
+    createdAt: dayjs_min_default()().add(1, "d")
   }, {
     id: "5",
     startTime: 6,
     duration: 120,
-    title: "5",
+    title: "This is a long long long long long long long for tile",
     content: "You only live once",
     status: EStatus.BOOKED,
-    createdAt: dayjs_min_default()()
+    createdAt: dayjs_min_default()().add(1, "d")
   }, {
     id: "6",
     startTime: 9,
     duration: 90,
-    title: "6",
+    title: "This is a long long long long long long long for tile",
     content: "You only live once",
     status: EStatus.CONFIRMED,
-    createdAt: dayjs_min_default()()
+    createdAt: dayjs_min_default()().add(1, "d")
   }, {
     id: "7",
     startTime: 9,
     duration: 90,
-    title: "7",
+    title: "This is a long long long long long long long for tile",
     content: "You only live once",
     status: EStatus.ARRIVED,
     createdAt: dayjs_min_default()().subtract(1, "d")
@@ -109,10 +111,10 @@ function getDataSource() {
     id: "8",
     startTime: 7,
     duration: 90,
-    title: "8",
+    title: "This is a long long long long long long long for tile",
     content: "You only live once",
     status: EStatus.STARTED,
-    createdAt: dayjs_min_default()().add(1, "d")
+    createdAt: dayjs_min_default()().subtract(1, "d")
   }, {
     id: "9",
     startTime: 7,
@@ -120,7 +122,7 @@ function getDataSource() {
     title: "9",
     content: "You only live once",
     status: EStatus.NOSHOW,
-    createdAt: dayjs_min_default()().add(2, "d")
+    createdAt: dayjs_min_default()().subtract(1, "d")
   }, {
     id: "10",
     startTime: 7,
@@ -144,7 +146,7 @@ function getDataSource() {
     title: "12",
     content: "You only live once",
     status: EStatus.NOSHOW,
-    createdAt: dayjs_min_default()().subtract(2, "d")
+    createdAt: dayjs_min_default()().add(2, "d")
   }, {
     id: "13",
     startTime: 8,
@@ -152,31 +154,7 @@ function getDataSource() {
     title: "13",
     content: "You only live once",
     status: EStatus.BOOKED,
-    createdAt: dayjs_min_default()().subtract(2, "d")
-  }, {
-    id: "14",
-    startTime: 6,
-    duration: 135,
-    title: "14",
-    content: "You only live once",
-    status: EStatus.BOOKED,
-    createdAt: dayjs_min_default()().subtract(2, "d")
-  }, {
-    id: "15",
-    startTime: 6,
-    duration: 300,
-    title: "15",
-    content: "You only live once",
-    status: EStatus.ARRIVED,
-    createdAt: dayjs_min_default()().subtract(3, "d")
-  }, {
-    id: "16",
-    startTime: 6,
-    duration: 300,
-    title: "16",
-    content: "You only live once",
-    status: EStatus.CONFIRMED,
-    createdAt: dayjs_min_default()().subtract(4, "d")
+    createdAt: dayjs_min_default()().add(2, "d")
   }];
 }
 ;// CONCATENATED MODULE: ./src/mock/index.ts
@@ -1537,6 +1515,7 @@ var DATA_IDTF = {
   DAYTIME: "daytime",
   VIEWMODE: "viewmode",
   SCROLLING: "scrolling",
+  MONTH: "month",
   INTERVAL: "interval",
   TIME: "time",
   SWIPABLE: "swipable",
@@ -1751,9 +1730,12 @@ var DateUtils = {
   getNextDay: getNextDay,
   getPrevWeek: getPrevWeek,
   getNextWeek: getNextWeek,
+  getPrevMonth: getPrevMonth,
+  getNextMonth: getNextMonth,
   getDateline: getDateline,
   getCustomDateToDate: getCustomDateToDate,
   getCustomDay: getCustomDay,
+  getCustomMonth: getCustomMonth,
   isEqual: isEqual
 };
 function getPrevDay(currentDate) {
@@ -1768,6 +1750,12 @@ function getPrevWeek(currentDate) {
 function getNextWeek(currentDate) {
   return dayjs_min_default()(currentDate).add(7, "d");
 }
+function getPrevMonth(currentDate) {
+  return dayjs_min_default()(currentDate).subtract(1, "month");
+}
+function getNextMonth(currentDate) {
+  return dayjs_min_default()(currentDate).add(1, "month");
+}
 function getDateline(currentDate, viewMode) {
   var startOfWeek = currentDate.startOf("weeks"); // monday
   var endOfWeek = currentDate.endOf("weeks"); // sunday
@@ -1780,7 +1768,7 @@ function getDateline(currentDate, viewMode) {
       origin: currentDate
     };
     dateline.push(today);
-  } else if (viewMode === "WEEK") {
+  } else if (viewMode === "WEEK" || viewMode === "MONTH") {
     while (startOfWeek <= endOfWeek) {
       dateline.push({
         number: startOfWeek.format("DD"),
@@ -1825,6 +1813,9 @@ function isEqual(dayA, dayB) {
   var dayBStr = dayB.format(CONFIG.DATE_FORMAT);
   var res = dayAStr === dayBStr;
   return res;
+}
+function getCustomMonth(currentDate) {
+  return currentDate.format("MMMM YYYY");
 }
 ;// CONCATENATED MODULE: ./src/util/config.ts
 
@@ -2089,6 +2080,14 @@ function calendarReducer(state, action) {
       return useCalendarContext_objectSpread(useCalendarContext_objectSpread({}, state), {}, {
         currentDate: action.payload
       });
+    case EAction.PREV_MONTH:
+      return useCalendarContext_objectSpread(useCalendarContext_objectSpread({}, state), {}, {
+        currentDate: action.payload
+      });
+    case EAction.NEXT_MONTH:
+      return useCalendarContext_objectSpread(useCalendarContext_objectSpread({}, state), {}, {
+        currentDate: action.payload
+      });
     case EAction.GET_TODAY:
       return useCalendarContext_objectSpread(useCalendarContext_objectSpread({}, state), {}, {
         currentDate: action.payload
@@ -2174,46 +2173,6 @@ var Line = st(Flex)(Line_templateObject || (Line_templateObject = Line_taggedTem
 
 ;// CONCATENATED MODULE: ./src/hook/index.ts
 
-;// CONCATENATED MODULE: ./src/app/ViewMode.tsx
-
-
-
-
-
-
-var options = [{
-  value: "DAY",
-  text: "day"
-}, {
-  value: "WEEK",
-  text: "week"
-}
-// { value: 'MONTH', text: 'month' },
-];
-var ViewMode = function ViewMode() {
-  var calendarState = useCalendarState();
-  var dispath = useCalendarDispatch();
-  var onSelectMode = function onSelectMode(e) {
-    var value = ElementUtils.getValueFromUserInput(e);
-    dispath({
-      type: EAction.CHANGE_MODE,
-      payload: value
-    });
-  };
-  return /*#__PURE__*/react.createElement(Select, {
-    "data-idtf": CONFIG.DATA_IDTF.VIEWMODE,
-    $padding: [8, 12],
-    $isborderradius: true,
-    value: calendarState.viewMode,
-    onChange: onSelectMode
-  }, options.map(function (o, i) {
-    return /*#__PURE__*/react.createElement(Option, {
-      key: i,
-      value: o.value
-    }, o.text);
-  }));
-};
-/* harmony default export */ const app_ViewMode = (ViewMode);
 ;// CONCATENATED MODULE: ./src/app/Zoom.tsx
 
 
@@ -2221,7 +2180,7 @@ var ViewMode = function ViewMode() {
 
 
 
-var Zoom_options = [{
+var options = [{
   value: EViewMode.LARGE,
   text: "large"
 }, {
@@ -2260,7 +2219,7 @@ var Zoom = function Zoom() {
     $isborderradius: true,
     value: TimeUtils.parseDurationToViewMode(calendarState.duration),
     onChange: onSelectZoom
-  }, Zoom_options.map(function (o, i) {
+  }, options.map(function (o, i) {
     return /*#__PURE__*/react.createElement(Option, {
       key: i,
       value: o.value
@@ -2280,33 +2239,77 @@ var DateManipulation = function DateManipulation() {
   var dispath = useCalendarDispatch();
   var curDate = calendarState.currentDate.format(calendarState.dateFormat);
   var today = calendarState.todayGlobalIns.format(calendarState.dateFormat);
-  var onPrevDay = function onPrevDay(e) {
+  var onPrevDay = function onPrevDay() {
     var prevDay = DateUtils.getPrevDay(curDate);
     dispath({
       type: EAction.PREV_DAY,
       payload: prevDay
     });
   };
-  var onNextDay = function onNextDay(e) {
+  var onNextDay = function onNextDay() {
     var nextDay = DateUtils.getNextDay(curDate);
     dispath({
       type: EAction.NEXT_DAY,
       payload: nextDay
     });
   };
-  var onPrevWeek = function onPrevWeek(e) {
+  var onPrevWeek = function onPrevWeek() {
     var prevWeek = DateUtils.getPrevWeek(curDate);
     dispath({
       type: EAction.PREV_WEEK,
       payload: prevWeek
     });
   };
-  var onNextWeek = function onNextWeek(e) {
+  var onNextWeek = function onNextWeek() {
     var nextWeek = DateUtils.getNextWeek(curDate);
     dispath({
       type: EAction.NEXT_WEEK,
       payload: nextWeek
     });
+  };
+  var onPrevMonth = function onPrevMonth() {
+    var prevMonth = DateUtils.getPrevMonth(curDate);
+    dispath({
+      type: EAction.PREV_MONTH,
+      payload: prevMonth
+    });
+  };
+  var onNextMonth = function onNextMonth() {
+    var nextMonth = DateUtils.getNextMonth(curDate);
+    dispath({
+      type: EAction.NEXT_MONTH,
+      payload: nextMonth
+    });
+  };
+  var prevBtnFactory = function prevBtnFactory(e) {
+    switch (calendarState.viewMode) {
+      case "DAY":
+        onPrevDay();
+        break;
+      case "WEEK":
+        onPrevWeek();
+        break;
+      case "MONTH":
+        onPrevMonth();
+        break;
+      default:
+        break;
+    }
+  };
+  var nextBtnFactory = function nextBtnFactory(e) {
+    switch (calendarState.viewMode) {
+      case "DAY":
+        onNextDay();
+        break;
+      case "WEEK":
+        onNextWeek();
+        break;
+      case "MONTH":
+        onNextMonth();
+        break;
+      default:
+        break;
+    }
   };
   var onToday = function onToday(e) {
     dispath({
@@ -2318,7 +2321,7 @@ var DateManipulation = function DateManipulation() {
     "data-idtf": CONFIG.DATA_IDTF.DAYTIME
   }, /*#__PURE__*/react.createElement(Button, {
     $padding: [8, 12],
-    onClick: calendarState.viewMode === "DAY" ? onPrevDay : onPrevWeek
+    onClick: prevBtnFactory
   }, "\u2039"), /*#__PURE__*/react.createElement(Button, {
     disabled: curDate === today,
     style: {
@@ -2335,15 +2338,56 @@ var DateManipulation = function DateManipulation() {
     $padding: [7, 12],
     $align: "center",
     $justify: "center"
-  }, calendarState.viewMode === "DAY" && DateUtils.getCustomDay(calendarState.currentDate), calendarState.viewMode === "WEEK" && DateUtils.getCustomDateToDate(calendarState.currentDate)), /*#__PURE__*/react.createElement(Button, {
+  }, calendarState.viewMode === "DAY" && DateUtils.getCustomDay(calendarState.currentDate), calendarState.viewMode === "WEEK" && DateUtils.getCustomDateToDate(calendarState.currentDate), calendarState.viewMode === "MONTH" && DateUtils.getCustomMonth(calendarState.currentDate)), /*#__PURE__*/react.createElement(Button, {
     $padding: [8, 12],
     style: {
       borderLeft: "none"
     },
-    onClick: calendarState.viewMode === "DAY" ? onNextDay : onNextWeek
+    onClick: nextBtnFactory
   }, "\u203A"));
 };
 /* harmony default export */ const app_DateManipulation = (DateManipulation);
+;// CONCATENATED MODULE: ./src/app/ViewMode.tsx
+
+
+
+
+
+
+var ViewMode_options = [{
+  value: "DAY",
+  text: "day"
+}, {
+  value: "WEEK",
+  text: "week"
+}, {
+  value: "MONTH",
+  text: "month"
+}];
+var ViewMode = function ViewMode() {
+  var calendarState = useCalendarState();
+  var dispath = useCalendarDispatch();
+  var onSelectMode = function onSelectMode(e) {
+    var value = ElementUtils.getValueFromUserInput(e);
+    dispath({
+      type: EAction.CHANGE_MODE,
+      payload: value
+    });
+  };
+  return /*#__PURE__*/react.createElement(Select, {
+    "data-idtf": CONFIG.DATA_IDTF.VIEWMODE,
+    $padding: [8, 12],
+    $isborderradius: true,
+    value: calendarState.viewMode,
+    onChange: onSelectMode
+  }, ViewMode_options.map(function (o, i) {
+    return /*#__PURE__*/react.createElement(Option, {
+      key: i,
+      value: o.value
+    }, o.text);
+  }));
+};
+/* harmony default export */ const app_ViewMode = (ViewMode);
 ;// CONCATENATED MODULE: ./src/app/Toolbar.tsx
 var Toolbar_templateObject;
 function Toolbar_taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
@@ -2354,12 +2398,14 @@ function Toolbar_taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings
 
 
 
+
 var Wrapper = st(Flex)(Toolbar_templateObject || (Toolbar_templateObject = Toolbar_taggedTemplateLiteral(["\n  height: 68px;\n  padding: 16px 24px;\n"])));
 var Toolbar = function Toolbar() {
+  var calendarState = useCalendarState();
   return /*#__PURE__*/react.createElement(Wrapper, {
     "data-idtf": CONFIG.DATA_IDTF.TOOLBAR,
     $justify: "space-between"
-  }, /*#__PURE__*/react.createElement(app_Zoom, null), /*#__PURE__*/react.createElement(app_DateManipulation, null), /*#__PURE__*/react.createElement(app_ViewMode, null));
+  }, calendarState.viewMode === "DAY" || calendarState.viewMode === "WEEK" ? /*#__PURE__*/react.createElement(app_Zoom, null) : /*#__PURE__*/react.createElement("div", null), /*#__PURE__*/react.createElement(app_DateManipulation, null), /*#__PURE__*/react.createElement(app_ViewMode, null));
 };
 /* harmony default export */ const app_Toolbar = (Toolbar);
 ;// CONCATENATED MODULE: ./src/app/Dateline.tsx
@@ -2380,7 +2426,7 @@ var DatelineText = st.div(_templateObject4 || (_templateObject4 = Dateline_tagge
 var Dateline = function Dateline() {
   var calendarState = useCalendarState();
   var steps = TimeUtils.calcTimeStep(calendarState.dayTime.end, calendarState.dayTime.start, calendarState.duration);
-  var maxGridHeight = steps * CONFIG.CSS.LINE_HEIGHT;
+  var maxGridHeight = calendarState.viewMode === "MONTH" ? CONFIG.CSS.DATELINE_HEIGHT : steps * CONFIG.CSS.LINE_HEIGHT;
   var render = (0,react.useCallback)(function () {
     var dateline = DateUtils.getDateline(calendarState.currentDate, calendarState.viewMode);
     return dateline.map(function (d, i) {
@@ -2393,7 +2439,7 @@ var Dateline = function Dateline() {
         $justify: "center",
         $align: "center",
         $afterPseudoHeight: maxGridHeight
-      }, /*#__PURE__*/react.createElement(DatelineNumber, {
+      }, calendarState.viewMode !== "MONTH" && /*#__PURE__*/react.createElement(DatelineNumber, {
         className: classname
       }, d.number), /*#__PURE__*/react.createElement(DatelineText, {
         className: classname
@@ -2529,7 +2575,7 @@ var NowIndicator = function NowIndicator(_ref) {
 /* harmony default export */ const app_NowIndicator = (NowIndicator);
 ;// CONCATENATED MODULE: ./src/app/ApptBooking.tsx
 function ApptBooking_typeof(o) { "@babel/helpers - typeof"; return ApptBooking_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, ApptBooking_typeof(o); }
-var ApptBooking_templateObject, ApptBooking_templateObject2, ApptBooking_templateObject3;
+var ApptBooking_templateObject, ApptBooking_templateObject2, ApptBooking_templateObject3, ApptBooking_templateObject4, _templateObject5, _templateObject6;
 function ApptBooking_ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
 function ApptBooking_objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ApptBooking_ownKeys(Object(t), !0).forEach(function (r) { ApptBooking_defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ApptBooking_ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
 function ApptBooking_defineProperty(obj, key, value) { key = ApptBooking_toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -2549,13 +2595,16 @@ function ApptBooking_taggedTemplateLiteral(strings, raw) { if (!raw) { raw = str
 
 
 
-var ApptBooking_Wrapper = st.div(ApptBooking_templateObject || (ApptBooking_templateObject = ApptBooking_taggedTemplateLiteral(["\n  background: ", ";\n  border: 1px solid ", ";\n  color: ", ";\n  font-size: ", "px;\n  border-radius: 4px;\n\n  overflow: hidden;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n\n  cursor: pointer;\n  position: absolute;\n  &:hover {\n    box-shadow: 0 3px 5px 0 ", ";\n  }\n  &.drag,\n  &.resize {\n    box-shadow: 0 5px 8px 3px ", ";\n    z-index: 50;\n  }\n  &.drag {\n    cursor: move;\n  }\n  &.resize {\n    cursor: row-resize;\n  }\n"])), function (props) {
+var ApptBooking_Wrapper = st.div(ApptBooking_templateObject || (ApptBooking_templateObject = ApptBooking_taggedTemplateLiteral(["\n  border-radius: 4px;\n  overflow: hidden;\n  white-space: nowrap;\n  cursor: pointer;\n  position: absolute;\n  color: ", ";\n  font-size: ", "px;\n  background: ", ";\n  border: 1px solid ", ";\n  &:hover {\n    box-shadow: 0 3px 5px 0 ", ";\n  }\n  &.drag,\n  &.resize {\n    box-shadow: 0 5px 8px 3px ", ";\n    z-index: 50;\n  }\n  &.drag {\n    cursor: move;\n  }\n  &.resize {\n    cursor: row-resize;\n  }\n"])), CONFIG.CSS.FONT_DARK_COLOR, CONFIG.CSS.FONT_SIZE_MEDIUM, function (props) {
   return AppointmentUtils.getApptColorByStatus(props.$status);
 }, function (props) {
   return AppointmentUtils.getApptColorByStatus(props.$status);
-}, CONFIG.CSS.FONT_DARK_COLOR, CONFIG.CSS.FONT_SIZE_MEDIUM, CONFIG.CSS.BOX_SHADOW_COLOR, CONFIG.CSS.BOX_SHADOW_COLOR);
-var Content = st(Flex)(ApptBooking_templateObject2 || (ApptBooking_templateObject2 = ApptBooking_taggedTemplateLiteral(["\n  padding: 3px 4px 3px 8px;\n  pointer-events: none;\n"])));
-var Resize = st.div(ApptBooking_templateObject3 || (ApptBooking_templateObject3 = ApptBooking_taggedTemplateLiteral(["\n  position: absolute;\n  width: 100%;\n  height: 20px;\n  bottom: 0;\n  cursor: row-resize;\n  z-index: 11;\n"])));
+}, CONFIG.CSS.BOX_SHADOW_COLOR, CONFIG.CSS.BOX_SHADOW_COLOR);
+var Info = st(Flex)(ApptBooking_templateObject2 || (ApptBooking_templateObject2 = ApptBooking_taggedTemplateLiteral(["\n  padding: 4px;\n  pointer-events: none;\n"])));
+var ShareStyle = st.span(ApptBooking_templateObject3 || (ApptBooking_templateObject3 = ApptBooking_taggedTemplateLiteral(["\n  width: calc(100% - 5px);\n  overflow: hidden;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n"])));
+var Title = st(ShareStyle)(ApptBooking_templateObject4 || (ApptBooking_templateObject4 = ApptBooking_taggedTemplateLiteral([""])));
+var Content = st(ShareStyle)(_templateObject5 || (_templateObject5 = ApptBooking_taggedTemplateLiteral([""])));
+var Resize = st.div(_templateObject6 || (_templateObject6 = ApptBooking_taggedTemplateLiteral(["\n  position: absolute;\n  width: 100%;\n  height: 20px;\n  bottom: 0;\n  cursor: row-resize;\n  z-index: 11;\n"])));
 var ApptBooking = function ApptBooking(_ref) {
   var _calendarRef$current;
   var value = _ref.value,
@@ -2834,9 +2883,13 @@ var ApptBooking = function ApptBooking(_ref) {
     className: classname,
     onMouseDown: onStartDragging,
     onMouseUp: onEndDragging
-  }, /*#__PURE__*/react.createElement(Content, {
+  }, /*#__PURE__*/react.createElement(Info, {
     $dir: "column"
-  }, /*#__PURE__*/react.createElement("div", null, updatedStartTime, "-", updatedEndTime), /*#__PURE__*/react.createElement("div", null, value.title), /*#__PURE__*/react.createElement("div", null, value.content)), /*#__PURE__*/react.createElement(Resize, {
+  }, /*#__PURE__*/react.createElement("div", null, updatedStartTime, "-", updatedEndTime), /*#__PURE__*/react.createElement(Title, {
+    title: value.title
+  }, value.title), /*#__PURE__*/react.createElement(Content, {
+    title: value.content
+  }, value.content)), /*#__PURE__*/react.createElement(Resize, {
     "data-idtf": CONFIG.DATA_IDTF.APPT_RESIZE,
     onMouseDown: onStartResize,
     onMouseUp: onEndResize
@@ -3271,6 +3324,124 @@ var Scrolling = function Scrolling() {
   }, /*#__PURE__*/react.createElement(app_Interval, null), /*#__PURE__*/react.createElement(app_Swipable, null));
 };
 /* harmony default export */ const app_Scrolling = (Scrolling);
+;// CONCATENATED MODULE: ./src/app/Month.tsx
+var Month_templateObject, Month_templateObject2, Month_templateObject3, Month_templateObject4, Month_templateObject5, Month_templateObject6, _templateObject7;
+function Month_toConsumableArray(arr) { return Month_arrayWithoutHoles(arr) || Month_iterableToArray(arr) || Month_unsupportedIterableToArray(arr) || Month_nonIterableSpread(); }
+function Month_nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function Month_iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+function Month_arrayWithoutHoles(arr) { if (Array.isArray(arr)) return Month_arrayLikeToArray(arr); }
+function Month_slicedToArray(arr, i) { return Month_arrayWithHoles(arr) || Month_iterableToArrayLimit(arr, i) || Month_unsupportedIterableToArray(arr, i) || Month_nonIterableRest(); }
+function Month_nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function Month_unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return Month_arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return Month_arrayLikeToArray(o, minLen); }
+function Month_arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function Month_iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function Month_arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+function Month_taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+
+
+
+
+
+
+var Month_Wrapper = st.div(Month_templateObject || (Month_templateObject = Month_taggedTemplateLiteral(["\n  flex: 1;\n  overflow-y: auto;\n"])));
+var DayGrid = st(Flex)(Month_templateObject2 || (Month_templateObject2 = Month_taggedTemplateLiteral(["\n  height: calc(100% - 60px); // 60px is height of dateline\n  display: grid;\n  grid-template-columns: repeat(7, 1fr);\n  border-bottom: 1px solid ", ";\n  border-left: 1px solid ", ";\n"])), CONFIG.CSS.GRAY_SECONDARY_COLOR, CONFIG.CSS.GRAY_SECONDARY_COLOR);
+var DayCell = st.div(Month_templateObject3 || (Month_templateObject3 = Month_taggedTemplateLiteral(["\n  cursor: pointer;\n  overflow-y: hidden;\n  border-top: 1px solid ", ";\n  border-right: 1px solid ", ";\n  background-color: ", ";\n  &.currMonth {\n    color: #000;\n    background-color: #fff;\n  }\n"])), CONFIG.CSS.GRAY_SECONDARY_COLOR, CONFIG.CSS.GRAY_SECONDARY_COLOR, CONFIG.CSS.GRAY_PRIMARY_COLOR);
+var DayText = st.p(Month_templateObject4 || (Month_templateObject4 = Month_taggedTemplateLiteral(["\n  margin: 4px;\n  font-size: ", "px;\n  color: ", ";\n  width: 30px;\n  height: 30px;\n  line-height: 30px;\n  &.today {\n    text-align: center;\n    border-radius: 50%;\n    background-color: ", ";\n    color: #fff !important;\n  }\n  &.currMonth {\n    color: #000;\n  }\n"])), CONFIG.CSS.FONT_SIZE_MEDIUM, CONFIG.CSS.FONT_LIGHT_COLOR, CONFIG.CSS.HIGHLIGHT_PRIMARY_COLOR);
+var RectWrapper = st(Flex)(Month_templateObject5 || (Month_templateObject5 = Month_taggedTemplateLiteral(["\n  height: calc(100% / 5);\n  border-radius: 4px;\n  padding: 0 4px;\n  &:hover {\n    background-color: ", ";\n  }\n"])), CONFIG.CSS.GRAY_PRIMARY_COLOR);
+var RectDotCircle = st.div(Month_templateObject6 || (Month_templateObject6 = Month_taggedTemplateLiteral(["\n  width: 6px;\n  height: 6px;\n  border-radius: 50%;\n  margin-right: 6px;\n  background: ", ";\n  border: 1px solid ", ";\n"])), function (props) {
+  return AppointmentUtils.getApptColorByStatus(props.$status);
+}, function (props) {
+  return AppointmentUtils.getApptColorByStatus(props.$status);
+});
+var RectText = st.span(_templateObject7 || (_templateObject7 = Month_taggedTemplateLiteral(["\n  width: calc(100% - 20px);\n  overflow: hidden;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  color: ", ";\n  font-size: ", "px;\n"])), CONFIG.CSS.FONT_DARK_COLOR, CONFIG.CSS.FONT_SIZE_MEDIUM);
+var ApptRectangle = function ApptRectangle(_ref) {
+  var value = _ref.value;
+  var startTime = TimeUtils.convertSecondsToHourString(value.startTime);
+  return /*#__PURE__*/react.createElement(RectWrapper, {
+    $align: "center",
+    $status: value.status
+  }, /*#__PURE__*/react.createElement(RectDotCircle, {
+    $status: value.status
+  }), " ", /*#__PURE__*/react.createElement(RectText, {
+    title: value.title
+  }, startTime, " - ", value.title));
+};
+var Month = function Month() {
+  var calendarState = useCalendarState();
+  var dayGridRef = (0,react.useRef)(null);
+  var _useState = (0,react.useState)(0),
+    _useState2 = Month_slicedToArray(_useState, 2),
+    dayGridHeight = _useState2[0],
+    setDayGridHeight = _useState2[1];
+  var firstDayOfMonth = calendarState.currentDate.startOf("month");
+  var prevMonth = firstDayOfMonth.subtract(1, "month");
+  var nextMonth = firstDayOfMonth.add(1, "month");
+  var daysInMonth = firstDayOfMonth.daysInMonth();
+  var daysInPrevMonth = prevMonth.daysInMonth();
+  var prevMonthRemainingDays = firstDayOfMonth.get("day"); // first day of month, get index of that day in week
+  var nearestEndOfMonth = daysInPrevMonth - prevMonthRemainingDays;
+  var nextMonthRemainingDays = 7 - (prevMonthRemainingDays + daysInMonth) % 7;
+  var rows = prevMonthRemainingDays >= 4 && nextMonthRemainingDays >= 4 ? 6 : 5;
+  var pushDays = (0,react.useCallback)(function (remainingDays, month, dayNumber, prefix) {
+    var days = [];
+    var _loop = function _loop() {
+      var dateInMonth = month.date(dayNumber + i);
+      var isToday = DateUtils.isEqual(dateInMonth, calendarState.todayGlobalIns);
+      var classname = clsx({
+        today: isToday,
+        currMonth: remainingDays > 15
+      });
+      var apptByDay = calendarState.appointments.filter(function (appt) {
+        return DateUtils.isEqual(dateInMonth, appt.createdAt);
+      });
+      days.push( /*#__PURE__*/react.createElement(DayCell, {
+        key: "".concat(prefix, "-month-").concat(i),
+        className: classname,
+        style: {
+          height: dayGridHeight / rows
+        }
+      }, /*#__PURE__*/react.createElement(DayText, {
+        className: classname
+      }, dateInMonth.date()), apptByDay.map(function (a) {
+        return /*#__PURE__*/react.createElement(ApptRectangle, {
+          key: a.id,
+          value: a
+        });
+      })));
+    };
+    for (var i = 1; i <= remainingDays; i++) {
+      _loop();
+    }
+    return days;
+  }, [calendarState.todayGlobalIns, prevMonthRemainingDays, calendarState.appointments, dayGridHeight, rows]);
+  var render = (0,react.useCallback)(function () {
+    var days = [];
+    days.push.apply(days, Month_toConsumableArray(pushDays(prevMonthRemainingDays, prevMonth, nearestEndOfMonth, "prev")));
+    days.push.apply(days, Month_toConsumableArray(pushDays(daysInMonth, firstDayOfMonth, 0, "curr")));
+    days.push.apply(days, Month_toConsumableArray(pushDays(nextMonthRemainingDays, nextMonth, 0, "next")));
+    return days;
+  }, [prevMonthRemainingDays, nearestEndOfMonth, daysInMonth, nextMonthRemainingDays, dayGridHeight]);
+  (0,react.useEffect)(function () {
+    if (dayGridRef && dayGridRef.current) setDayGridHeight(dayGridRef.current.offsetHeight);
+  }, []);
+  return /*#__PURE__*/react.createElement(Month_Wrapper, {
+    "data-idtf": CONFIG.DATA_IDTF.MONTH
+  }, /*#__PURE__*/react.createElement(app_Dateline, null), /*#__PURE__*/react.createElement(DayGrid, {
+    ref: dayGridRef
+  }, render()));
+};
+/* harmony default export */ const app_Month = (Month);
+;// CONCATENATED MODULE: ./src/app/Presentation.tsx
+
+
+
+
+var Presentation = function Presentation() {
+  var calendarState = useCalendarState();
+  return /*#__PURE__*/react.createElement(react.Fragment, null, calendarState.viewMode !== "MONTH" && /*#__PURE__*/react.createElement(app_Scrolling, null), calendarState.viewMode === "MONTH" && /*#__PURE__*/react.createElement(app_Month, null));
+};
+/* harmony default export */ const app_Presentation = (Presentation);
 // EXTERNAL MODULE: ./node_modules/dayjs/locale/vi.js
 var vi = __webpack_require__(553);
 ;// CONCATENATED MODULE: ./src/app/Calendar.tsx
@@ -3337,7 +3508,7 @@ var Calendar = function Calendar(userProps) {
   }, /*#__PURE__*/react.createElement(Calendar_Wrapper, {
     "data-idtf": CONFIG.DATA_IDTF.CALENDAR,
     $dir: "column"
-  }, /*#__PURE__*/react.createElement(app_Toolbar, null), /*#__PURE__*/react.createElement(app_Scrolling, null)));
+  }, /*#__PURE__*/react.createElement(app_Toolbar, null), /*#__PURE__*/react.createElement(app_Presentation, null)));
 };
 /* harmony default export */ const app_Calendar = (Calendar);
 // EXTERNAL MODULE: ./src/index.css
@@ -3360,7 +3531,7 @@ root.render( /*#__PURE__*/react.createElement(react.StrictMode, null, /*#__PURE_
   timeType: 24,
   groupTime: 60,
   nowIndicator: true,
-  viewMode: "WEEK",
+  viewMode: "MONTH",
   dateFormat: "MM/DD/YYYY",
   datetimeFormat: "MM DD YYYY hh:mm:ss",
   timeFormat: "hh:mm:ss",
@@ -3693,7 +3864,7 @@ module.exports = function (urlString) {
 // extracted by mini-css-extract-plugin
 
     if(true) {
-      // 1702826847415
+      // 1703993119404
       var cssReload = __webpack_require__(783)(module.id, {"locals":false});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -4317,7 +4488,7 @@ module.exports = function shallowEqual(objA, objB, compare, compareContext) {
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("8854817662b22709bd28")
+/******/ 		__webpack_require__.h = () => ("8f514fb2659d6f48c931")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */
@@ -5417,7 +5588,7 @@ module.exports = function shallowEqual(objA, objB, compare, compareContext) {
 /******/ 	// module cache are used so entry inlining is disabled
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
-/******/ 	var __webpack_exports__ = __webpack_require__(368);
+/******/ 	var __webpack_exports__ = __webpack_require__(467);
 /******/ 	
 /******/ })()
 ;
