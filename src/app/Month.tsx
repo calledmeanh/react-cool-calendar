@@ -107,6 +107,7 @@ const Month: React.FC = () => {
   const nearestEndOfMonth: number = daysInPrevMonth - prevMonthRemainingDays;
 
   const nextMonthRemainingDays: number = 7 - ((prevMonthRemainingDays + daysInMonth) % 7);
+  const rows = prevMonthRemainingDays >= 4 && nextMonthRemainingDays >= 4 ? 6 : 5;
 
   const pushDays = useCallback(
     (remainingDays: number, month: Dayjs, dayNumber: number, prefix: string) => {
@@ -122,7 +123,7 @@ const Month: React.FC = () => {
         });
 
         const apptByDay = calendarState.appointments.filter((appt) => DateUtils.isEqual(dateInMonth, appt.createdAt));
-        const rows = prevMonthRemainingDays > 4 ? 6 : 5;
+
         days.push(
           <DayCell key={`${prefix}-month-${i}`} className={classname} style={{ height: dayGridHeight / rows }}>
             <DayText className={classname}>{dateInMonth.date()}</DayText>
@@ -135,7 +136,7 @@ const Month: React.FC = () => {
 
       return days;
     },
-    [calendarState.todayGlobalIns, prevMonthRemainingDays, calendarState.appointments, dayGridHeight],
+    [calendarState.todayGlobalIns, prevMonthRemainingDays, calendarState.appointments, dayGridHeight, rows],
   );
 
   const render = useCallback(() => {
