@@ -3414,14 +3414,14 @@ var Month = function Month() {
       _loop();
     }
     return days;
-  }, [calendarState.todayGlobalIns, prevMonthRemainingDays, calendarState.appointments, dayGridHeight, rows]);
+  }, [calendarState.todayGlobalIns, calendarState.appointments, dayGridHeight, rows]);
   var render = (0,react.useCallback)(function () {
     var days = [];
     days.push.apply(days, Month_toConsumableArray(pushDays(prevMonthRemainingDays, prevMonth, nearestEndOfMonth, "prev")));
     days.push.apply(days, Month_toConsumableArray(pushDays(daysInMonth, firstDayOfMonth, 0, "curr")));
     days.push.apply(days, Month_toConsumableArray(pushDays(nextMonthRemainingDays, nextMonth, 0, "next")));
     return days;
-  }, [prevMonthRemainingDays, nearestEndOfMonth, daysInMonth, nextMonthRemainingDays, dayGridHeight]);
+  }, [prevMonthRemainingDays, nearestEndOfMonth, daysInMonth, nextMonthRemainingDays, prevMonth, firstDayOfMonth, nextMonth, pushDays]);
   (0,react.useEffect)(function () {
     if (dayGridRef && dayGridRef.current) setDayGridHeight(dayGridRef.current.offsetHeight);
   }, []);
@@ -3531,7 +3531,7 @@ root.render( /*#__PURE__*/react.createElement(react.StrictMode, null, /*#__PURE_
   timeType: 24,
   groupTime: 60,
   nowIndicator: true,
-  viewMode: "MONTH",
+  viewMode: "WEEK",
   dateFormat: "MM/DD/YYYY",
   datetimeFormat: "MM DD YYYY hh:mm:ss",
   timeFormat: "hh:mm:ss",
@@ -3864,7 +3864,7 @@ module.exports = function (urlString) {
 // extracted by mini-css-extract-plugin
 
     if(true) {
-      // 1703993119404
+      // 1704084644810
       var cssReload = __webpack_require__(783)(module.id, {"locals":false});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -4488,7 +4488,7 @@ module.exports = function shallowEqual(objA, objB, compare, compareContext) {
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("8f514fb2659d6f48c931")
+/******/ 		__webpack_require__.h = () => ("00a59098c7e35a879ff4")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */

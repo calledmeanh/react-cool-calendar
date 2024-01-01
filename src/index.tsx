@@ -15,7 +15,7 @@ root.render(
         timeType={24}
         groupTime={60}
         nowIndicator={true}
-        viewMode={"MONTH"}
+        viewMode={"WEEK"}
         dateFormat="MM/DD/YYYY"
         datetimeFormat="MM DD YYYY hh:mm:ss"
         timeFormat="hh:mm:ss"

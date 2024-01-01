@@ -107,7 +107,7 @@ const Month: React.FC = () => {
   const nearestEndOfMonth: number = daysInPrevMonth - prevMonthRemainingDays;
 
   const nextMonthRemainingDays: number = 7 - ((prevMonthRemainingDays + daysInMonth) % 7);
-  const rows = prevMonthRemainingDays >= 4 && nextMonthRemainingDays >= 4 ? 6 : 5;
+  const rows: number = prevMonthRemainingDays >= 4 && nextMonthRemainingDays >= 4 ? 6 : 5;
 
   const pushDays = useCallback(
     (remainingDays: number, month: Dayjs, dayNumber: number, prefix: string) => {
@@ -136,7 +136,7 @@ const Month: React.FC = () => {
 
       return days;
     },
-    [calendarState.todayGlobalIns, prevMonthRemainingDays, calendarState.appointments, dayGridHeight, rows],
+    [calendarState.todayGlobalIns, calendarState.appointments, dayGridHeight, rows],
   );
 
   const render = useCallback(() => {
@@ -147,7 +147,7 @@ const Month: React.FC = () => {
     days.push(...pushDays(nextMonthRemainingDays, nextMonth, 0, "next"));
 
     return days;
-  }, [prevMonthRemainingDays, nearestEndOfMonth, daysInMonth, nextMonthRemainingDays, dayGridHeight]);
+  }, [prevMonthRemainingDays, nearestEndOfMonth, daysInMonth, nextMonthRemainingDays, prevMonth, firstDayOfMonth, nextMonth, pushDays]);
 
   useEffect(() => {
     if (dayGridRef && dayGridRef.current) setDayGridHeight(dayGridRef.current.offsetHeight);
