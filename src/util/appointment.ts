@@ -1,5 +1,5 @@
 import { CONFIG } from "../constant";
-import { EStatus, TAppointmentForApp, TAppointmentForUser, TRect } from "../model";
+import { EStatus, TAppointmentForApp, TAppointmentForUser } from "../model";
 import { TimeUtils } from "./time";
 
 export const AppointmentUtils = {
