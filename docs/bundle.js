@@ -1,7 +1,7 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 467:
+/***/ 252:
 /***/ ((__unused_webpack_module, __unused_webpack___webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -2118,13 +2118,13 @@ var Flex = st.div(_templateObject || (_templateObject = _taggedTemplateLiteral([
 }, function (props) {
   return props.$align;
 });
-;// CONCATENATED MODULE: ./src/app/common/Text.ts
-var Text_templateObject;
-function Text_taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+;// CONCATENATED MODULE: ./src/app/common/Label.ts
+var Label_templateObject;
+function Label_taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
 
 
-var Text = st(Flex)(Text_templateObject || (Text_templateObject = Text_taggedTemplateLiteral(["\n  padding: ", ";\n  border-radius: ", ";\n  border: 1px solid ", ";\n  background: ", ";\n  color: ", ";\n  text-transform: capitalize;\n"])), function (props) {
+var Label = st(Flex)(Label_templateObject || (Label_templateObject = Label_taggedTemplateLiteral(["\n  padding: ", ";\n  border-radius: ", ";\n  border: 1px solid ", ";\n  background: ", ";\n  color: ", ";\n  text-transform: capitalize;\n"])), function (props) {
   return "".concat(props.$padding[0], "px ").concat(props.$padding[1], "px");
 }, function (props) {
   return props.$isborderradius ? "4px" : 0;
@@ -2149,8 +2149,10 @@ var Button = st.button(Button_templateObject || (Button_templateObject = Button_
   return "".concat(props.$padding[0], "px ").concat(props.$padding[1], "px");
 }, function (props) {
   return props.$isborderradius ? "4px" : 0;
-}, CONFIG.CSS.GRAY_THIRD_COLOR, CONFIG.CSS.LIGHT_THEME_BG_COLOR, function (props) {
-  return props.color || CONFIG.CSS.FONT_DARK_COLOR;
+}, CONFIG.CSS.GRAY_THIRD_COLOR, function (props) {
+  return props.$background || CONFIG.CSS.LIGHT_THEME_BG_COLOR;
+}, function (props) {
+  return props.$color || CONFIG.CSS.FONT_DARK_COLOR;
 }, CONFIG.CSS.FONT_SIZE_MEDIUM, CONFIG.CSS.BOX_SHADOW_COLOR, CONFIG.CSS.DISABLED_COLOR);
 ;// CONCATENATED MODULE: ./src/app/common/Line.ts
 var Line_templateObject;
@@ -2165,7 +2167,78 @@ var Line = st(Flex)(Line_templateObject || (Line_templateObject = Line_taggedTem
     gt = group time
     ngt = no group time
  */
+;// CONCATENATED MODULE: ./src/app/ApptRectangle.tsx
+var ApptRectangle_templateObject, ApptRectangle_templateObject2, _templateObject3;
+function ApptRectangle_taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+
+
+
+
+var Wrapper = st(Flex)(ApptRectangle_templateObject || (ApptRectangle_templateObject = ApptRectangle_taggedTemplateLiteral(["\n  height: calc(100% / 5);\n  border-radius: 4px;\n  padding: 0 4px;\n  cursor: pointer;\n  &:hover {\n    background-color: ", ";\n  }\n"])), CONFIG.CSS.GRAY_PRIMARY_COLOR);
+var DotCircle = st.div(ApptRectangle_templateObject2 || (ApptRectangle_templateObject2 = ApptRectangle_taggedTemplateLiteral(["\n  width: 6px;\n  height: 6px;\n  border-radius: 50%;\n  margin-right: 6px;\n  background: ", ";\n  border: 1px solid ", ";\n"])), function (props) {
+  return AppointmentUtils.getApptColorByStatus(props.$status);
+}, function (props) {
+  return AppointmentUtils.getApptColorByStatus(props.$status);
+});
+var Content = st.span(_templateObject3 || (_templateObject3 = ApptRectangle_taggedTemplateLiteral(["\n  width: calc(100% - 20px);\n  overflow: hidden;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  color: ", ";\n  font-size: ", "px;\n"])), CONFIG.CSS.FONT_DARK_COLOR, CONFIG.CSS.FONT_SIZE_MEDIUM);
+var ApptRectangle = function ApptRectangle(_ref) {
+  var value = _ref.value;
+  var startTime = TimeUtils.convertSecondsToHourString(value.startTime);
+  return /*#__PURE__*/react.createElement(Wrapper, {
+    $align: "center",
+    $status: value.status
+  }, /*#__PURE__*/react.createElement(DotCircle, {
+    $status: value.status
+  }), " ", /*#__PURE__*/react.createElement(Content, {
+    title: value.title
+  }, startTime, " - ", value.title));
+};
+/* harmony default export */ const app_ApptRectangle = (ApptRectangle);
+;// CONCATENATED MODULE: ./src/app/common/Modal.tsx
+var Modal_templateObject, Modal_templateObject2, Modal_templateObject3, _templateObject4;
+function Modal_taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+
+
+
+var Modal_Wrapper = st(Flex)(Modal_templateObject || (Modal_templateObject = Modal_taggedTemplateLiteral(["\n  position: fixed;\n  top: 0;\n  left: 0;\n  bottom: 0;\n  right: 0;\n  background: rgba(0, 0, 0, 0.5);\n  z-index: 99;\n"])));
+var Container = st(Flex)(Modal_templateObject2 || (Modal_templateObject2 = Modal_taggedTemplateLiteral(["\n  background: #fff;\n  padding: 14px;\n  border-radius: 8px;\n  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);\n  width: 280px;\n  height: 200px;\n"])));
+var Title = st(Flex)(Modal_templateObject3 || (Modal_templateObject3 = Modal_taggedTemplateLiteral(["\n  width: 100%;\n  height: 40px;\n"])));
+var List = st(Flex)(_templateObject4 || (_templateObject4 = Modal_taggedTemplateLiteral(["\n  padding-top: 10px;\n  width: 100%;\n  height: calc(100% - 40px);\n  overflow-x: hidden;\n  overflow-y: auto;\n"])));
+var Modal = function Modal(_ref) {
+  var titleRender = _ref.titleRender,
+    data = _ref.data,
+    onClose = _ref.onClose;
+  return /*#__PURE__*/react.createElement(Modal_Wrapper, {
+    $align: "center",
+    $justify: "center"
+  }, /*#__PURE__*/react.createElement(Container, {
+    $dir: "column"
+  }, /*#__PURE__*/react.createElement(Title, {
+    $align: "center"
+  }, titleRender, /*#__PURE__*/react.createElement(Button, {
+    style: {
+      width: 40,
+      height: 40,
+      borderRadius: 40,
+      border: "none"
+    },
+    $padding: [8, 12],
+    onClick: function onClick() {
+      return onClose();
+    }
+  }, "X")), /*#__PURE__*/react.createElement(List, {
+    $dir: "column"
+  }, data.map(function (d) {
+    return /*#__PURE__*/react.createElement(app_ApptRectangle, {
+      key: d.id,
+      value: d
+    });
+  }))));
+};
 ;// CONCATENATED MODULE: ./src/app/common/index.ts
+
 
 
 
@@ -2330,7 +2403,7 @@ var DateManipulation = function DateManipulation() {
     },
     $padding: [8, 12],
     onClick: onToday
-  }, "today"), /*#__PURE__*/react.createElement(Text, {
+  }, "today"), /*#__PURE__*/react.createElement(Label, {
     style: {
       minWidth: 200,
       fontSize: 14
@@ -2399,17 +2472,17 @@ function Toolbar_taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings
 
 
 
-var Wrapper = st(Flex)(Toolbar_templateObject || (Toolbar_templateObject = Toolbar_taggedTemplateLiteral(["\n  height: 68px;\n  padding: 16px 24px;\n"])));
+var Toolbar_Wrapper = st(Flex)(Toolbar_templateObject || (Toolbar_templateObject = Toolbar_taggedTemplateLiteral(["\n  height: 68px;\n  padding: 16px 24px;\n"])));
 var Toolbar = function Toolbar() {
   var calendarState = useCalendarState();
-  return /*#__PURE__*/react.createElement(Wrapper, {
+  return /*#__PURE__*/react.createElement(Toolbar_Wrapper, {
     "data-idtf": CONFIG.DATA_IDTF.TOOLBAR,
     $justify: "space-between"
   }, calendarState.viewMode === "DAY" || calendarState.viewMode === "WEEK" ? /*#__PURE__*/react.createElement(app_Zoom, null) : /*#__PURE__*/react.createElement("div", null), /*#__PURE__*/react.createElement(app_DateManipulation, null), /*#__PURE__*/react.createElement(app_ViewMode, null));
 };
 /* harmony default export */ const app_Toolbar = (Toolbar);
 ;// CONCATENATED MODULE: ./src/app/Dateline.tsx
-var Dateline_templateObject, Dateline_templateObject2, _templateObject3, _templateObject4;
+var Dateline_templateObject, Dateline_templateObject2, Dateline_templateObject3, Dateline_templateObject4;
 function Dateline_taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
 
@@ -2421,8 +2494,8 @@ var Dateline_Wrapper = st(Flex)(Dateline_templateObject || (Dateline_templateObj
 var DatelineHeader = st(Flex)(Dateline_templateObject2 || (Dateline_templateObject2 = Dateline_taggedTemplateLiteral(["\n  flex: 1;\n  background: ", ";\n  font-weight: 500;\n  cursor: pointer;\n  position: relative;\n  &:hover {\n    background: ", ";\n    box-shadow: 0 3px 5px 0 ", ";\n  }\n  &:active {\n    box-shadow: none;\n  }\n  &::after {\n    width: 1px;\n    background: ", ";\n    height: ", "px;\n    position: absolute;\n    top: 0;\n    right: 0;\n    content: \"\";\n    pointer-events: none;\n  }\n"])), CONFIG.CSS.GRAY_PRIMARY_COLOR, CONFIG.CSS.DATELINE_COLORS.BG_HOVER, CONFIG.CSS.BOX_SHADOW_COLOR, CONFIG.CSS.GRAY_SECONDARY_COLOR, function (props) {
   return props.$afterPseudoHeight;
 });
-var DatelineNumber = st.div(_templateObject3 || (_templateObject3 = Dateline_taggedTemplateLiteral(["\n  font-size: 26px;\n  margin-right: 6px;\n  color: ", ";\n  &.today {\n    width: 40px;\n    height: 40px;\n    line-height: 40px;\n    text-align: center;\n    border-radius: 50%;\n    background: ", ";\n    color: ", ";\n  }\n"])), CONFIG.CSS.FONT_LIGHT_COLOR, CONFIG.CSS.HIGHLIGHT_PRIMARY_COLOR, CONFIG.CSS.HIGHLIGHT_SECONDARY_COLOR);
-var DatelineText = st.div(_templateObject4 || (_templateObject4 = Dateline_taggedTemplateLiteral(["\n  font-size: ", "px;\n  color: ", ";\n  text-transform: capitalize;\n  &.today {\n    color: ", ";\n  }\n"])), CONFIG.CSS.FONT_SIZE_MEDIUM, CONFIG.CSS.FONT_LIGHT_COLOR, CONFIG.CSS.HIGHLIGHT_PRIMARY_COLOR);
+var DatelineNumber = st.div(Dateline_templateObject3 || (Dateline_templateObject3 = Dateline_taggedTemplateLiteral(["\n  font-size: 26px;\n  margin-right: 6px;\n  color: ", ";\n  &.today {\n    width: 40px;\n    height: 40px;\n    line-height: 40px;\n    text-align: center;\n    border-radius: 50%;\n    background: ", ";\n    color: ", ";\n  }\n"])), CONFIG.CSS.FONT_LIGHT_COLOR, CONFIG.CSS.HIGHLIGHT_PRIMARY_COLOR, CONFIG.CSS.HIGHLIGHT_SECONDARY_COLOR);
+var DatelineText = st.div(Dateline_templateObject4 || (Dateline_templateObject4 = Dateline_taggedTemplateLiteral(["\n  font-size: ", "px;\n  color: ", ";\n  text-transform: capitalize;\n  &.today {\n    color: ", ";\n  }\n"])), CONFIG.CSS.FONT_SIZE_MEDIUM, CONFIG.CSS.FONT_LIGHT_COLOR, CONFIG.CSS.HIGHLIGHT_PRIMARY_COLOR);
 var Dateline = function Dateline() {
   var calendarState = useCalendarState();
   var steps = TimeUtils.calcTimeStep(calendarState.dayTime.end, calendarState.dayTime.start, calendarState.duration);
@@ -2602,8 +2675,8 @@ var ApptBooking_Wrapper = st.div(ApptBooking_templateObject || (ApptBooking_temp
 }, CONFIG.CSS.BOX_SHADOW_COLOR, CONFIG.CSS.BOX_SHADOW_COLOR);
 var Info = st(Flex)(ApptBooking_templateObject2 || (ApptBooking_templateObject2 = ApptBooking_taggedTemplateLiteral(["\n  padding: 4px;\n  pointer-events: none;\n"])));
 var ShareStyle = st.span(ApptBooking_templateObject3 || (ApptBooking_templateObject3 = ApptBooking_taggedTemplateLiteral(["\n  width: calc(100% - 5px);\n  overflow: hidden;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n"])));
-var Title = st(ShareStyle)(ApptBooking_templateObject4 || (ApptBooking_templateObject4 = ApptBooking_taggedTemplateLiteral([""])));
-var Content = st(ShareStyle)(_templateObject5 || (_templateObject5 = ApptBooking_taggedTemplateLiteral([""])));
+var ApptBooking_Title = st(ShareStyle)(ApptBooking_templateObject4 || (ApptBooking_templateObject4 = ApptBooking_taggedTemplateLiteral([""])));
+var ApptBooking_Content = st(ShareStyle)(_templateObject5 || (_templateObject5 = ApptBooking_taggedTemplateLiteral([""])));
 var Resize = st.div(_templateObject6 || (_templateObject6 = ApptBooking_taggedTemplateLiteral(["\n  position: absolute;\n  width: 100%;\n  height: 20px;\n  bottom: 0;\n  cursor: row-resize;\n  z-index: 11;\n"])));
 var ApptBooking = function ApptBooking(_ref) {
   var _calendarRef$current;
@@ -2885,9 +2958,9 @@ var ApptBooking = function ApptBooking(_ref) {
     onMouseUp: onEndDragging
   }, /*#__PURE__*/react.createElement(Info, {
     $dir: "column"
-  }, /*#__PURE__*/react.createElement("div", null, updatedStartTime, "-", updatedEndTime), /*#__PURE__*/react.createElement(Title, {
+  }, /*#__PURE__*/react.createElement("div", null, updatedStartTime, "-", updatedEndTime), /*#__PURE__*/react.createElement(ApptBooking_Title, {
     title: value.title
-  }, value.title), /*#__PURE__*/react.createElement(Content, {
+  }, value.title), /*#__PURE__*/react.createElement(ApptBooking_Content, {
     title: value.content
   }, value.content)), /*#__PURE__*/react.createElement(Resize, {
     "data-idtf": CONFIG.DATA_IDTF.APPT_RESIZE,
@@ -3325,7 +3398,7 @@ var Scrolling = function Scrolling() {
 };
 /* harmony default export */ const app_Scrolling = (Scrolling);
 ;// CONCATENATED MODULE: ./src/app/Month.tsx
-var Month_templateObject, Month_templateObject2, Month_templateObject3, Month_templateObject4, Month_templateObject5, Month_templateObject6, _templateObject7;
+var Month_templateObject, Month_templateObject2, Month_templateObject3, Month_templateObject4, Month_templateObject5, Month_templateObject6;
 function Month_toConsumableArray(arr) { return Month_arrayWithoutHoles(arr) || Month_iterableToArray(arr) || Month_unsupportedIterableToArray(arr) || Month_nonIterableSpread(); }
 function Month_nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function Month_iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
@@ -3344,36 +3417,28 @@ function Month_taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.s
 
 
 
+
 var Month_Wrapper = st.div(Month_templateObject || (Month_templateObject = Month_taggedTemplateLiteral(["\n  flex: 1;\n  overflow-y: auto;\n"])));
 var DayGrid = st(Flex)(Month_templateObject2 || (Month_templateObject2 = Month_taggedTemplateLiteral(["\n  height: calc(100% - 60px); // 60px is height of dateline\n  display: grid;\n  grid-template-columns: repeat(7, 1fr);\n  border-bottom: 1px solid ", ";\n  border-left: 1px solid ", ";\n"])), CONFIG.CSS.GRAY_SECONDARY_COLOR, CONFIG.CSS.GRAY_SECONDARY_COLOR);
 var DayCell = st.div(Month_templateObject3 || (Month_templateObject3 = Month_taggedTemplateLiteral(["\n  cursor: pointer;\n  overflow-y: hidden;\n  border-top: 1px solid ", ";\n  border-right: 1px solid ", ";\n  background-color: ", ";\n  &.currMonth {\n    color: #000;\n    background-color: #fff;\n  }\n"])), CONFIG.CSS.GRAY_SECONDARY_COLOR, CONFIG.CSS.GRAY_SECONDARY_COLOR, CONFIG.CSS.GRAY_PRIMARY_COLOR);
-var DayText = st.p(Month_templateObject4 || (Month_templateObject4 = Month_taggedTemplateLiteral(["\n  margin: 4px;\n  font-size: ", "px;\n  color: ", ";\n  width: 30px;\n  height: 30px;\n  line-height: 30px;\n  &.today {\n    text-align: center;\n    border-radius: 50%;\n    background-color: ", ";\n    color: #fff !important;\n  }\n  &.currMonth {\n    color: #000;\n  }\n"])), CONFIG.CSS.FONT_SIZE_MEDIUM, CONFIG.CSS.FONT_LIGHT_COLOR, CONFIG.CSS.HIGHLIGHT_PRIMARY_COLOR);
-var RectWrapper = st(Flex)(Month_templateObject5 || (Month_templateObject5 = Month_taggedTemplateLiteral(["\n  height: calc(100% / 5);\n  border-radius: 4px;\n  padding: 0 4px;\n  &:hover {\n    background-color: ", ";\n  }\n"])), CONFIG.CSS.GRAY_PRIMARY_COLOR);
-var RectDotCircle = st.div(Month_templateObject6 || (Month_templateObject6 = Month_taggedTemplateLiteral(["\n  width: 6px;\n  height: 6px;\n  border-radius: 50%;\n  margin-right: 6px;\n  background: ", ";\n  border: 1px solid ", ";\n"])), function (props) {
-  return AppointmentUtils.getApptColorByStatus(props.$status);
-}, function (props) {
-  return AppointmentUtils.getApptColorByStatus(props.$status);
-});
-var RectText = st.span(_templateObject7 || (_templateObject7 = Month_taggedTemplateLiteral(["\n  width: calc(100% - 20px);\n  overflow: hidden;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  color: ", ";\n  font-size: ", "px;\n"])), CONFIG.CSS.FONT_DARK_COLOR, CONFIG.CSS.FONT_SIZE_MEDIUM);
-var ApptRectangle = function ApptRectangle(_ref) {
-  var value = _ref.value;
-  var startTime = TimeUtils.convertSecondsToHourString(value.startTime);
-  return /*#__PURE__*/react.createElement(RectWrapper, {
-    $align: "center",
-    $status: value.status
-  }, /*#__PURE__*/react.createElement(RectDotCircle, {
-    $status: value.status
-  }), " ", /*#__PURE__*/react.createElement(RectText, {
-    title: value.title
-  }, startTime, " - ", value.title));
-};
+var DayNumber = st.p(Month_templateObject4 || (Month_templateObject4 = Month_taggedTemplateLiteral(["\n  margin: 4px;\n  font-size: ", "px;\n  color: ", ";\n  width: 30px;\n  height: 30px;\n  line-height: 30px;\n  &.today {\n    text-align: center;\n    border-radius: 50%;\n    background-color: ", ";\n    color: #fff !important;\n  }\n  &.currMonth {\n    color: #000;\n  }\n"])), CONFIG.CSS.FONT_SIZE_MEDIUM, CONFIG.CSS.FONT_LIGHT_COLOR, CONFIG.CSS.HIGHLIGHT_PRIMARY_COLOR);
+var EventLeft = st(Flex)(Month_templateObject5 || (Month_templateObject5 = Month_taggedTemplateLiteral(["\n  height: calc(100% / 5);\n  border-radius: 4px;\n  padding: 0 4px;\n  cursor: pointer;\n  font-size: 12px;\n  font-weight: 600;\n  padding-left: 6px;\n  color: ", ";\n  &:hover {\n    background-color: ", ";\n  }\n"])), CONFIG.CSS.FONT_DARK_COLOR, CONFIG.CSS.GRAY_PRIMARY_COLOR);
+var TitleRender = st.div(Month_templateObject6 || (Month_templateObject6 = Month_taggedTemplateLiteral(["\n  width: calc(100% - 40px);\n  text-align: center;\n  font-weight: 400;\n  color: ", ";\n  font-size: ", "px;\n"])), CONFIG.CSS.FONT_DARK_COLOR, CONFIG.CSS.FONT_SIZE_MEDIUM + 4);
 var Month = function Month() {
   var calendarState = useCalendarState();
   var dayGridRef = (0,react.useRef)(null);
-  var _useState = (0,react.useState)(0),
+  var _useState = (0,react.useState)({
+      isOpen: false,
+      title: "",
+      data: []
+    }),
     _useState2 = Month_slicedToArray(_useState, 2),
-    dayGridHeight = _useState2[0],
-    setDayGridHeight = _useState2[1];
+    modalData = _useState2[0],
+    setModalData = _useState2[1];
+  var _useState3 = (0,react.useState)(0),
+    _useState4 = Month_slicedToArray(_useState3, 2),
+    dayGridHeight = _useState4[0],
+    setDayGridHeight = _useState4[1];
   var firstDayOfMonth = calendarState.currentDate.startOf("month");
   var prevMonth = firstDayOfMonth.subtract(1, "month");
   var nextMonth = firstDayOfMonth.add(1, "month");
@@ -3395,20 +3460,30 @@ var Month = function Month() {
       var apptByDay = calendarState.appointments.filter(function (appt) {
         return DateUtils.isEqual(dateInMonth, appt.createdAt);
       });
+      var apptLeft = apptByDay.length - 2;
       days.push( /*#__PURE__*/react.createElement(DayCell, {
         key: "".concat(prefix, "-month-").concat(i),
         className: classname,
         style: {
           height: dayGridHeight / rows
         }
-      }, /*#__PURE__*/react.createElement(DayText, {
+      }, /*#__PURE__*/react.createElement(DayNumber, {
         className: classname
-      }, dateInMonth.date()), apptByDay.map(function (a) {
-        return /*#__PURE__*/react.createElement(ApptRectangle, {
+      }, dateInMonth.format("DD")), apptByDay.slice(0, 2).map(function (a) {
+        return /*#__PURE__*/react.createElement(app_ApptRectangle, {
           key: a.id,
           value: a
         });
-      })));
+      }), apptByDay.length > 2 && /*#__PURE__*/react.createElement(EventLeft, {
+        $align: "center",
+        onClick: function onClick() {
+          return setModalData({
+            isOpen: true,
+            title: "".concat(dateInMonth.format("DD"), " ").concat(dateInMonth.format("dddd")),
+            data: apptByDay
+          });
+        }
+      }, apptLeft, " ", apptLeft >= 2 ? "events" : "event", " left")));
     };
     for (var i = 1; i <= remainingDays; i++) {
       _loop();
@@ -3429,7 +3504,17 @@ var Month = function Month() {
     "data-idtf": CONFIG.DATA_IDTF.MONTH
   }, /*#__PURE__*/react.createElement(app_Dateline, null), /*#__PURE__*/react.createElement(DayGrid, {
     ref: dayGridRef
-  }, render()));
+  }, render()), modalData.isOpen && /*#__PURE__*/react.createElement(Modal, {
+    titleRender: /*#__PURE__*/react.createElement(TitleRender, null, modalData.title),
+    data: modalData.data,
+    onClose: function onClose() {
+      return setModalData({
+        isOpen: false,
+        title: "",
+        data: []
+      });
+    }
+  }));
 };
 /* harmony default export */ const app_Month = (Month);
 ;// CONCATENATED MODULE: ./src/app/Presentation.tsx
@@ -3864,7 +3949,7 @@ module.exports = function (urlString) {
 // extracted by mini-css-extract-plugin
 
     if(true) {
-      // 1704084644810
+      // 1704382338138
       var cssReload = __webpack_require__(783)(module.id, {"locals":false});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -4488,7 +4573,7 @@ module.exports = function shallowEqual(objA, objB, compare, compareContext) {
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("00a59098c7e35a879ff4")
+/******/ 		__webpack_require__.h = () => ("64641b856bda7ea8b4a5")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */
@@ -5588,7 +5673,7 @@ module.exports = function shallowEqual(objA, objB, compare, compareContext) {
 /******/ 	// module cache are used so entry inlining is disabled
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
-/******/ 	var __webpack_exports__ = __webpack_require__(467);
+/******/ 	var __webpack_exports__ = __webpack_require__(252);
 /******/ 	
 /******/ })()
 ;
