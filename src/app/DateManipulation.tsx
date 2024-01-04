@@ -4,7 +4,7 @@ import { CONFIG } from "../constant";
 import { useCalendarDispatch, useCalendarState } from "../hook";
 import { EAction, TCalendarAction, TCalendarStateForApp } from "../model";
 import { DateUtils } from "../util";
-import { Flex, Button, Text } from "./common";
+import { Flex, Button, Label } from "./common";
 
 const DateManipulation: React.FC = () => {
   const calendarState: TCalendarStateForApp = useCalendarState();
@@ -87,11 +87,11 @@ const DateManipulation: React.FC = () => {
       <Button disabled={curDate === today} style={{ borderRight: "none", borderLeft: "none" }} $padding={[8, 12]} onClick={onToday}>
         today
       </Button>
-      <Text style={{ minWidth: 200, fontSize: 14 }} $padding={[7, 12]} $align={"center"} $justify={"center"}>
+      <Label style={{ minWidth: 200, fontSize: 14 }} $padding={[7, 12]} $align={"center"} $justify={"center"}>
         {calendarState.viewMode === "DAY" && DateUtils.getCustomDay(calendarState.currentDate)}
         {calendarState.viewMode === "WEEK" && DateUtils.getCustomDateToDate(calendarState.currentDate)}
         {calendarState.viewMode === "MONTH" && DateUtils.getCustomMonth(calendarState.currentDate)}
-      </Text>
+      </Label>
       <Button $padding={[8, 12]} style={{ borderLeft: "none" }} onClick={nextBtnFactory}>
         &#x203A;
       </Button>

@@ -3,10 +3,11 @@ import { Dayjs } from "dayjs";
 import styled from "styled-components";
 import { CONFIG } from "../constant";
 import { useCalendarState } from "../hook";
-import { EStatus, TAppointmentForUser, TCalendarStateForApp } from "../model";
-import { AppointmentUtils, DateUtils, TimeUtils, clsx } from "../util";
-import { Flex } from "./common";
+import { TAppointmentForUser, TCalendarStateForApp } from "../model";
+import { DateUtils, clsx } from "../util";
+import { Flex, Modal, TModalUsage } from "./common";
 import Dateline from "./Dateline";
+import ApptRectangle from "./ApptRectangle";
 
 const Wrapper = styled.div`
   flex: 1;
@@ -33,7 +34,7 @@ const DayCell = styled.div`
   }
 `;
 
-const DayText = styled.p`
+const DayNumber = styled.p`
   margin: 4px;
   font-size: ${CONFIG.CSS.FONT_SIZE_MEDIUM}px;
   color: ${CONFIG.CSS.FONT_LIGHT_COLOR};
@@ -51,48 +52,37 @@ const DayText = styled.p`
   }
 `;
 
-const RectWrapper = styled(Flex)<{ $status: EStatus }>`
+const EventLeft = styled(Flex)`
   height: calc(100% / 5);
   border-radius: 4px;
   padding: 0 4px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  padding-left: 6px;
+  color: ${CONFIG.CSS.FONT_DARK_COLOR};
   &:hover {
     background-color: ${CONFIG.CSS.GRAY_PRIMARY_COLOR};
   }
 `;
 
-const RectDotCircle = styled.div<{ $status: EStatus }>`
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  margin-right: 6px;
-  background: ${(props) => AppointmentUtils.getApptColorByStatus(props.$status)};
-  border: 1px solid ${(props) => AppointmentUtils.getApptColorByStatus(props.$status)};
-`;
-
-const RectText = styled.span`
-  width: calc(100% - 20px);
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+const TitleRender = styled.div`
+  width: calc(100% - 40px);
+  text-align: center;
+  font-weight: 400;
   color: ${CONFIG.CSS.FONT_DARK_COLOR};
-  font-size: ${CONFIG.CSS.FONT_SIZE_MEDIUM}px;
+  font-size: ${CONFIG.CSS.FONT_SIZE_MEDIUM + 4}px;
 `;
-
-const ApptRectangle: React.FC<{ value: TAppointmentForUser }> = ({ value }) => {
-  const startTime: string = TimeUtils.convertSecondsToHourString(value.startTime);
-  return (
-    <RectWrapper $align={"center"} $status={value.status}>
-      <RectDotCircle $status={value.status} />{" "}
-      <RectText title={value.title}>
-        {startTime} - {value.title}
-      </RectText>
-    </RectWrapper>
-  );
-};
 
 const Month: React.FC = () => {
   const calendarState: TCalendarStateForApp = useCalendarState();
   const dayGridRef: React.MutableRefObject<HTMLDivElement | null> = useRef<HTMLDivElement | null>(null);
+
+  const [modalData, setModalData] = useState<TModalUsage>({
+    isOpen: false,
+    title: "",
+    data: [],
+  });
 
   const [dayGridHeight, setDayGridHeight] = useState<number>(0);
 
@@ -122,14 +112,23 @@ const Month: React.FC = () => {
           currMonth: remainingDays > 15,
         });
 
-        const apptByDay = calendarState.appointments.filter((appt) => DateUtils.isEqual(dateInMonth, appt.createdAt));
+        const apptByDay: TAppointmentForUser[] = calendarState.appointments.filter((appt) => DateUtils.isEqual(dateInMonth, appt.createdAt));
+        const apptLeft: number = apptByDay.length - 2;
 
         days.push(
           <DayCell key={`${prefix}-month-${i}`} className={classname} style={{ height: dayGridHeight / rows }}>
-            <DayText className={classname}>{dateInMonth.date()}</DayText>
-            {apptByDay.map((a) => (
+            <DayNumber className={classname}>{dateInMonth.format("DD")}</DayNumber>
+            {apptByDay.slice(0, 2).map((a) => (
               <ApptRectangle key={a.id} value={a} />
             ))}
+            {apptByDay.length > 2 && (
+              <EventLeft
+                $align={"center"}
+                onClick={() => setModalData({ isOpen: true, title: `${dateInMonth.format("DD")} ${dateInMonth.format("dddd")}`, data: apptByDay })}
+              >
+                {apptLeft} {apptLeft >= 2 ? "events" : "event"} left
+              </EventLeft>
+            )}
           </DayCell>,
         );
       }
@@ -155,8 +154,21 @@ const Month: React.FC = () => {
 
   return (
     <Wrapper data-idtf={CONFIG.DATA_IDTF.MONTH}>
-      <Dateline></Dateline>
+      <Dateline />
       <DayGrid ref={dayGridRef}>{render()}</DayGrid>
+      {modalData.isOpen && (
+        <Modal
+          titleRender={<TitleRender>{modalData.title}</TitleRender>}
+          data={modalData.data}
+          onClose={() =>
+            setModalData({
+              isOpen: false,
+              title: "",
+              data: [],
+            })
+          }
+        />
+      )}
     </Wrapper>
   );
 };
