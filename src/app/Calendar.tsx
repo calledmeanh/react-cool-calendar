@@ -15,8 +15,9 @@ import "dayjs/locale/vi";
 
 const Wrapper = styled(Flex)`
   height: 100%;
-  background: ${CONFIG.CSS.GRAY_PRIMARY_COLOR};
   user-select: none;
+  -webkit-user-select: none;
+  background: ${CONFIG.CSS.GRAY_PRIMARY_COLOR};
 `;
 
 /**

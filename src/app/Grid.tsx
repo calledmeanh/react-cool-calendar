@@ -20,6 +20,13 @@ const Wrapper = styled.div`
     ${CONFIG.CSS.WT_COLORS.STROKE.PRIMARY} 51%,
     ${CONFIG.CSS.WT_COLORS.STROKE.SECONDARY} 55%
   );
+  background-image: -o-linear-gradient(
+    45deg,
+    ${CONFIG.CSS.WT_COLORS.STROKE.SECONDARY} 46%,
+    ${CONFIG.CSS.WT_COLORS.STROKE.PRIMARY},
+    ${CONFIG.CSS.WT_COLORS.STROKE.PRIMARY} 51%,
+    ${CONFIG.CSS.WT_COLORS.STROKE.SECONDARY} 55%
+  );
   background-color: ${CONFIG.CSS.GRAY_SECONDARY_COLOR};
   box-shadow: -2px 0px 4px 0px ${CONFIG.CSS.BOX_SHADOW_COLOR};
 `;

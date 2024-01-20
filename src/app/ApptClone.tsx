@@ -6,20 +6,19 @@ import { TimeUtils } from "../util";
 import { Flex } from "./common";
 
 const Wrapper = styled.div`
-  background: ${CONFIG.CSS.APPT_BG_COLORS.CLONE};
-  border: 1px solid ${CONFIG.CSS.APPT_BG_COLORS.BOOKED};
-  opacity: 0.5;
-
-  color: ${CONFIG.CSS.FONT_DARK_COLOR};
-  font-size: ${CONFIG.CSS.FONT_SIZE_MEDIUM}px;
   border-radius: 4px;
   text-align: left;
+  opacity: 0.5;
+  position: absolute;
 
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 
-  position: absolute;
+  color: ${CONFIG.CSS.FONT_DARK_COLOR};
+  font-size: ${CONFIG.CSS.FONT_SIZE_MEDIUM}px;
+  background: ${CONFIG.CSS.APPT_BG_COLORS.CLONE};
+  border: 1px solid ${CONFIG.CSS.APPT_BG_COLORS.BOOKED};
 `;
 
 const Content = styled(Flex)`
