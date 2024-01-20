@@ -2111,10 +2111,18 @@ function calendarReducer(state, action) {
 var _templateObject;
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
-var Flex = st.div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  display: flex;\n  flex-direction: ", ";\n  justify-content: ", ";\n  align-items: ", ";\n"])), function (props) {
+var Flex = st.div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  display: flex;\n\n  flex-direction: ", ";\n\n  justify-content: ", ";\n  -webkit-box-pack: ", ";\n  -ms-flex-pack: ", ";\n\n  align-items: ", ";\n  -webkit-box-align: ", ";\n  -ms-flex-align: ", ";\n"])), function (props) {
   return props.$dir;
 }, function (props) {
   return props.$justify;
+}, function (props) {
+  return props.$justify;
+}, function (props) {
+  return props.$justify;
+}, function (props) {
+  return props.$align;
+}, function (props) {
+  return props.$align;
 }, function (props) {
   return props.$align;
 });
@@ -2124,43 +2132,43 @@ function Label_taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.s
 
 
 
-var Label = st(Flex)(Label_templateObject || (Label_templateObject = Label_taggedTemplateLiteral(["\n  padding: ", ";\n  border-radius: ", ";\n  border: 1px solid ", ";\n  background: ", ";\n  color: ", ";\n  text-transform: capitalize;\n"])), function (props) {
-  return "".concat(props.$padding[0], "px ").concat(props.$padding[1], "px");
-}, function (props) {
+var Label = st(Flex)(Label_templateObject || (Label_templateObject = Label_taggedTemplateLiteral(["\n  text-transform: capitalize;\n  color: ", ";\n  background: ", ";\n  border: 1px solid ", ";\n  border-radius: ", ";\n  padding: ", ";\n"])), CONFIG.CSS.FONT_DARK_COLOR, CONFIG.CSS.LIGHT_THEME_BG_COLOR, CONFIG.CSS.GRAY_THIRD_COLOR, function (props) {
   return props.$isborderradius ? "4px" : 0;
-}, CONFIG.CSS.GRAY_THIRD_COLOR, CONFIG.CSS.LIGHT_THEME_BG_COLOR, CONFIG.CSS.FONT_DARK_COLOR);
+}, function (props) {
+  return "".concat(props.$padding[0], "px ").concat(props.$padding[1], "px");
+});
 ;// CONCATENATED MODULE: ./src/app/common/Select.ts
 var Select_templateObject, _templateObject2;
 function Select_taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
 
-var Select = st.select(Select_templateObject || (Select_templateObject = Select_taggedTemplateLiteral(["\n  border-radius: ", ";\n  padding: ", ";\n  border: 1px solid ", ";\n  outline: none;\n  background: ", ";\n  cursor: pointer;\n  font-size: ", "px;\n  text-transform: capitalize;\n  transition: all 0.15s cubic-bezier(0, 0, 1, 1);\n  &:hover {\n    box-shadow: 0 3px 5px 0 ", ";\n  }\n  &:active {\n    box-shadow: none;\n  }\n"])), function (props) {
+var Select = st.select(Select_templateObject || (Select_templateObject = Select_taggedTemplateLiteral(["\n  outline: none;\n  cursor: pointer;\n  text-transform: capitalize;\n  transition: all 0.15s cubic-bezier(0, 0, 1, 1);\n  -webkit-transition: transform 0.15s cubic-bezier(0, 0, 1, 1);\n  font-size: ", "px;\n  background: ", ";\n  border: 1px solid ", ";\n  border-radius: ", ";\n  padding: ", ";\n  &:hover {\n    box-shadow: 0 3px 5px 0 ", ";\n  }\n  &:active {\n    box-shadow: none;\n  }\n"])), CONFIG.CSS.FONT_SIZE_MEDIUM, CONFIG.CSS.LIGHT_THEME_BG_COLOR, CONFIG.CSS.GRAY_THIRD_COLOR, function (props) {
   return props.$isborderradius ? "4px" : 0;
 }, function (props) {
   return "".concat(props.$padding[0], "px ").concat(props.$padding[1], "px");
-}, CONFIG.CSS.GRAY_THIRD_COLOR, CONFIG.CSS.LIGHT_THEME_BG_COLOR, CONFIG.CSS.FONT_SIZE_MEDIUM, CONFIG.CSS.BOX_SHADOW_COLOR);
+}, CONFIG.CSS.BOX_SHADOW_COLOR);
 var Option = st.option(_templateObject2 || (_templateObject2 = Select_taggedTemplateLiteral([""])));
 ;// CONCATENATED MODULE: ./src/app/common/Button.ts
 var Button_templateObject;
 function Button_taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
 
-var Button = st.button(Button_templateObject || (Button_templateObject = Button_taggedTemplateLiteral(["\n  padding: ", ";\n  border-radius: ", ";\n  outline: none;\n  border: 1px solid ", ";\n  background: ", ";\n  color: ", ";\n  cursor: pointer;\n  font-size: ", "px;\n  text-transform: capitalize;\n  transition: all 0.15s cubic-bezier(0, 0, 1, 1);\n  &:hover {\n    box-shadow: 0 3px 5px 0 ", ";\n  }\n  &:active {\n    box-shadow: none;\n  }\n  &:disabled {\n    background: ", ";\n    box-shadow: none;\n    cursor: not-allowed;\n  }\n"])), function (props) {
-  return "".concat(props.$padding[0], "px ").concat(props.$padding[1], "px");
+var Button = st.button(Button_templateObject || (Button_templateObject = Button_taggedTemplateLiteral(["\n  outline: none;\n  cursor: pointer;\n  text-transform: capitalize;\n  transition: all 0.15s cubic-bezier(0, 0, 1, 1);\n  -webkit-transition: transform 0.15s cubic-bezier(0, 0, 1, 1);\n  font-size: ", "px;\n  border: 1px solid ", ";\n  color: ", ";\n  border-radius: ", ";\n  padding: ", ";\n  background: ", ";\n  &:hover {\n    box-shadow: 0 3px 5px 0 ", ";\n  }\n  &:active {\n    box-shadow: none;\n  }\n  &:disabled {\n    background: ", ";\n    box-shadow: none;\n    cursor: not-allowed;\n  }\n"])), CONFIG.CSS.FONT_SIZE_MEDIUM, CONFIG.CSS.GRAY_THIRD_COLOR, function (props) {
+  return props.$color || CONFIG.CSS.FONT_DARK_COLOR;
 }, function (props) {
   return props.$isborderradius ? "4px" : 0;
-}, CONFIG.CSS.GRAY_THIRD_COLOR, function (props) {
-  return props.$background || CONFIG.CSS.LIGHT_THEME_BG_COLOR;
 }, function (props) {
-  return props.$color || CONFIG.CSS.FONT_DARK_COLOR;
-}, CONFIG.CSS.FONT_SIZE_MEDIUM, CONFIG.CSS.BOX_SHADOW_COLOR, CONFIG.CSS.DISABLED_COLOR);
+  return "".concat(props.$padding[0], "px ").concat(props.$padding[1], "px");
+}, function (props) {
+  return props.$background || CONFIG.CSS.LIGHT_THEME_BG_COLOR;
+}, CONFIG.CSS.BOX_SHADOW_COLOR, CONFIG.CSS.DISABLED_COLOR);
 ;// CONCATENATED MODULE: ./src/app/common/Line.ts
 var Line_templateObject;
 function Line_taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
 
 
-var Line = st(Flex)(Line_templateObject || (Line_templateObject = Line_taggedTemplateLiteral(["\n  height: ", "px;\n  color: ", ";\n  font-size: ", "px;\n  line-height: 14px;\n  font-weight: 500;\n  border-top: 1px solid ", ";\n  &.wt {\n    background-color: ", ";\n  }\n  &.gt {\n    border-top: 1px solid ", ";\n  }\n  &.ngt {\n    border-top: none;\n  }\n"])), CONFIG.CSS.LINE_HEIGHT, CONFIG.CSS.FONT_DARK_COLOR, CONFIG.CSS.FONT_SIZE_MEDIUM, CONFIG.CSS.GRAY_SECONDARY_COLOR, CONFIG.CSS.WT_COLORS.PRIMARY, CONFIG.CSS.GRAY_PRIMARY_COLOR);
+var Line = st(Flex)(Line_templateObject || (Line_templateObject = Line_taggedTemplateLiteral(["\n  line-height: 14px;\n  font-weight: 500;\n  height: ", "px;\n  color: ", ";\n  font-size: ", "px;\n  border-top: 1px solid ", ";\n  &.wt {\n    background-color: ", ";\n  }\n  &.gt {\n    border-top: 1px solid ", ";\n  }\n  &.ngt {\n    border-top: none;\n  }\n"])), CONFIG.CSS.LINE_HEIGHT, CONFIG.CSS.FONT_DARK_COLOR, CONFIG.CSS.FONT_SIZE_MEDIUM, CONFIG.CSS.GRAY_SECONDARY_COLOR, CONFIG.CSS.WT_COLORS.PRIMARY, CONFIG.CSS.GRAY_PRIMARY_COLOR);
 
 /* 
     wt = working time
@@ -2490,12 +2498,12 @@ function Dateline_taggedTemplateLiteral(strings, raw) { if (!raw) { raw = string
 
 
 
-var Dateline_Wrapper = st(Flex)(Dateline_templateObject || (Dateline_templateObject = Dateline_taggedTemplateLiteral(["\n  height: ", "px;\n  background: ", ";\n  position: sticky;\n  top: 0;\n  z-index: 4;\n"])), CONFIG.CSS.DATELINE_HEIGHT, CONFIG.CSS.GRAY_PRIMARY_COLOR);
-var DatelineHeader = st(Flex)(Dateline_templateObject2 || (Dateline_templateObject2 = Dateline_taggedTemplateLiteral(["\n  flex: 1;\n  background: ", ";\n  font-weight: 500;\n  cursor: pointer;\n  position: relative;\n  &:hover {\n    background: ", ";\n    box-shadow: 0 3px 5px 0 ", ";\n  }\n  &:active {\n    box-shadow: none;\n  }\n  &::after {\n    width: 1px;\n    background: ", ";\n    height: ", "px;\n    position: absolute;\n    top: 0;\n    right: 0;\n    content: \"\";\n    pointer-events: none;\n  }\n"])), CONFIG.CSS.GRAY_PRIMARY_COLOR, CONFIG.CSS.DATELINE_COLORS.BG_HOVER, CONFIG.CSS.BOX_SHADOW_COLOR, CONFIG.CSS.GRAY_SECONDARY_COLOR, function (props) {
+var Dateline_Wrapper = st(Flex)(Dateline_templateObject || (Dateline_templateObject = Dateline_taggedTemplateLiteral(["\n  position: sticky;\n  top: 0;\n  z-index: 4;\n  height: ", "px;\n  background: ", ";\n"])), CONFIG.CSS.DATELINE_HEIGHT, CONFIG.CSS.GRAY_PRIMARY_COLOR);
+var DatelineHeader = st(Flex)(Dateline_templateObject2 || (Dateline_templateObject2 = Dateline_taggedTemplateLiteral(["\n  flex: 1;\n  font-weight: 500;\n  cursor: pointer;\n  position: relative;\n  background: ", ";\n  &:hover {\n    background: ", ";\n    box-shadow: 0 3px 5px 0 ", ";\n  }\n  &:active {\n    box-shadow: none;\n  }\n  &::after {\n    width: 1px;\n    position: absolute;\n    top: 0;\n    right: 0;\n    content: \"\";\n    pointer-events: none;\n    -webkit-pointer-events: none;\n    background: ", ";\n    height: ", "px;\n  }\n"])), CONFIG.CSS.GRAY_PRIMARY_COLOR, CONFIG.CSS.DATELINE_COLORS.BG_HOVER, CONFIG.CSS.BOX_SHADOW_COLOR, CONFIG.CSS.GRAY_SECONDARY_COLOR, function (props) {
   return props.$afterPseudoHeight;
 });
 var DatelineNumber = st.div(Dateline_templateObject3 || (Dateline_templateObject3 = Dateline_taggedTemplateLiteral(["\n  font-size: 26px;\n  margin-right: 6px;\n  color: ", ";\n  &.today {\n    width: 40px;\n    height: 40px;\n    line-height: 40px;\n    text-align: center;\n    border-radius: 50%;\n    background: ", ";\n    color: ", ";\n  }\n"])), CONFIG.CSS.FONT_LIGHT_COLOR, CONFIG.CSS.HIGHLIGHT_PRIMARY_COLOR, CONFIG.CSS.HIGHLIGHT_SECONDARY_COLOR);
-var DatelineText = st.div(Dateline_templateObject4 || (Dateline_templateObject4 = Dateline_taggedTemplateLiteral(["\n  font-size: ", "px;\n  color: ", ";\n  text-transform: capitalize;\n  &.today {\n    color: ", ";\n  }\n"])), CONFIG.CSS.FONT_SIZE_MEDIUM, CONFIG.CSS.FONT_LIGHT_COLOR, CONFIG.CSS.HIGHLIGHT_PRIMARY_COLOR);
+var DatelineText = st.div(Dateline_templateObject4 || (Dateline_templateObject4 = Dateline_taggedTemplateLiteral(["\n  text-transform: capitalize;\n  font-size: ", "px;\n  color: ", ";\n  &.today {\n    color: ", ";\n  }\n"])), CONFIG.CSS.FONT_SIZE_MEDIUM, CONFIG.CSS.FONT_LIGHT_COLOR, CONFIG.CSS.HIGHLIGHT_PRIMARY_COLOR);
 var Dateline = function Dateline() {
   var calendarState = useCalendarState();
   var steps = TimeUtils.calcTimeStep(calendarState.dayTime.end, calendarState.dayTime.start, calendarState.duration);
@@ -2540,15 +2548,22 @@ function NowIndicator_taggedTemplateLiteral(strings, raw) { if (!raw) { raw = st
 
 
 
-var TimePill = st(Flex)(NowIndicator_templateObject || (NowIndicator_templateObject = NowIndicator_taggedTemplateLiteral(["\n  width: 100%;\n  height: 20px;\n  background: ", ";\n  border-radius: 10px;\n  color: ", ";\n  border: 1px solid ", ";\n  font-size: 12px;\n  line-height: 12px;\n  font-weight: 600;\n  position: absolute;\n  transform: translateY(", "px);\n  z-index: 3;\n"])), CONFIG.CSS.NOWINDICATOR_COLORS.SECONDARY, CONFIG.CSS.NOWINDICATOR_COLORS.PRIMARY, CONFIG.CSS.NOWINDICATOR_COLORS.PRIMARY, function (props) {
+var TimePill = st(Flex)(NowIndicator_templateObject || (NowIndicator_templateObject = NowIndicator_taggedTemplateLiteral(["\n  width: 100%;\n  height: 20px;\n  font-size: 12px;\n  line-height: 12px;\n  font-weight: 600;\n  position: absolute;\n  border-radius: 10px;\n  z-index: 3;\n  transform: translateY(", "px);\n  -webkit-transform: translateY(", "px);\n  color: ", ";\n  background: ", ";\n  border: 1px solid ", ";\n"])), function (props) {
   return props.$top;
-});
-var TimeLine = st.div(NowIndicator_templateObject2 || (NowIndicator_templateObject2 = NowIndicator_taggedTemplateLiteral(["\n  width: ", "px;\n  border-bottom: 1px solid ", ";\n  pointer-events: none;\n  position: absolute;\n  transform: translateX(", "px) translateY(", "px);\n  z-index: 3;\n"])), function (props) {
+}, function (props) {
+  return props.$top;
+}, CONFIG.CSS.NOWINDICATOR_COLORS.PRIMARY, CONFIG.CSS.NOWINDICATOR_COLORS.SECONDARY, CONFIG.CSS.NOWINDICATOR_COLORS.PRIMARY);
+var TimeLine = st.div(NowIndicator_templateObject2 || (NowIndicator_templateObject2 = NowIndicator_taggedTemplateLiteral(["\n  pointer-events: none;\n  -webkit-pointer-events: none;\n  position: absolute;\n  z-index: 3;\n  width: ", "px;\n  border-bottom: 1px solid ", ";\n  transform: translateX(", "px) translateY(", "px);\n  -webkit-transform: translateX(", "px) translateY(", "px);\n"])), function (props) {
   var _props$$timelinePos;
   return (_props$$timelinePos = props.$timelinePos) === null || _props$$timelinePos === void 0 ? void 0 : _props$$timelinePos.width;
 }, CONFIG.CSS.NOWINDICATOR_COLORS.PRIMARY, function (props) {
   var _props$$timelinePos2;
   return (_props$$timelinePos2 = props.$timelinePos) === null || _props$$timelinePos2 === void 0 ? void 0 : _props$$timelinePos2.left;
+}, function (props) {
+  return props.$top;
+}, function (props) {
+  var _props$$timelinePos3;
+  return (_props$$timelinePos3 = props.$timelinePos) === null || _props$$timelinePos3 === void 0 ? void 0 : _props$$timelinePos3.left;
 }, function (props) {
   return props.$top;
 });
@@ -2673,7 +2688,7 @@ var ApptBooking_Wrapper = st.div(ApptBooking_templateObject || (ApptBooking_temp
 }, function (props) {
   return AppointmentUtils.getApptColorByStatus(props.$status);
 }, CONFIG.CSS.BOX_SHADOW_COLOR, CONFIG.CSS.BOX_SHADOW_COLOR);
-var Info = st(Flex)(ApptBooking_templateObject2 || (ApptBooking_templateObject2 = ApptBooking_taggedTemplateLiteral(["\n  padding: 4px;\n  pointer-events: none;\n"])));
+var Info = st(Flex)(ApptBooking_templateObject2 || (ApptBooking_templateObject2 = ApptBooking_taggedTemplateLiteral(["\n  padding: 4px;\n  pointer-events: none;\n  -webkit-pointer-events: none;\n"])));
 var ShareStyle = st.span(ApptBooking_templateObject3 || (ApptBooking_templateObject3 = ApptBooking_taggedTemplateLiteral(["\n  width: calc(100% - 5px);\n  overflow: hidden;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n"])));
 var ApptBooking_Title = st(ShareStyle)(ApptBooking_templateObject4 || (ApptBooking_templateObject4 = ApptBooking_taggedTemplateLiteral([""])));
 var ApptBooking_Content = st(ShareStyle)(_templateObject5 || (_templateObject5 = ApptBooking_taggedTemplateLiteral([""])));
@@ -2977,7 +2992,7 @@ function ApptClone_taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strin
 
 
 
-var ApptClone_Wrapper = st.div(ApptClone_templateObject || (ApptClone_templateObject = ApptClone_taggedTemplateLiteral(["\n  background: ", ";\n  border: 1px solid ", ";\n  opacity: 0.5;\n\n  color: ", ";\n  font-size: ", "px;\n  border-radius: 4px;\n  text-align: left;\n\n  overflow: hidden;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n\n  position: absolute;\n"])), CONFIG.CSS.APPT_BG_COLORS.CLONE, CONFIG.CSS.APPT_BG_COLORS.BOOKED, CONFIG.CSS.FONT_DARK_COLOR, CONFIG.CSS.FONT_SIZE_MEDIUM);
+var ApptClone_Wrapper = st.div(ApptClone_templateObject || (ApptClone_templateObject = ApptClone_taggedTemplateLiteral(["\n  border-radius: 4px;\n  text-align: left;\n  opacity: 0.5;\n  position: absolute;\n\n  overflow: hidden;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n\n  color: ", ";\n  font-size: ", "px;\n  background: ", ";\n  border: 1px solid ", ";\n"])), CONFIG.CSS.FONT_DARK_COLOR, CONFIG.CSS.FONT_SIZE_MEDIUM, CONFIG.CSS.APPT_BG_COLORS.CLONE, CONFIG.CSS.APPT_BG_COLORS.BOOKED);
 var ApptClone_Content = st(Flex)(ApptClone_templateObject2 || (ApptClone_templateObject2 = ApptClone_taggedTemplateLiteral(["\n  padding: 3px 4px 3px 8px;\n  pointer-events: none;\n"])));
 var ApptClone = function ApptClone(_ref) {
   var value = _ref.value;
@@ -3144,13 +3159,17 @@ function Ghost_taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.s
 
 
 
-var Ghost_Wrapper = st(Flex)(Ghost_templateObject || (Ghost_templateObject = Ghost_taggedTemplateLiteral(["\n  width: ", "px;\n  height: ", "px;\n  line-height: ", "px;\n  padding: 0 5px;\n  background: ", ";\n  color: ", ";\n  position: absolute;\n  z-index: 1;\n  transform: translateX(", "px) translateY(", "px);\n  transition: transform 0.15s cubic-bezier(0, 0, 1, 1);\n"])), function (props) {
+var Ghost_Wrapper = st(Flex)(Ghost_templateObject || (Ghost_templateObject = Ghost_taggedTemplateLiteral(["\n  padding: 0 5px;\n  position: absolute;\n  z-index: 1;\n  transition: transform 0.15s cubic-bezier(0, 0, 1, 1);\n  -webkit-transition: transform 0.15s cubic-bezier(0, 0, 1, 1);\n  color: ", ";\n  background: ", ";\n  width: ", "px;\n  height: ", "px;\n  line-height: ", "px;\n  transform: translateX(", "px) translateY(", "px);\n  -webkit-transform: translateX(", "px) translateY(", "px);\n"])), CONFIG.CSS.HIGHLIGHT_SECONDARY_COLOR, CONFIG.CSS.HIGHLIGHT_PRIMARY_COLOR, function (props) {
   return props.$rect.width;
 }, function (props) {
   return props.$rect.height;
 }, function (props) {
   return props.$rect.height;
-}, CONFIG.CSS.HIGHLIGHT_PRIMARY_COLOR, CONFIG.CSS.HIGHLIGHT_SECONDARY_COLOR, function (props) {
+}, function (props) {
+  return props.$rect.left;
+}, function (props) {
+  return props.$rect.top;
+}, function (props) {
   return props.$rect.left;
 }, function (props) {
   return props.$rect.top;
@@ -3211,7 +3230,7 @@ function Grid_taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.sl
 
 
 
-var Grid_Wrapper = st.div(Grid_templateObject || (Grid_templateObject = Grid_taggedTemplateLiteral(["\n  touch-action: pan-y;\n  position: relative;\n  background-size: 8px 8px;\n  background-image: linear-gradient(\n    45deg,\n    ", " 46%,\n    ", ",\n    ", " 51%,\n    ", " 55%\n  );\n  background-color: ", ";\n  box-shadow: -2px 0px 4px 0px ", ";\n"])), CONFIG.CSS.WT_COLORS.STROKE.SECONDARY, CONFIG.CSS.WT_COLORS.STROKE.PRIMARY, CONFIG.CSS.WT_COLORS.STROKE.PRIMARY, CONFIG.CSS.WT_COLORS.STROKE.SECONDARY, CONFIG.CSS.GRAY_SECONDARY_COLOR, CONFIG.CSS.BOX_SHADOW_COLOR);
+var Grid_Wrapper = st.div(Grid_templateObject || (Grid_templateObject = Grid_taggedTemplateLiteral(["\n  touch-action: pan-y;\n  position: relative;\n  background-size: 8px 8px;\n  background-image: linear-gradient(\n    45deg,\n    ", " 46%,\n    ", ",\n    ", " 51%,\n    ", " 55%\n  );\n  background-image: -o-linear-gradient(\n    45deg,\n    ", " 46%,\n    ", ",\n    ", " 51%,\n    ", " 55%\n  );\n  background-color: ", ";\n  box-shadow: -2px 0px 4px 0px ", ";\n"])), CONFIG.CSS.WT_COLORS.STROKE.SECONDARY, CONFIG.CSS.WT_COLORS.STROKE.PRIMARY, CONFIG.CSS.WT_COLORS.STROKE.PRIMARY, CONFIG.CSS.WT_COLORS.STROKE.SECONDARY, CONFIG.CSS.WT_COLORS.STROKE.SECONDARY, CONFIG.CSS.WT_COLORS.STROKE.PRIMARY, CONFIG.CSS.WT_COLORS.STROKE.PRIMARY, CONFIG.CSS.WT_COLORS.STROKE.SECONDARY, CONFIG.CSS.GRAY_SECONDARY_COLOR, CONFIG.CSS.BOX_SHADOW_COLOR);
 var Grid = function Grid() {
   var calendarState = useCalendarState();
   var gridRef = (0,react.useRef)(null);
@@ -3374,7 +3393,7 @@ var Interval_Wrapper = st.div(Interval_templateObject || (Interval_templateObjec
 /**
  * sticky to the header with dateline
  */
-var Box = st.div(Interval_templateObject2 || (Interval_templateObject2 = Interval_taggedTemplateLiteral(["\n  height: ", "px;\n  background: ", ";\n  position: sticky;\n  top: 0;\n  z-index: 4;\n"])), CONFIG.CSS.DATELINE_HEIGHT, CONFIG.CSS.GRAY_PRIMARY_COLOR);
+var Box = st.div(Interval_templateObject2 || (Interval_templateObject2 = Interval_taggedTemplateLiteral(["\n  position: sticky;\n  top: 0;\n  z-index: 4;\n  height: ", "px;\n  background: ", ";\n"])), CONFIG.CSS.DATELINE_HEIGHT, CONFIG.CSS.GRAY_PRIMARY_COLOR);
 var Interval = function Interval() {
   return /*#__PURE__*/react.createElement(Interval_Wrapper, {
     "data-idtf": CONFIG.DATA_IDTF.INTERVAL
@@ -3557,7 +3576,7 @@ function Calendar_taggedTemplateLiteral(strings, raw) { if (!raw) { raw = string
   By default, Day.js comes with English locale only. If you need other locales, you can load them on demand. 
 */
 
-var Calendar_Wrapper = st(Flex)(Calendar_templateObject || (Calendar_templateObject = Calendar_taggedTemplateLiteral(["\n  height: 100%;\n  background: ", ";\n  user-select: none;\n"])), CONFIG.CSS.GRAY_PRIMARY_COLOR);
+var Calendar_Wrapper = st(Flex)(Calendar_templateObject || (Calendar_templateObject = Calendar_taggedTemplateLiteral(["\n  height: 100%;\n  user-select: none;\n  -webkit-user-select: none;\n  background: ", ";\n"])), CONFIG.CSS.GRAY_PRIMARY_COLOR);
 
 /**
  * Calendar takes props by user pass in
@@ -3949,7 +3968,7 @@ module.exports = function (urlString) {
 // extracted by mini-css-extract-plugin
 
     if(true) {
-      // 1704382338138
+      // 1705758363350
       var cssReload = __webpack_require__(783)(module.id, {"locals":false});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -4573,7 +4592,7 @@ module.exports = function shallowEqual(objA, objB, compare, compareContext) {
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("64641b856bda7ea8b4a5")
+/******/ 		__webpack_require__.h = () => ("31e2a5cd59ada5fc70d2")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */
