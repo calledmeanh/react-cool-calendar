@@ -35,6 +35,7 @@ const Wrapper = styled.div<{ $status: EStatus }>`
 const Info = styled(Flex)`
   padding: 4px;
   pointer-events: none;
+  -webkit-pointer-events: none;
 `;
 
 const ShareStyle = styled.span`

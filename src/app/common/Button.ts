@@ -12,6 +12,7 @@ export const Button = styled.button<{
   cursor: pointer;
   text-transform: capitalize;
   transition: all 0.15s cubic-bezier(0, 0, 1, 1);
+  -webkit-transition: transform 0.15s cubic-bezier(0, 0, 1, 1);
   font-size: ${CONFIG.CSS.FONT_SIZE_MEDIUM}px;
   border: 1px solid ${CONFIG.CSS.GRAY_THIRD_COLOR};
   color: ${(props) => props.$color || CONFIG.CSS.FONT_DARK_COLOR};

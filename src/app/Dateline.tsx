@@ -34,6 +34,7 @@ const DatelineHeader = styled(Flex)<{ $afterPseudoHeight: number }>`
     right: 0;
     content: "";
     pointer-events: none;
+    -webkit-pointer-events: none;
     background: ${CONFIG.CSS.GRAY_SECONDARY_COLOR};
     height: ${(props) => props.$afterPseudoHeight}px;
   }

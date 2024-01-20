@@ -9,12 +9,14 @@ const Wrapper = styled(Flex)<{ $rect: TRect }>`
   position: absolute;
   z-index: 1;
   transition: transform 0.15s cubic-bezier(0, 0, 1, 1);
+  -webkit-transition: transform 0.15s cubic-bezier(0, 0, 1, 1);
   color: ${CONFIG.CSS.HIGHLIGHT_SECONDARY_COLOR};
   background: ${CONFIG.CSS.HIGHLIGHT_PRIMARY_COLOR};
   width: ${(props) => props.$rect.width}px;
   height: ${(props) => props.$rect.height}px;
   line-height: ${(props) => props.$rect.height}px;
   transform: translateX(${(props) => props.$rect.left}px) translateY(${(props) => props.$rect.top}px);
+  -webkit-transform: translateX(${(props) => props.$rect.left}px) translateY(${(props) => props.$rect.top}px);
 `;
 
 type TGhost = {
