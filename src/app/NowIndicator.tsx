@@ -23,12 +23,12 @@ const TimePill = styled(Flex)<{ $top: number }>`
 `;
 
 const TimeLine = styled.div<{ $top: number; $timelinePos?: { left: number; width: number } }>`
-pointer-events: none;
-position: absolute;
-z-index: 3;
-width: ${(props) => props.$timelinePos?.width}px;
-border-bottom: 1px solid ${CONFIG.CSS.NOWINDICATOR_COLORS.PRIMARY};
-transform: translateX(${(props) => props.$timelinePos?.left}px) translateY(${(props) => props.$top}px);
+  pointer-events: none;
+  position: absolute;
+  z-index: 3;
+  width: ${(props) => props.$timelinePos?.width}px;
+  border-bottom: 1px solid ${CONFIG.CSS.NOWINDICATOR_COLORS.PRIMARY};
+  transform: translateX(${(props) => props.$timelinePos?.left}px) translateY(${(props) => props.$top}px);
 `;
 
 type TNowIndicator = {

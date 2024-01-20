@@ -12,11 +12,11 @@ const Wrapper = styled.div`
  * sticky to the header with dateline
  */
 const Box = styled.div`
-position: sticky;
-top: 0;
-z-index: 4;
-height: ${CONFIG.CSS.DATELINE_HEIGHT}px;
-background: ${CONFIG.CSS.GRAY_PRIMARY_COLOR};
+  position: sticky;
+  top: 0;
+  z-index: 4;
+  height: ${CONFIG.CSS.DATELINE_HEIGHT}px;
+  background: ${CONFIG.CSS.GRAY_PRIMARY_COLOR};
 `;
 
 const Interval: React.FC = () => {

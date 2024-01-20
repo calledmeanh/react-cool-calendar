@@ -7,11 +7,11 @@ import { TimeUtils, clsx, DateUtils } from "../util";
 import { Flex } from "./common";
 
 const Wrapper = styled(Flex)`
-position: sticky;
-top: 0;
-z-index: 4;
-height: ${CONFIG.CSS.DATELINE_HEIGHT}px;
-background: ${CONFIG.CSS.GRAY_PRIMARY_COLOR};
+  position: sticky;
+  top: 0;
+  z-index: 4;
+  height: ${CONFIG.CSS.DATELINE_HEIGHT}px;
+  background: ${CONFIG.CSS.GRAY_PRIMARY_COLOR};
 `;
 
 const DatelineHeader = styled(Flex)<{ $afterPseudoHeight: number }>`
