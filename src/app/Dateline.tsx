@@ -7,19 +7,19 @@ import { TimeUtils, clsx, DateUtils } from "../util";
 import { Flex } from "./common";
 
 const Wrapper = styled(Flex)`
-  height: ${CONFIG.CSS.DATELINE_HEIGHT}px;
-  background: ${CONFIG.CSS.GRAY_PRIMARY_COLOR};
-  position: sticky;
-  top: 0;
-  z-index: 4;
+position: sticky;
+top: 0;
+z-index: 4;
+height: ${CONFIG.CSS.DATELINE_HEIGHT}px;
+background: ${CONFIG.CSS.GRAY_PRIMARY_COLOR};
 `;
 
 const DatelineHeader = styled(Flex)<{ $afterPseudoHeight: number }>`
   flex: 1;
-  background: ${CONFIG.CSS.GRAY_PRIMARY_COLOR};
   font-weight: 500;
   cursor: pointer;
   position: relative;
+  background: ${CONFIG.CSS.GRAY_PRIMARY_COLOR};
   &:hover {
     background: ${CONFIG.CSS.DATELINE_COLORS.BG_HOVER};
     box-shadow: 0 3px 5px 0 ${CONFIG.CSS.BOX_SHADOW_COLOR};
@@ -29,13 +29,13 @@ const DatelineHeader = styled(Flex)<{ $afterPseudoHeight: number }>`
   }
   &::after {
     width: 1px;
-    background: ${CONFIG.CSS.GRAY_SECONDARY_COLOR};
-    height: ${(props) => props.$afterPseudoHeight}px;
     position: absolute;
     top: 0;
     right: 0;
     content: "";
     pointer-events: none;
+    background: ${CONFIG.CSS.GRAY_SECONDARY_COLOR};
+    height: ${(props) => props.$afterPseudoHeight}px;
   }
 `;
 
@@ -55,9 +55,9 @@ const DatelineNumber = styled.div`
 `;
 
 const DatelineText = styled.div`
+  text-transform: capitalize;
   font-size: ${CONFIG.CSS.FONT_SIZE_MEDIUM}px;
   color: ${CONFIG.CSS.FONT_LIGHT_COLOR};
-  text-transform: capitalize;
   &.today {
     color: ${CONFIG.CSS.HIGHLIGHT_PRIMARY_COLOR};
   }

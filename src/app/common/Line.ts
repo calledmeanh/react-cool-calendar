@@ -3,11 +3,11 @@ import { CONFIG } from "../../constant";
 import { Flex } from "./Flex";
 
 export const Line = styled(Flex)`
-  height: ${CONFIG.CSS.LINE_HEIGHT}px;
-  color: ${CONFIG.CSS.FONT_DARK_COLOR};
-  font-size: ${CONFIG.CSS.FONT_SIZE_MEDIUM}px;
-  line-height: 14px;
-  font-weight: 500;
+line-height: 14px;
+font-weight: 500;
+height: ${CONFIG.CSS.LINE_HEIGHT}px;
+color: ${CONFIG.CSS.FONT_DARK_COLOR};
+font-size: ${CONFIG.CSS.FONT_SIZE_MEDIUM}px;
   border-top: 1px solid ${CONFIG.CSS.GRAY_SECONDARY_COLOR};
   &.wt {
     background-color: ${CONFIG.CSS.WT_COLORS.PRIMARY};

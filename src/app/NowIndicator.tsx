@@ -10,25 +10,25 @@ import { Flex } from "./common";
 const TimePill = styled(Flex)<{ $top: number }>`
   width: 100%;
   height: 20px;
-  background: ${CONFIG.CSS.NOWINDICATOR_COLORS.SECONDARY};
-  border-radius: 10px;
-  color: ${CONFIG.CSS.NOWINDICATOR_COLORS.PRIMARY};
-  border: 1px solid ${CONFIG.CSS.NOWINDICATOR_COLORS.PRIMARY};
   font-size: 12px;
   line-height: 12px;
   font-weight: 600;
   position: absolute;
-  transform: translateY(${(props) => props.$top}px);
+  border-radius: 10px;
   z-index: 3;
+  transform: translateY(${(props) => props.$top}px);
+  color: ${CONFIG.CSS.NOWINDICATOR_COLORS.PRIMARY};
+  background: ${CONFIG.CSS.NOWINDICATOR_COLORS.SECONDARY};
+  border: 1px solid ${CONFIG.CSS.NOWINDICATOR_COLORS.PRIMARY};
 `;
 
 const TimeLine = styled.div<{ $top: number; $timelinePos?: { left: number; width: number } }>`
-  width: ${(props) => props.$timelinePos?.width}px;
-  border-bottom: 1px solid ${CONFIG.CSS.NOWINDICATOR_COLORS.PRIMARY};
-  pointer-events: none;
-  position: absolute;
-  transform: translateX(${(props) => props.$timelinePos?.left}px) translateY(${(props) => props.$top}px);
-  z-index: 3;
+pointer-events: none;
+position: absolute;
+z-index: 3;
+width: ${(props) => props.$timelinePos?.width}px;
+border-bottom: 1px solid ${CONFIG.CSS.NOWINDICATOR_COLORS.PRIMARY};
+transform: translateX(${(props) => props.$timelinePos?.left}px) translateY(${(props) => props.$top}px);
 `;
 
 type TNowIndicator = {
