@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { useOutsideClick } from "../../hook";
 import { TAppointmentForUser } from "../../model";
 import { Flex, Button } from ".";
 import ApptRectangle from "../ApptRectangle";
@@ -49,9 +50,11 @@ export type TModalUsage = {
 };
 
 export const Modal: React.FC<TModal> = ({ titleRender, data, onClose }) => {
+  const modalRef: React.MutableRefObject<HTMLDivElement | null> = useOutsideClick(() => onClose());
+
   return (
     <Wrapper $align={"center"} $justify={"center"}>
-      <Container $dir={"column"}>
+      <Container ref={modalRef} $dir={"column"}>
         <Title $align={"center"}>
           {titleRender}
           <Button style={{ width: 40, height: 40, borderRadius: 40, border: "none" }} $padding={[8, 12]} onClick={() => onClose()}>
