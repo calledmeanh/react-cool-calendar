@@ -22,7 +22,7 @@ const Wrapper = styled.div`
 `;
 
 const Content = styled(Flex)`
-  padding: 3px 4px 3px 8px;
+  padding: 4px;
   pointer-events: none;
 `;
 
@@ -38,7 +38,7 @@ const ApptClone: React.FC<TApptClone> = ({ value }) => {
     <Wrapper
       data-idtf={CONFIG.DATA_IDTF.APPT_CLONE}
       style={{
-        transform: `translateX(${value.left}px) translateY(${value.top}px)`,
+        transform: `translateX(${value.x}px) translateY(${value.y}px)`,
         width: value.width,
         height: value.height,
       }}

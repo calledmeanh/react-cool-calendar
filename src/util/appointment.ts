@@ -24,21 +24,21 @@ function layoutAlgorithm(
   let lastEventEnding: number | null = null;
 
   let events: TAppointmentForApp[] = appts.map((appt) => {
-    return { ...appt, ...calcApptPos(appt, { ...opts }), width: 0, left: 0, weekcolumnIndex: opts.weekcolumnIndex };
+    return { ...appt, ...calcApptPos(appt, { ...opts }), width: 0, x: 0, weekcolumnIndex: opts.weekcolumnIndex };
   });
 
   // sort it by starting time, and then by ending time.
   events = events.sort(function (e1, e2) {
-    if (e1.top < e2.top) return -1;
-    if (e1.top > e2.top) return 1;
-    if (e1.top + e1.height < e2.top + e2.height) return -1;
-    if (e1.top + e1.height > e2.top + e2.height) return 1;
+    if (e1.y < e2.y) return -1;
+    if (e1.y > e2.y) return 1;
+    if (e1.y + e1.height < e2.y + e2.height) return -1;
+    if (e1.y + e1.height > e2.y + e2.height) return 1;
     return 0;
   });
 
   // iterate over the sorted array
   events.forEach((e: TAppointmentForApp) => {
-    if (lastEventEnding !== null && e.top >= lastEventEnding) {
+    if (lastEventEnding !== null && e.y >= lastEventEnding) {
       packEvents(columns, { ...opts });
       columns = [];
       lastEventEnding = null;
@@ -58,8 +58,8 @@ function layoutAlgorithm(
       columns.push([e]);
     }
 
-    if (lastEventEnding === null || e.top + e.height > lastEventEnding) {
-      lastEventEnding = e.top + e.height;
+    if (lastEventEnding === null || e.y + e.height > lastEventEnding) {
+      lastEventEnding = e.y + e.height;
     }
   });
 
@@ -85,8 +85,8 @@ function packEvents(
       const cellWidth: number = otps.columnWidth / n - 1;
       // cellWidth * i + i: is the position of child elements inside week column
       // otps.columnWidth * otps.weekcolumnIndex: is the left position of child elements
-      const cellLeft: number = cellWidth * i + i + otps.columnWidth * otps.weekcolumnIndex;
-      cell.left = cellLeft;
+      const cellX: number = cellWidth * i + i + otps.columnWidth * otps.weekcolumnIndex;
+      cell.x = cellX;
       cell.width = cellWidth;
     }
   }
@@ -100,20 +100,20 @@ function calcApptPos(
     duration: number;
   },
 ): {
-  top: number;
+  y: number;
   height: number;
   startTime: number;
   endTime: number;
 } {
   const apptEndTime: number = appt.startTime + TimeUtils.convertMinuteToSeconds(appt.duration);
 
-  const top: number = TimeUtils.calcDistanceBetweenTimes(appt.startTime, opts.daytimeStart, opts.duration, CONFIG.CSS.LINE_HEIGHT);
+  const y: number = TimeUtils.calcDistanceBetweenTimes(appt.startTime, opts.daytimeStart, opts.duration, CONFIG.CSS.LINE_HEIGHT);
 
   const mapDuration = CONFIG.MAPPING_TIME[opts.duration];
   const height: number = TimeUtils.calcDistanceBetweenTimes(apptEndTime, appt.startTime, mapDuration, (CONFIG.CSS.LINE_HEIGHT * mapDuration) / opts.duration);
 
   return {
-    top,
+    y,
     height: height - 1,
     startTime: appt.startTime,
     endTime: apptEndTime,
@@ -121,8 +121,8 @@ function calcApptPos(
 }
 
 function checkOverlapped(a: TAppointmentForApp, b: TAppointmentForApp): boolean {
-  const { top: start } = a;
-  const { top: otherStart } = b;
+  const { y: start } = a;
+  const { y: otherStart } = b;
   const end: number = start + a.height;
   const otherEnd: number = otherStart + b.height;
 

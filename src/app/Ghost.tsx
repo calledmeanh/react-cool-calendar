@@ -15,8 +15,8 @@ const Wrapper = styled(Flex)<{ $rect: TRect }>`
   width: ${(props) => props.$rect.width}px;
   height: ${(props) => props.$rect.height}px;
   line-height: ${(props) => props.$rect.height}px;
-  transform: translateX(${(props) => props.$rect.left}px) translateY(${(props) => props.$rect.top}px);
-  -webkit-transform: translateX(${(props) => props.$rect.left}px) translateY(${(props) => props.$rect.top}px);
+  transform: translateX(${(props) => props.$rect.x}px) translateY(${(props) => props.$rect.y}px);
+  -webkit-transform: translateX(${(props) => props.$rect.x}px) translateY(${(props) => props.$rect.y}px);
 `;
 
 type TGhost = {

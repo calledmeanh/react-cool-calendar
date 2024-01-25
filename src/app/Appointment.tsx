@@ -19,10 +19,10 @@ const Wrapper = styled.div`
 type TAppointment = {
   scrollEl: HTMLDivElement | null;
   widthTimeline: number;
-  mousePosition: { top: number; left: number; pageY: number; pageX: number };
+  coords: { x: number; y: number; pageX: number; pageY: number };
 };
 
-const Appointment: React.FC<TAppointment> = ({ scrollEl, widthTimeline, mousePosition }) => {
+const Appointment: React.FC<TAppointment> = ({ scrollEl, widthTimeline, coords }) => {
   const calendarState: TCalendarStateForApp = useCalendarState();
   const dispath: React.Dispatch<TCalendarAction> = useCalendarDispatch();
 
@@ -95,7 +95,7 @@ const Appointment: React.FC<TAppointment> = ({ scrollEl, widthTimeline, mousePos
       setApptClone(null);
     }
 
-    const weekColIdx: number = Math.round(mousePosition.left / widthTimeline);
+    const weekColIdx: number = Math.round(coords.x / widthTimeline);
     const dayCustom: TDay = dateline[weekColIdx];
     const payload: any = {
       startTime,
@@ -132,7 +132,7 @@ const Appointment: React.FC<TAppointment> = ({ scrollEl, widthTimeline, mousePos
           value={appt}
           scrollEl={scrollEl}
           widthTimeline={widthTimeline}
-          mousePosition={mousePosition}
+          coords={coords}
           onPressAppt={onPressApptBooking}
           onReleaseAppt={onReleaseApptBooking}
         />

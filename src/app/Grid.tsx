@@ -34,12 +34,13 @@ const Wrapper = styled.div`
 const Grid: React.FC = () => {
   const calendarState: TCalendarStateForApp = useCalendarState();
 
-  const gridRef: React.MutableRefObject<HTMLDivElement | null> = useRef<HTMLDivElement | null>(null);
   const [gridWidth, setGridWidth] = useState(0);
   const [scrollEl, setScrollEl] = useState<HTMLDivElement | null>(null);
   const [timeEachCell, setTimeEachCell] = useState("");
-  const [position, setPosition] = useState({ top: 0, left: 0, pageY: 0, pageX: 0 });
+  const [coords, setCoords] = useState({ x: 0, y: 0, pageY: 0, pageX: 0 });
   const [isShowGhost, setShowGhost] = useState(false);
+
+  const gridRef: React.MutableRefObject<HTMLDivElement | null> = useRef<HTMLDivElement | null>(null);
 
   const dateline: TDateline = DateUtils.getDateline(calendarState.currentDate, calendarState.viewMode);
   const widthTimeline: number = gridWidth / dateline.length;
@@ -57,22 +58,22 @@ const Grid: React.FC = () => {
       setShowGhost(false);
     }
 
-    const topOutside: number = ElementUtils.getOffsetToDocument(gridRef.current, "top");
-    const leftOutside: number = ElementUtils.getOffsetToDocument(gridRef.current, "left");
+    const outsideY: number = ElementUtils.getOffsetToDocument(gridRef.current, "top");
+    const outsideX: number = ElementUtils.getOffsetToDocument(gridRef.current, "left");
 
-    const offsetTop: number = e.pageY - topOutside + (scrollEl?.scrollTop || 0);
-    const offsetLeft: number = e.pageX - leftOutside + (scrollEl?.scrollLeft || 0);
+    const offsetY: number = e.pageY - outsideY + (scrollEl?.scrollTop || 0);
+    const offsetX: number = e.pageX - outsideX + (scrollEl?.scrollLeft || 0);
 
-    const lineIdx = Math.floor(offsetTop / CONFIG.CSS.LINE_HEIGHT);
-    const colIdx: number = Math.floor(offsetLeft / widthTimeline);
+    const lineIdx = Math.floor(offsetY / CONFIG.CSS.LINE_HEIGHT);
+    const colIdx: number = Math.floor(offsetX / widthTimeline);
 
-    const top: number = lineIdx * CONFIG.CSS.LINE_HEIGHT;
-    const left: number = colIdx * widthTimeline;
+    const x: number = colIdx * widthTimeline;
+    const y: number = lineIdx * CONFIG.CSS.LINE_HEIGHT;
 
     const seconds: number = lineIdx * calendarState.duration + calendarState.dayTime.start;
     const time: string = TimeUtils.convertSecondsToHourString(seconds, calendarState.timeType);
 
-    setPosition({ top, left, pageY: e.pageY, pageX: e.pageX });
+    setCoords({ x, y, pageY: e.pageY, pageX: e.pageX });
     setTimeEachCell(time);
   };
 
@@ -92,10 +93,8 @@ const Grid: React.FC = () => {
   return (
     <Wrapper data-idtf={CONFIG.DATA_IDTF.GRID} onMouseMove={onMouseMove} onMouseLeave={onMouseLeave} onContextMenu={onRightClick} ref={gridRef}>
       <NowIndicator type={"LINE"} widthTimeline={widthTimeline} />
-      {isShowGhost && (
-        <Ghost timeEachCell={timeEachCell} rect={{ top: position.top, left: position.left, width: widthTimeline, height: CONFIG.CSS.LINE_HEIGHT }} />
-      )}
-      <Appointment scrollEl={scrollEl} widthTimeline={widthTimeline} mousePosition={position} />
+      {isShowGhost && <Ghost timeEachCell={timeEachCell} rect={{ x: coords.x, y: coords.y, width: widthTimeline, height: CONFIG.CSS.LINE_HEIGHT }} />}
+      <Appointment scrollEl={scrollEl} widthTimeline={widthTimeline} coords={coords} />
       <Row />
     </Wrapper>
   );

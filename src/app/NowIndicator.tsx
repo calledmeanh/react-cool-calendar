@@ -7,7 +7,7 @@ import { TCalendarStateForApp, TDateline } from "../model";
 import { DateUtils, TimeUtils } from "../util";
 import { Flex } from "./common";
 
-const TimePill = styled(Flex)<{ $top: number }>`
+const TimePill = styled(Flex)<{ $y: number }>`
   width: 100%;
   height: 20px;
   font-size: 12px;
@@ -16,22 +16,22 @@ const TimePill = styled(Flex)<{ $top: number }>`
   position: absolute;
   border-radius: 10px;
   z-index: 3;
-  transform: translateY(${(props) => props.$top}px);
-  -webkit-transform: translateY(${(props) => props.$top}px);
+  transform: translateY(${(props) => props.$y}px);
+  -webkit-transform: translateY(${(props) => props.$y}px);
   color: ${CONFIG.CSS.NOWINDICATOR_COLORS.PRIMARY};
   background: ${CONFIG.CSS.NOWINDICATOR_COLORS.SECONDARY};
   border: 1px solid ${CONFIG.CSS.NOWINDICATOR_COLORS.PRIMARY};
 `;
 
-const TimeLine = styled.div<{ $top: number; $timelinePos?: { left: number; width: number } }>`
+const TimeLine = styled.div<{ $y: number; $timelinePos?: { x: number; width: number } }>`
   pointer-events: none;
   -webkit-pointer-events: none;
   position: absolute;
   z-index: 3;
   width: ${(props) => props.$timelinePos?.width}px;
   border-bottom: 1px solid ${CONFIG.CSS.NOWINDICATOR_COLORS.PRIMARY};
-  transform: translateX(${(props) => props.$timelinePos?.left}px) translateY(${(props) => props.$top}px);
-  -webkit-transform: translateX(${(props) => props.$timelinePos?.left}px) translateY(${(props) => props.$top}px);
+  transform: translateX(${(props) => props.$timelinePos?.x}px) translateY(${(props) => props.$y}px);
+  -webkit-transform: translateX(${(props) => props.$timelinePos?.x}px) translateY(${(props) => props.$y}px);
 `;
 
 type TNowIndicator = {
@@ -41,8 +41,8 @@ type TNowIndicator = {
 
 const NowIndicator: React.FC<TNowIndicator> = ({ type, widthTimeline = 0 }) => {
   const calendarState: TCalendarStateForApp = useCalendarState();
-  const [now, setNow] = useState({ position: 0, text: "00:00" });
-  const [timelinePos, setTimelinePos] = useState({ width: 0, left: 0 });
+  const [now, setNow] = useState({ y: 0, text: "00:00" });
+  const [timelinePos, setTimelinePos] = useState({ width: 0, x: 0 });
 
   const getCurrentTime = useCallback(() => {
     const currentHours: number = calendarState.todayGlobalIns.hour();
@@ -66,31 +66,26 @@ const NowIndicator: React.FC<TNowIndicator> = ({ type, widthTimeline = 0 }) => {
 
         const timeEachInterval: number = TimeUtils.covertHourMinuteToSeconds(hourEachInterval, minuteEachInterval);
 
-        const position: number = TimeUtils.calcDistanceBetweenTimes(
-          timeEachInterval,
-          calendarState.dayTime.start,
-          calendarState.duration,
-          CONFIG.CSS.LINE_HEIGHT,
-        );
+        const y: number = TimeUtils.calcDistanceBetweenTimes(timeEachInterval, calendarState.dayTime.start, calendarState.duration, CONFIG.CSS.LINE_HEIGHT);
 
         const text: string = TimeUtils.convertSecondsToHourString(timeEachInterval, calendarState.timeType);
 
-        setNow({ position, text });
+        setNow({ y, text });
       } else {
-        setNow({ position: 0, text: "00:00" });
+        setNow({ y: 0, text: "00:00" });
       }
     },
     [calendarState.dayTime, calendarState.duration, calendarState.timeType],
   );
 
-  /* get position of timeline */
+  /* get y of timeline */
   const getTimelineNowPos = useCallback(() => {
     const dateline: TDateline = DateUtils.getDateline(calendarState.currentDate, calendarState.viewMode);
 
     const todayIdx: number = dateline.findIndex((d) => DateUtils.isEqual(d.origin, calendarState.todayGlobalIns));
 
     if (todayIdx > -1) {
-      setTimelinePos({ width: widthTimeline, left: widthTimeline * todayIdx });
+      setTimelinePos({ width: widthTimeline, x: widthTimeline * todayIdx });
     }
   }, [widthTimeline, calendarState.currentDate, calendarState.viewMode, calendarState.todayGlobalIns]);
 
@@ -98,7 +93,7 @@ const NowIndicator: React.FC<TNowIndicator> = ({ type, widthTimeline = 0 }) => {
     getTimelineNowPos();
   }, [getTimelineNowPos]);
 
-  /* update now-indicator when re-render to fit the position while user is changing duration */
+  /* update now-indicator when re-render to fit the y while user is changing duration */
   useEffect(() => {
     const currentTime: number = getCurrentTime();
     const isToday: boolean = checkToday();
@@ -120,12 +115,12 @@ const NowIndicator: React.FC<TNowIndicator> = ({ type, widthTimeline = 0 }) => {
 
   return (
     <React.Fragment>
-      {type === "PILL" && calendarState.viewMode === "DAY" && Boolean(now.position) && calendarState.nowIndicator && (
-        <TimePill $align={"center"} $justify={"center"} $top={now.position}>
+      {type === "PILL" && calendarState.viewMode === "DAY" && Boolean(now.y) && calendarState.nowIndicator && (
+        <TimePill $align={"center"} $justify={"center"} $y={now.y}>
           {now.text}
         </TimePill>
       )}
-      {type === "LINE" && Boolean(now.position) && calendarState.nowIndicator && <TimeLine $top={now.position + 9.5} $timelinePos={timelinePos}></TimeLine>}
+      {type === "LINE" && Boolean(now.y) && calendarState.nowIndicator && <TimeLine $y={now.y + 9.5} $timelinePos={timelinePos}></TimeLine>}
     </React.Fragment>
   );
 };

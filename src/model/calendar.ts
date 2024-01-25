@@ -50,7 +50,7 @@ export type TViewMode = "DAY" | "WEEK" | "MONTH";
 export type TDay = { number: string; text: string; origin: Dayjs };
 export type TDateline = TDay[];
 
-export type TRect = { width: number; height: number; top: number; left: number };
+export type TRect = { width: number; height: number; x: number; y: number };
 
 export type TCalendarAction = {
   type: EAction;
