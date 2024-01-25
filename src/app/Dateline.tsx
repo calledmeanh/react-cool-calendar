@@ -67,10 +67,10 @@ const DatelineText = styled.div`
 const Dateline: React.FC = () => {
   const calendarState: TCalendarStateForApp = useCalendarState();
 
-  const steps: number = TimeUtils.calcTimeStep(calendarState.dayTime.end, calendarState.dayTime.start, calendarState.duration);
-  const maxGridHeight: number = calendarState.viewMode === "MONTH" ? CONFIG.CSS.DATELINE_HEIGHT : steps * CONFIG.CSS.LINE_HEIGHT;
-
   const render = useCallback(() => {
+    const steps: number = TimeUtils.calcTimeStep(calendarState.dayTime.end, calendarState.dayTime.start, calendarState.duration);
+    const maxGridHeight: number = calendarState.viewMode === "MONTH" ? CONFIG.CSS.DATELINE_HEIGHT : steps * CONFIG.CSS.LINE_HEIGHT;
+
     const dateline: TDateline = DateUtils.getDateline(calendarState.currentDate, calendarState.viewMode);
 
     return dateline.map((d, i) => {
@@ -85,7 +85,7 @@ const Dateline: React.FC = () => {
         </DatelineHeader>
       );
     });
-  }, [maxGridHeight, calendarState.viewMode, calendarState.currentDate, calendarState.todayGlobalIns]);
+  }, [calendarState.viewMode, calendarState.currentDate, calendarState.todayGlobalIns]);
 
   return <Wrapper data-idtf={CONFIG.DATA_IDTF.DATELINE}>{render()}</Wrapper>;
 };
