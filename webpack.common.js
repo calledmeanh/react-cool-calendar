@@ -29,7 +29,6 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.join(__dirname, "docs", "index.html"),
     }),
-    new MiniCssExtractPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
+    new MiniCssExtractPlugin()
   ],
 };
