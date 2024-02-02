@@ -63,7 +63,7 @@ export const Modal: React.FC<TModal> = ({ titleRender, data, onClose }) => {
         </Title>
         <List $dir={"column"}>
           {data.map((d: TAppointmentForUser) => (
-            <ApptRectangle key={d.id} value={d} />
+            <ApptRectangle key={d.id} value={d} mouseCoords={{ x: 0, y: 0 }} />
           ))}
         </List>
       </Container>

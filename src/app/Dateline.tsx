@@ -85,7 +85,14 @@ const Dateline: React.FC = () => {
         </DatelineHeader>
       );
     });
-  }, [calendarState.viewMode, calendarState.currentDate, calendarState.todayGlobalIns]);
+  }, [
+    calendarState.viewMode,
+    calendarState.currentDate,
+    calendarState.todayGlobalIns,
+    calendarState.dayTime.end,
+    calendarState.dayTime.start,
+    calendarState.duration,
+  ]);
 
   return <Wrapper data-idtf={CONFIG.DATA_IDTF.DATELINE}>{render()}</Wrapper>;
 };

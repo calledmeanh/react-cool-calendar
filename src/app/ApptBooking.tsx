@@ -60,13 +60,13 @@ const Resize = styled.div`
 type TApptBooking = {
   value: TAppointmentForApp;
   scrollEl: HTMLDivElement | null;
-  coords: { x: number; y: number; pageX: number; pageY: number };
+  mouseCoords: { x: number; y: number; pageX: number; pageY: number };
   widthTimeline: number;
   onPressAppt: (value: TAppointmentForApp) => void;
   onReleaseAppt: (id: string, startTime: number, duration: number) => void;
 };
 
-const ApptBooking: React.FC<TApptBooking> = ({ value, scrollEl, coords, widthTimeline, onPressAppt, onReleaseAppt }) => {
+const ApptBooking: React.FC<TApptBooking> = ({ value, scrollEl, mouseCoords, widthTimeline, onPressAppt, onReleaseAppt }) => {
   const calendarState: TCalendarStateForApp = useCalendarState();
   const dispath: React.Dispatch<TCalendarAction> = useCalendarDispatch();
 
@@ -86,7 +86,7 @@ const ApptBooking: React.FC<TApptBooking> = ({ value, scrollEl, coords, widthTim
   const preventDragEventRef: React.MutableRefObject<Function> = useRef(() => {});
   const autoScrollThresholdRef: React.MutableRefObject<number> = useRef(value.height / 5); // threshold to start auto scroll
 
-  const floorY: number = Math.floor(coords.pageY / CONFIG.CSS.LINE_HEIGHT) * CONFIG.CSS.LINE_HEIGHT;
+  const floorY: number = Math.floor(mouseCoords.pageY / CONFIG.CSS.LINE_HEIGHT) * CONFIG.CSS.LINE_HEIGHT;
 
   const lineIdx: number = apptCoords.y / CONFIG.CSS.LINE_HEIGHT;
   const startTime: number = lineIdx * calendarState.duration + calendarState.dayTime.start;
@@ -98,7 +98,7 @@ const ApptBooking: React.FC<TApptBooking> = ({ value, scrollEl, coords, widthTim
   const updatedStartTime: string = TimeUtils.convertSecondsToHourString(newStartTime);
   const updatedEndTime: string = TimeUtils.convertSecondsToHourString(newEndTime);
   const updatedWidth: number = isDragRef.current ? widthTimeline : size.width;
-  const updatedX: number = isDragRef.current ? coords.x : apptCoords.x;
+  const updatedX: number = isDragRef.current ? mouseCoords.x : apptCoords.x;
   const updatedHeight: number = isResizeRef.current ? size.height : value.height;
 
   const calendarHeight: number = calendarRef.current?.offsetHeight || 0;
@@ -107,9 +107,9 @@ const ApptBooking: React.FC<TApptBooking> = ({ value, scrollEl, coords, widthTim
   const maxScrollY: number = scrollEl?.scrollHeight || 0;
 
   // distance from mouse to
-  const distanceUp: number = coords.y - origDeltaYRef.current;
-  const distanceLeft: number = coords.x - origDeltaXRef.current;
-  const distanceDown: number = coords.y + (value.height - origDeltaYRef.current);
+  const distanceUp: number = mouseCoords.y - origDeltaYRef.current;
+  const distanceDown: number = mouseCoords.y + (value.height - origDeltaYRef.current);
+  const distanceLeft: number = mouseCoords.x - origDeltaXRef.current;
 
   const steps: number = TimeUtils.calcTimeStep(calendarState.dayTime.end, calendarState.dayTime.start, calendarState.duration);
   const maxGridHeight: number = steps * CONFIG.CSS.LINE_HEIGHT;
@@ -140,8 +140,8 @@ const ApptBooking: React.FC<TApptBooking> = ({ value, scrollEl, coords, widthTim
       updateDraggingState(true);
     }, 250);
 
-    origDeltaXRef.current = coords.x - apptCoords.x;
-    origDeltaYRef.current = coords.y - apptCoords.y;
+    origDeltaXRef.current = mouseCoords.x - apptCoords.x;
+    origDeltaYRef.current = mouseCoords.y - apptCoords.y;
 
     // save data for later use
     edgeYRef.current = ElementUtils.getOffsetToDocument(e.currentTarget, "top");
@@ -282,7 +282,7 @@ const ApptBooking: React.FC<TApptBooking> = ({ value, scrollEl, coords, widthTim
   const onStartResize = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation(); // prevent to fire a drag event on parent div
 
-    lastMouseYPositionRef.current = coords.y;
+    lastMouseYPositionRef.current = mouseCoords.y;
 
     updateResizeState(true);
 
@@ -292,12 +292,12 @@ const ApptBooking: React.FC<TApptBooking> = ({ value, scrollEl, coords, widthTim
 
   const onResizing = useCallback(() => {
     if (isResizeRef.current) {
-      const distance: number = lastMouseYPositionRef.current - coords.y;
+      const distance: number = lastMouseYPositionRef.current - mouseCoords.y;
       const newHeight: number = value.height - distance;
       sizeBackerRef.current = newHeight;
       setSize((s) => ({ ...s, height: newHeight }));
     }
-  }, [coords.y, value.height]);
+  }, [mouseCoords.y, value.height]);
 
   const onEndResize = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation(); // prevent to fire a drag event on parent div
@@ -315,7 +315,7 @@ const ApptBooking: React.FC<TApptBooking> = ({ value, scrollEl, coords, widthTim
   useEffect(() => {
     setSize({ width: value.width, height: value.height });
     setApptCoords({ x: value.x, y: value.y });
-  }, [value.width, value.height, value.y]);
+  }, [value.width, value.height, value.x, value.y]);
 
   // when move mouse around
   useEffect(() => {

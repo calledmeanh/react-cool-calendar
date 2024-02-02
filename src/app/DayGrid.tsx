@@ -11,6 +11,8 @@ import ApptRectangle from "./ApptRectangle";
 const Wrapper = styled(Flex)`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
+  border: 1px solid black;
+  position: relative;
   height: calc(100% - 60px); // 60px is height of dateline
   border-left: 1px solid ${CONFIG.CSS.GRAY_SECONDARY_COLOR};
   border-bottom: 1px solid ${CONFIG.CSS.GRAY_SECONDARY_COLOR};
@@ -66,9 +68,10 @@ type TDayGrid = {
 
 const DayGrid: React.FC<TDayGrid> = ({ onShowMoreEvent }) => {
   const calendarState: TCalendarStateForApp = useCalendarState();
-  const dayGridRef: React.MutableRefObject<HTMLDivElement | null> = useRef<HTMLDivElement | null>(null);
-
+  const [mouseCoords, setMouseCoords] = useState({ x: 0, y: 0 });
   const [dayGridHeight, setDayGridHeight] = useState<number>(0);
+
+  const dayGridRef: React.MutableRefObject<HTMLDivElement | null> = useRef<HTMLDivElement | null>(null);
 
   const firstDayOfMonth: Dayjs = calendarState.currentDate.startOf("month");
   const prevMonth: Dayjs = firstDayOfMonth.subtract(1, "month");
@@ -103,7 +106,7 @@ const DayGrid: React.FC<TDayGrid> = ({ onShowMoreEvent }) => {
           <DayCell key={`${prefix}-month-${i}`} className={classname} style={{ height: dayGridHeight / rows }}>
             <DayNumber className={classname}>{dateInMonth.format("DD")}</DayNumber>
             {apptByDay.slice(0, 2).map((a) => (
-              <ApptRectangle key={a.id} value={a} />
+              <ApptRectangle key={a.id} value={a} mouseCoords={mouseCoords} />
             ))}
             {apptByDay.length > 2 && (
               <EventLeft $align={"center"} onClick={() => onShowMoreEvent(dateInMonth, apptByDay)}>
@@ -116,7 +119,7 @@ const DayGrid: React.FC<TDayGrid> = ({ onShowMoreEvent }) => {
 
       return days;
     },
-    [calendarState.todayGlobalIns, calendarState.appointments, dayGridHeight, rows],
+    [calendarState.todayGlobalIns, calendarState.appointments, mouseCoords, dayGridHeight, rows, onShowMoreEvent],
   );
 
   const render = useCallback(() => {
@@ -129,11 +132,19 @@ const DayGrid: React.FC<TDayGrid> = ({ onShowMoreEvent }) => {
     return days;
   }, [prevMonthRemainingDays, nearestEndOfMonth, daysInMonth, nextMonthRemainingDays, prevMonth, firstDayOfMonth, nextMonth, pushDays]);
 
+  const onMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    setMouseCoords({ x: e.pageX, y: e.pageY });
+  };
+
   useEffect(() => {
     if (dayGridRef && dayGridRef.current) setDayGridHeight(dayGridRef.current.offsetHeight);
   }, []);
 
-  return <Wrapper ref={dayGridRef}>{render()}</Wrapper>;
+  return (
+    <Wrapper ref={dayGridRef} onMouseMove={onMouseMove}>
+      {render()}
+    </Wrapper>
+  );
 };
 
 export default DayGrid;

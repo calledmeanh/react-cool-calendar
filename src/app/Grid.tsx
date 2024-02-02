@@ -37,7 +37,7 @@ const Grid: React.FC = () => {
   const [gridWidth, setGridWidth] = useState(0);
   const [scrollEl, setScrollEl] = useState<HTMLDivElement | null>(null);
   const [timeEachCell, setTimeEachCell] = useState("");
-  const [coords, setCoords] = useState({ x: 0, y: 0, pageY: 0, pageX: 0 });
+  const [mouseCoords, setMouseCoords] = useState({ x: 0, y: 0, pageY: 0, pageX: 0 });
   const [isShowGhost, setShowGhost] = useState(false);
 
   const gridRef: React.MutableRefObject<HTMLDivElement | null> = useRef<HTMLDivElement | null>(null);
@@ -73,7 +73,7 @@ const Grid: React.FC = () => {
     const seconds: number = lineIdx * calendarState.duration + calendarState.dayTime.start;
     const time: string = TimeUtils.convertSecondsToHourString(seconds, calendarState.timeType);
 
-    setCoords({ x, y, pageY: e.pageY, pageX: e.pageX });
+    setMouseCoords({ x, y, pageY: e.pageY, pageX: e.pageX });
     setTimeEachCell(time);
   };
 
@@ -93,8 +93,8 @@ const Grid: React.FC = () => {
   return (
     <Wrapper data-idtf={CONFIG.DATA_IDTF.GRID} onMouseMove={onMouseMove} onMouseLeave={onMouseLeave} onContextMenu={onRightClick} ref={gridRef}>
       <NowIndicator type={"LINE"} widthTimeline={widthTimeline} />
-      {isShowGhost && <Ghost timeEachCell={timeEachCell} rect={{ x: coords.x, y: coords.y, width: widthTimeline, height: CONFIG.CSS.LINE_HEIGHT }} />}
-      <Appointment scrollEl={scrollEl} widthTimeline={widthTimeline} coords={coords} />
+      {isShowGhost && <Ghost timeEachCell={timeEachCell} rect={{ x: mouseCoords.x, y: mouseCoords.y, width: widthTimeline, height: CONFIG.CSS.LINE_HEIGHT }} />}
+      <Appointment scrollEl={scrollEl} widthTimeline={widthTimeline} mouseCoords={mouseCoords} />
       <Row />
     </Wrapper>
   );
